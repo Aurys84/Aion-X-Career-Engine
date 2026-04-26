@@ -4,16 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aion-X Career Engine v1.1.0</title>
-    <link rel="stylesheet" href="styles.css?v=1.1">
+    <style>
+        /* Itt a dizájn, hogy ne kelljen külső fájl */
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid #3498db; }
+        .preview-side { width: 65%; display: flex; justify-content: center; align-items: flex-start; padding: 30px; overflow-y: auto; background: #dfe4ea; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .control-group { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 11px; }
+        input, textarea, select { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 5px; }
+        .lang-btns { display: flex; gap: 5px; }
+        .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #333; color: #ccc; }
+        .active-lang { background: #3498db !important; color: white; }
+    </style>
 </head>
 <body>
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 24px; margin-bottom: 5px;">Aion-X Global Control</h1>
-        <p style="font-size: 10px; color: #777; margin-top: 0;">LABORATORY STATUS: ACTIVE</p>
+        <h1 style="color: #3498db; font-size: 24px;">Aion-X Global Control</h1>
         
         <div class="control-group">
-            <label>Language / Sprache / Nyelv</label>
+            <label id="lbl-lang">Language</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -26,11 +37,11 @@
             <select id="theme-color" onchange="updateTheme()">
                 <option value="#3498db">Aion Kék</option>
                 <option value="#1a3a5a">Éjfélkék</option>
-                <option value="#4a4a4a">Antracit</option>
                 <option value="#2ecc71">Smaragd</option>
                 <option value="#e67e22">Norbi Narancs</option>
                 <option value="#e74c3c">Vörös</option>
                 <option value="#8e44ad">Lila</option>
+                <option value="#4a4a4a">Antracit</option>
                 <option value="#2c3e50">Pala</option>
                 <option value="#d35400">Téglavörös</option>
                 <option value="#1abc9c">Türkiz</option>
@@ -41,22 +52,50 @@
             <label id="lbl-name">Name</label>
             <input type="text" id="in-name" oninput="updatePreview()">
         </div>
-
-        <div class="control-group">
-            <label id="lbl-summary">Professional Summary</label>
-            <textarea id="in-summary" rows="5" oninput="updatePreview()"></textarea>
-        </div>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper">
-            <h1 id="out-name" style="transition: 0.3s;">Your Name</h1>
-            <hr id="line" style="border: 2px solid #3498db; margin: 15px 0; transition: 0.3s;">
-            <p id="out-summary" style="white-space: pre-wrap;">Summary preview...</p>
+            <h1 id="out-name">Name</h1>
+            <hr id="line" style="border: 2px solid #3498db; margin: 15px 0;">
         </div>
     </div>
 
-    <script src="dictionary.js?v=1.1"></script>
-    <script src="engine.js?v=1.1"></script>
+    <script>
+        // Minden egyben, hogy ne legyen hiba!
+        const dictionary = {
+            hu: { name: "Teljes Név", theme: "Mátrix Design (Szín)", lang: "Nyelv" },
+            en: { name: "Full Name", theme: "Matrix Design (Color)", lang: "Language" },
+            de: { name: "Vollständiger Name", theme: "Matrix Design (Farbe)", lang: "Sprache" }
+        };
+
+        let currentLang = 'hu';
+
+        function changeLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
+            document.getElementById('btn-' + lang).classList.add('active-lang');
+            
+            document.getElementById('lbl-name').innerText = dictionary[lang].name;
+            document.getElementById('lbl-theme').innerText = dictionary[lang].theme;
+            document.getElementById('lbl-lang').innerText = dictionary[lang].lang;
+            updatePreview();
+        }
+
+        function updateTheme() {
+            const color = document.getElementById('theme-color').value;
+            document.getElementById('out-name').style.color = color;
+            document.getElementById('line').style.borderColor = color;
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('in-name').value;
+            document.getElementById('out-name').innerText = name || dictionary[currentLang].name;
+        }
+
+        window.onload = () => { changeLang('hu'); };
+    </script>
 </body>
 </html>
+
+    

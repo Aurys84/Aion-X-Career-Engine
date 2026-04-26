@@ -44,10 +44,11 @@ async function renderAsyncContent(szin) {
     const fullStreet = sName ? sName + " " + sType : "";
     const finalAddr = [city, fullStreet, house, zip].filter(x => x).join(", ");
 
+    // EMAIL-PHONE FIX: Blokkosítva, hogy ne folyjon össze
     document.getElementById('out-contact').innerHTML = `
         <div style="margin-top:10px; line-height: 1.4;">
             ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
-            <div style="display:block;">${email ? '<b>' + d.email + ':</b> ' + email + '</div>' : ''}
+            ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
             ${finalAddr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + finalAddr + '</div>' : ''}
         </div>
     `;
@@ -59,22 +60,23 @@ async function renderAsyncContent(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    // DINAMIKUS CIKLUS FIX: for...of használata az await miatt
-    for (let type of ['edu', 'work']) {
+    // DINAMIKUS CIKLUS FIX: Kényszerített renderelés
+    const types = ['edu', 'work'];
+    for (const type of types) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        for (let box of boxes) {
+        for (const box of boxes) {
             const mRaw = box.querySelector('.e-main').value;
-            const sub = box.querySelector('.e-sub').value;
+            const subV = box.querySelector('.e-sub').value;
             const descRaw = box.querySelector('.e-desc').value;
             
             const m = await deepTranslate(mRaw);
             const desc = await deepTranslate(descRaw);
             
-            if(m || sub || desc) {
+            if(m || subV || desc) {
                 items += `<div style="margin-bottom:12px">
-                    <b>${m}</b> ${sub ? '('+sub+')' : ''}<br>
-                    <span style="font-size:13px; color:#555;">${desc}</span>
+                    <b>${m}</b> ${subV ? '('+subV+')' : ''}<br>
+                    <span style="font-size:13px; color:#666;">${desc}</span>
                 </div>`;
             }
         }
@@ -96,9 +98,9 @@ function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
     div.innerHTML = `
-        <input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()">
-        <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
-        <input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">
+        <input type="text" class="e-main" placeholder="Intézmény/Cég" oninput="updatePreview()">
+        <input type="text" class="e-sub" placeholder="Időtartam" oninput="updatePreview()">
+        <input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">
     `;
     document.getElementById(type + '-container').appendChild(div);
     updatePreview();

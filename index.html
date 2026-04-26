@@ -2,19 +2,19 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v11.0</title>
+    <title>Aion-X Dashboard v12.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
     <div class="editor-side">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
             <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
             <h2 id="lbl-title" style="color:var(--main-color); margin:0; font-size:18px;">AION-X PANEL</h2>
         </div>
 
-        <div class="ats-tips" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:20px; border-left:4px solid #f1c40f; font-size:11px;">
+        <div class="ats-tips" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
             <b style="color:#f1c40f;">🚀 GIGA ATS TIPPEK:</b><br>
-            • Használj kulcsszavakat (SAP, Minitab)!<br>
+            • Használj konkrét szoftverneveket (SAP, Minitab)!<br>
             • Fotó: Világos háttér, profi öltözet.
         </div>
         
@@ -37,39 +37,34 @@
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
                 <select id="theme-color" onchange="updateTheme()">
                     <option value="#007bb5">Aion Kék</option>
-                    <option value="#e67e22">Norbi Narancs</option>
+                    <option value="#e67e22">Narancs</option>
                     <option value="#27ae60">Smaragd</option>
                     <option value="#c0392b">Vörös</option>
                     <option value="#8e44ad">Lila</option>
-                    <option value="#1a1a1a">Fekete</option>
                     <option value="#2c3e50">Pala</option>
-                    <option value="#d35400">Tégla</option>
+                    <option value="#f1c40f">Arany</option>
                     <option value="#16a085">Türkiz</option>
-                    <option value="#f39c12">Arany</option>
+                    <option value="#e74c3c">Alizarin</option>
+                    <option value="#2ecc71">Lomb</option>
                 </select>
             </div>
         </div>
 
-        <label class="smart-label" id="lbl-photo">FOTÓ</label>
-        <input type="file" accept="image/*" onchange="loadPhoto(event)">
-
         <label class="smart-label" id="lbl-name">NÉV</label>
-        <input type="text" id="in-name" oninput="updatePreview()">
+        <input type="text" id="in-name" placeholder="Vezetéknév Keresztnév" oninput="updatePreview()">
 
         <label class="smart-label" id="lbl-city">IRSZ / VÁROS / UTCA / HÁZ</label>
         <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" placeholder="9757" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
         <div style="display: flex; gap: 5px; margin-top:5px;">
             <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()" style="width:70%">
-            <input type="text" id="in-house" placeholder="68" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()" style="width:30%">
         </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
-        <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label><input type="text" id="in-license" oninput="updatePreview()">
         
         <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label><div id="edu-container"></div>
         <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
@@ -82,14 +77,9 @@
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
-            <div class="cv-header" style="display:flex; gap:20px;">
-                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;">
-                    <img id="out-photo" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <div class="header-text">
-                    <h1 id="out-name">NAME</h1>
-                    <div id="out-contact" style="font-size:12px; margin-top:10px;"></div>
-                </div>
+            <div class="cv-header">
+                <h1 id="out-name">NAME</h1>
+                <div id="out-contact"></div>
             </div>
             <div id="main-content"></div>
         </div>

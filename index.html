@@ -2,13 +2,13 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v9.0</title>
+    <title>Aion-X Dashboard v9.1</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="editor-side">
         <h2 id="lbl-title" style="color:var(--main-color)">AION-X PANEL</h2>
-        <div class="lang-grid" style="margin-bottom: 20px;">
+        <div class="lang-grid" style="margin-bottom: 20px; display: flex; gap: 5px;">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
             <button class="btn-lang" onclick="setMode('en', this)">EN</button>
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
@@ -16,9 +16,16 @@
         <div style="display: flex; gap: 10px;">
             <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
                 <select id="style-select" onchange="updateStyle()">
-                    <option value="style-10">10. Aion-X</option><option value="style-1">1. Modern</option>
-                    <option value="style-2">2. Klasszikus</option><option value="style-3">3. Üzleti</option>
+                    <option value="style-10">10. Aion-X Speciál</option>
+                    <option value="style-1">1. Modern Oszlopos</option>
+                    <option value="style-2">2. Klasszikus</option>
+                    <option value="style-3">3. Centrált</option>
+                    <option value="style-4">4. Minimalista</option>
+                    <option value="style-5">5. Technikai</option>
                     <option value="style-6">6. Kreatív</option>
+                    <option value="style-7">7. Menedzseri</option>
+                    <option value="style-8">8. Akadémiai</option>
+                    <option value="style-9">9. Junior</option>
                 </select>
             </div>
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
@@ -29,18 +36,19 @@
         <label class="smart-label" id="lbl-name">NÉV</label><input type="text" id="in-name" oninput="updatePreview()">
         <label class="smart-label" id="lbl-phone">TEL</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-city">HELYSZÍN (IRSZ, VÁROS, UTCA, HÁZ)</label>
+        <label class="smart-label" id="lbl-city">IRSZ / VÁROS</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-zip" style="width:30%" oninput="updatePreview()">
             <input type="text" id="in-city" style="width:70%" oninput="updatePreview()">
         </div>
-        <div style="display: flex; gap: 5px; margin-top:5px;">
+        <label class="smart-label" id="lbl-street">UTCA / HÁZSZÁM</label>
+        <div style="display: flex; gap: 5px;">
             <input type="text" id="in-street" style="width:70%" oninput="updatePreview()">
             <input type="text" id="in-house" style="width:30%" oninput="updatePreview()">
         </div>
         <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
         <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label><input type="text" id="in-license" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-edu">ISKOLÁK</label><div id="edu-container"></div>
+        <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label><div id="edu-container"></div>
         <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
         <label class="smart-label" id="lbl-work">MUNKAHELYEK</label><div id="work-container"></div>
         <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
@@ -54,6 +62,7 @@
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact" style="font-size:12px; margin-top:10px;"></div></div>
             </div>
             <div id="main-content"></div>
+            <div style="position:absolute; bottom:15px; right:15px; opacity:0.1; font-weight:bold;">AION-X MATRIXLB</div>
         </div>
     </div>
     <script src="dictionary.js"></script><script src="engine.js"></script>

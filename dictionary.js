@@ -1,4 +1,4 @@
-// FIX SZAKMAI KIFEJEZÉSEK (Hogy ne kelljen mindenért API-t hívni)
+// FIX SZAKMAI KIFEJEZÉSEK (Hogy a plébános mellett a jogsi is golyóálló legyen)
 const omniDict = [
     { hu: "Vagyonőr", en: "Security Guard", de: "Sicherheitskraft" },
     { hu: "Takarító", en: "Cleaner", de: "Reinigungskraft" },
@@ -9,22 +9,20 @@ const omniDict = [
     { hu: "Főiskola", en: "College", de: "Fachhochschule" },
     { hu: "Érettségi", en: "High School Diploma", de: "Abitur" },
     { hu: "Középfok", en: "Intermediate", de: "Mittelstufe" },
-    { hu: "Alapfok", en: "Elementary", de: "Grundstufe" },
     { hu: "B kategória", en: "Category B", de: "Klasse B" },
     { hu: "Jogosítvány", en: "Driving License", de: "Führerschein" },
     { hu: "Személyautó", en: "Passenger car", de: "PKW" },
-    { hu: "Utca", en: "Street", de: "Straße" },
-    { hu: "Zenehallgatás", en: "Listening to music", de: "Musik hören" },
-    { hu: "Sport", en: "Sports", de: "Sport" },
-    { hu: "Olvasás", en: "Reading", de: "Lesen" }
+    { hu: "utca", en: "street", de: "straße" },
+    { hu: "zenehallgatás", en: "listening to music", de: "Musik hören" },
+    { hu: "sport", en: "sports", de: "Sport" }
 ];
 
-// INTERFÉSZ ÉS PAPÍR FELIRATOK
+// INTERFÉSZ ÉS PAPÍR FELIRATOK (A 10 stílussal és minden mezővel)
 const dictionary = {
     hu: { 
         name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", 
-        phone:"Tel:", email:"Email:", summary:"Profil", work:"Munkahelyek", 
-        edu:"Iskolák", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", 
+        phone:"Tel:", email:"Email:", summary:"Profil", work:"Tapasztalat", 
+        edu:"Tanulmányok", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", 
         addr:"Cím:", addW:"+ Új Munkahely", addE:"+ Új Iskola"
     },
     en: { 

@@ -21,6 +21,18 @@
         </div>
 
         <div class="control-group">
+            <label>Mátrix Design (Szín)</label>
+            <select id="theme-color" onchange="updateTheme()">
+                <option value="#3498db">Aion Kék</option>
+                <option value="#e67e22">Norbi Narancs</option>
+                <option value="#2ecc71">Smaragd</option>
+                <option value="#e74c3c">Vörös</option>
+                <option value="#9b59b6">Lila</option>
+                <option value="#1abc9c">Türkiz</option>
+            </select>
+        </div>
+
+        <div class="control-group">
             <label id="lbl-name">Full Name</label>
             <input type="text" id="in-name" oninput="updatePreview()">
         </div>
@@ -34,7 +46,7 @@
     <div class="preview-side">
         <div class="cv-paper">
             <h1 id="out-name">Name</h1>
-            <hr id="line" style="border: 1px solid #3498db; margin: 15px 0;">
+            <hr id="line" style="border: 2px solid #3498db; margin: 15px 0;">
             <p id="out-summary">Summary will appear here...</p>
         </div>
     </div>

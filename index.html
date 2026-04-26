@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v3.8.0</title>
+    <title>Aion-X Global Control v4.1.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; overflow: hidden; }
         
-        /* EDITOR SIDE */
+        /* EDITOR SIDE - GOLYÓÁLLÓ PANEL */
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
         .logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
         .logo-icon { width: 40px; height: 40px; border: 3px solid var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--main-color); font-size: 22px; }
         
         .ats-box { background: #2c3e50; border-left: 5px solid #f1c40f; padding: 15px; margin-bottom: 25px; font-size: 11px; }
-        .ats-box p { margin: 5px 0; color: #bdc3c7; }
+        .ats-box p { margin: 5px 0; color: #bdc3c7; line-height: 1.4; }
 
         .control-group { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
@@ -27,30 +27,29 @@
         .job-entry { background: #252525; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid var(--main-color); }
         .add-btn { background: var(--main-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
 
-        /* PREVIEW SIDE */
-        .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
+        /* PREVIEW PANEL */
+        .preview-side { width: 65%; display: flex; justify-content: center; padding: 40px; overflow-y: auto; background: #525659; }
         .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 50px; box-shadow: 0 0 30px rgba(0,0,0,0.6); box-sizing: border-box; color: #333; transition: 0.4s ease; }
         
-        /* 10 DRASTIC STYLES */
-        .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 20px; }
+        /* 10 DRASZTIKUS STÍLUS - NINCS TÖBB RÖVIDÍTÉS! */
+        .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 15px; }
         .style-2 .cv-paper { border-top: 30px solid var(--main-color); }
-        .style-3 .cv-header { flex-direction: column; text-align: center; }
-        .style-4 .cv-paper { font-family: 'Courier New', monospace; font-size: 12px; }
-        .style-5 .cv-header { background: #f4f4f4; border: 2px solid #ddd; padding: 20px; }
-        .style-6 .cv-paper { border-left: 50px solid var(--main-color); padding-left: 35px; }
+        .style-3 .cv-header { flex-direction: column; text-align: center; border-bottom: 1px solid #eee; }
+        .style-4 .cv-paper { font-family: 'Courier New', Courier, monospace; }
+        .style-5 .cv-header { background: #f4f4f4; border: 2px solid #ddd; padding: 25px; }
+        .style-6 .cv-paper { border-left: 55px solid var(--main-color); padding-left: 40px; }
         .style-7 .header-text h1 { font-size: 50px; border-bottom: 8px solid var(--main-color); }
         .style-8 .cv-paper { line-height: 2.2; font-size: 11px; }
-        .style-9 #photo-preview { border-radius: 50%; border: 6px solid var(--main-color); }
-        .style-10 .cv-paper { border: 20px double var(--main-color); background: #fbfbfb; }
+        .style-9 #photo-preview { border-radius: 50%; border: 6px solid var(--main-color); width: 140px; height: 140px; }
+        .style-10 .cv-paper { border: 20px double var(--main-color); background: #fafafa; }
 
         .cv-header { border-bottom: 4px solid var(--main-color); padding-bottom: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 25px; }
-        #photo-preview { width: 140px; height: 180px; object-fit: cover; display: none; border: 1px solid #ddd; }
+        #photo-preview { width: 140px; height: 180px; object-fit: cover; border: 1px solid #ddd; display: none; }
         .contact-row { margin-bottom: 5px; font-size: 14px; }
         .contact-label { font-weight: bold; color: var(--main-color); margin-right: 10px; }
         
         h3 { border-bottom: 1px solid #eee; padding-bottom: 8px; color: var(--main-color); text-transform: uppercase; font-size: 16px; margin-top: 30px; }
         .job-item { margin-bottom: 15px; }
-        .job-title-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 15px; }
 
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
     </style>
@@ -58,10 +57,10 @@
 <body class="style-1">
 
     <div class="editor-side">
-        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color: #3498db; font-size: 24px; margin: 0;">Global Control</h1></div>
+        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color:#3498db; font-size:24px; margin:0;">Global Control</h1></div>
         
         <div class="ats-box">
-            <strong id="ats-title" style="color: #f1c40f;">ATS STRATEGY BOARD</strong>
+            <strong id="ats-title" style="color:#f1c40f;">ATS STRATEGY BOARD</strong>
             <div id="ats-tips"></div>
         </div>
 
@@ -71,9 +70,10 @@
             <button id="btn-de" onclick="changeLang('de')">DE</button>
         </div>
 
-        <div class="control-group"><label id="lbl-style">Interface Style</label><select id="style-select" onchange="updateStyle()"></select></div>
-        <div class="control-group"><label id="lbl-theme">Color Theme</label><select id="theme-color" onchange="updateTheme()"></select></div>
-        <div class="control-group"><label id="lbl-photo">Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        <div class="control-group"><label id="lbl-style">Style (10 Types)</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">Theme Color (10)</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        
         <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
         <div style="display: flex; gap: 8px;">
@@ -81,24 +81,24 @@
             <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="updatePreview()"></div>
         </div>
         <div style="display: flex; gap: 8px;">
-            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="updatePreview()"></div>
-            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street Name</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-house">House No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
         
         <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
 
-        <h4 id="lbl-work-h" style="color: var(--main-color); margin-top: 20px;">WORK HISTORY</h4>
+        <h4 id="lbl-work-h" style="color:var(--main-color); margin-top:20px;">WORK EXPERIENCE</h4>
         <div id="job-container"></div>
         <button class="add-btn" onclick="addJobField()" id="btn-add-job">+ ADD WORKPLACE</button>
 
         <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
-        <div class="control-group"><label id="lbl-skills">Core Skills</label><input type="text" id="in-skills" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-skills">Skills</label><textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea></div>
         <div class="control-group"><label id="lbl-langs">Languages</label><input type="text" id="in-langs" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-license">License</label><input type="text" id="in-license" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-hobby">Hobbies</label><input type="text" id="in-hobby" oninput="updatePreview()"></div>
 
-        <button onclick="window.print()" style="background: #27ae60; color: white; padding: 20px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px;">PRINT PDF</button>
+        <button onclick="window.print()" style="background:#27ae60; color:white; padding:20px; width:100%; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:15px;">GENERATE FINAL PDF</button>
     </div>
 
     <div class="preview-side">
@@ -115,20 +115,19 @@
     </div>
 
     <script>
-        const translatorDB = {
+        const universalDB = {
             "Vagyonőr": { en: "Security Guard", de: "Sicherheitskraft" },
-            "Felügyelet Vezető": { en: "Supervision Lead", de: "Überwachungsleiter" },
-            "Csapatban dolgozom": { en: "Team player", de: "Teamfähig" },
-            "B kategória": { en: "Category B license", de: "Führerschein Klasse B" },
-            "Középfok B2": { en: "Intermediate B2", de: "Mittelstufe B2" },
+            "Takarító": { en: "Cleaner", de: "Reinigungskraft" },
+            "Sofőr": { en: "Driver", de: "Fahrer" },
+            "B kategória": { en: "Category B", de: "Klasse B" },
             "utca": { en: "street", de: "straße" },
-            "Zenehallgatás": { en: "Listening to music", de: "Musik hören" }
+            "középfok": { en: "intermediate", de: "Mittelstufe" }
         };
 
         const dictionary = {
-            hu: { name: "Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Tel", email: "Email", summary: "Profil", work: "Munkahelyek", skills: "Készségek", langs: "Nyelvek", license: "Jogosítvány", hobby: "Hobbi", add: "+ Hozzáad", print: "PDF MENTÉS", photo: "Fotó", tips: ["1. Tiszta szöveg.", "2. Kulcsszavak.", "3. PDF mentés.", "4. Üres mezők rejtve."], labels: { p: "Tel:", e: "Email:", a: "Cím:" }, styles: ["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors: ["Kék", "Narancs", "Fekete", "Zöld", "Piros", "Lila", "Arany", "Ezüst", "Türkiz", "Szürke"] },
-            en: { name: "Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone", email: "Email", summary: "Summary", work: "History", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobbies", add: "+ Add", print: "SAVE PDF", photo: "Photo", tips: ["1. Clean text.", "2. Keywords.", "3. PDF Save.", "4. Hidden fields."], labels: { p: "Phone:", e: "Email:", a: "Address:" }, styles: ["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors: ["Blue", "Orange", "Black", "Green", "Red", "Purple", "Gold", "Silver", "Turquoise", "Gray"] },
-            de: { name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel", email: "Email", summary: "Profil", work: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobby", add: "+ Job", photo: "Foto", tips: ["1. Klarer Text.", "2. Keywords.", "3. PDF.", "4. Ausgeblendet."], labels: { p: "Tel:", e: "Email:", a: "Adresse:" }, styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimal", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors: ["Blau", "Orange", "Schwarz", "Grün", "Rot", "Lila", "Gold", "Silber", "Türkis", "Grau"] }
+            hu: { name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", phone:"Tel", email:"Email", summary:"Profil", work:"Munkahelyek", skills:"Készségek", langs:"Nyelvek", license:"Jogosítvány", hobby:"Hobbi", add:"+ Hozzáad", print:"PDF MENTÉS", tips:["1. Tiszta szöveg.", "2. Kulcsszavak.", "3. Üres mezők elrejtve."], labels:{p:"Tel:", e:"Email:", a:"Cím:"}, styles:["Modern", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzser", "Akadémiai", "Junior", "Aion-X"], colors:["Kék", "Narancs", "Fekete", "Zöld", "Piros", "Lila", "Arany", "Ezüst", "Türkiz", "Szürke"] },
+            en: { name:"Name", zip:"ZIP", city:"City", street:"Street", house:"No.", phone:"Phone", email:"Email", summary:"Summary", work:"Experience", skills:"Skills", langs:"Languages", license:"License", hobby:"Hobbies", add:"+ Add", print:"SAVE PDF", tips:["1. Clean text.", "2. Keywords.", "3. Empty hidden."], labels:{p:"Phone:", e:"Email:", a:"Address:"}, styles:["Modern", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Manager", "Academic", "Junior", "Aion-X Special"], colors:["Blue", "Orange", "Black", "Green", "Red", "Purple", "Gold", "Silver", "Turquoise", "Gray"] },
+            de: { name:"Name", zip:"PLZ", city:"Stadt", street:"Straße", house:"Hausnr.", phone:"Tel", email:"Email", summary:"Profil", work:"Erfahrung", skills:"Kenntnisse", langs:"Sprachen", license:"Führerschein", hobby:"Hobby", add:"+ Job", print:"PDF SPEICHERN", tips:["1. Klarer Text.", "2. Keywords.", "3. Ausgeblendet."], labels:{p:"Tel:", e:"Email:", a:"Adresse:"}, styles:["Modern", "Klassisch", "Zentriert", "Minimal", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors:["Blau", "Orange", "Schwarz", "Grün", "Rot", "Lila", "Gold", "Silber", "Türkis", "Grau"] }
         };
 
         const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#7f8c8d"];
@@ -138,74 +137,65 @@
             currentLang = lang;
             document.querySelectorAll('.lang-btns button').forEach(b => b.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
-            
-            const fields = ['style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'skills', 'langs', 'license', 'hobby'];
-            fields.forEach(f => { document.getElementById('lbl-' + f).innerText = dictionary[lang][f]; });
-            
+            ['style','theme','photo','name','zip','city','street','house','phone','email','summary','skills','langs','license','hobby'].forEach(f => { document.getElementById('lbl-'+f).innerText = dictionary[lang][f]; });
             document.getElementById('ats-tips').innerHTML = dictionary[lang].tips.map(t => `<p>${t}</p>`).join("");
             document.getElementById('btn-add-job').innerText = dictionary[lang].add;
             document.getElementById('lbl-work-h').innerText = dictionary[lang].work;
-
+            
             const styleS = document.getElementById('style-select'); styleS.innerHTML = "";
-            dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s; styleS.appendChild(o); });
+            dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-"+(i+1); o.innerText = s; styleS.appendChild(o); });
             const colorS = document.getElementById('theme-color'); colorS.innerHTML = "";
             dictionary[lang].colors.forEach((c, i) => { let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c; colorS.appendChild(o); });
-
             updatePreview();
-        }
-
-        function addJobField() {
-            jobCount++;
-            const div = document.createElement('div');
-            div.className = 'job-entry';
-            div.innerHTML = `<input type="text" placeholder="Company" class="j-c" oninput="updatePreview()"><input type="text" placeholder="Position" class="j-p" style="margin-top:5px" oninput="updatePreview()"><input type="text" placeholder="Year" class="j-y" style="margin-top:5px" oninput="updatePreview()">`;
-            document.getElementById('job-container').appendChild(div);
         }
 
         function smartTranslate(text) {
             if (!text || currentLang === 'hu') return text;
-            let result = text;
-            for (let huKey in translatorDB) {
-                let regex = new RegExp(huKey, "gi");
-                if (text.match(regex)) result = result.replace(regex, translatorDB[huKey][currentLang]);
+            let res = text;
+            for (let k in universalDB) {
+                let reg = new RegExp(k, "gi");
+                if (text.match(reg)) res = res.replace(reg, universalDB[k][currentLang]);
             }
-            return result;
+            return res;
         }
 
         function flipName(name, lang) {
             if (!name) return "";
             let p = name.trim().split(" ");
-            if (p.length >= 2 && lang !== 'hu') return p[p.length-1] + " " + p.slice(0, -1).join(" ");
-            return name;
+            return (p.length >= 2 && lang !== 'hu') ? p[p.length-1] + " " + p.slice(0, -1).join(" ") : name;
+        }
+
+        function addJobField() {
+            jobCount++;
+            const div = document.createElement('div'); div.className = 'job-entry';
+            div.innerHTML = `<input type="text" placeholder="Company" class="j-c" oninput="updatePreview()"><input type="text" placeholder="Position" class="j-p" style="margin-top:5px" oninput="updatePreview()"><input type="text" placeholder="Year" class="j-y" style="margin-top:5px" oninput="updatePreview()">`;
+            document.getElementById('job-container').appendChild(div);
         }
 
         function updatePreview() {
-            const rawName = document.getElementById('in-name').value;
-            document.getElementById('out-name').innerText = flipName(rawName, currentLang) || dictionary[currentLang].name;
-            const zip = document.getElementById('in-zip').value;
-            const city = smartTranslate(document.getElementById('in-city').value);
-            const street = smartTranslate(document.getElementById('in-street').value);
-            const house = document.getElementById('in-house').value;
-            let addr = (currentLang !== 'hu') ? `${zip} ${city}, ${street} ${house}` : `${city}, ${street} ${house}, ${zip}`;
+            const n = document.getElementById('in-name').value;
+            document.getElementById('out-name').innerText = flipName(n, currentLang) || dictionary[currentLang].name;
+            const z = document.getElementById('in-zip').value, c = smartTranslate(document.getElementById('in-city').value), s = smartTranslate(document.getElementById('in-street').value), h = document.getElementById('in-house').value;
+            let addr = (currentLang !== 'hu') ? `${z} ${c}, ${s} ${h}` : `${c}, ${s} ${h}, ${z}`;
             const lbl = dictionary[currentLang].labels;
             document.getElementById('out-contact').innerHTML = `<div class="contact-row"><span class="contact-label">${lbl.p}</span> ${document.getElementById('in-phone').value}</div><div class="contact-row"><span class="contact-label">${lbl.e}</span> ${document.getElementById('in-email').value}</div><div class="contact-row"><span class="contact-label">${lbl.a}</span> ${addr}</div>`;
-
-            let mainHtml = "";
-            const sum = smartTranslate(document.getElementById('in-summary').value);
-            if(sum) mainHtml += `<p style="font-style:italic; margin-bottom:20px; color:#555;">${sum}</p>`;
             
-            let jobsHtml = "";
+            let html = "";
+            const sum = smartTranslate(document.getElementById('in-summary').value);
+            if(sum) html += `<p style="font-style:italic; margin-bottom:20px; color:#555;">${sum}</p>`;
+            
+            let jH = "";
             document.querySelectorAll('.job-entry').forEach(e => {
-                const c = e.querySelector('.j-c').value, p = smartTranslate(e.querySelector('.j-p').value), y = e.querySelector('.j-y').value;
-                if(c || p) jobsHtml += `<div class="job-item"><div class="job-title-row"><span>${p}</span><span>${y}</span></div><div>* ${c}</div></div>`;
+                const comp = e.querySelector('.j-c').value, pos = smartTranslate(e.querySelector('.j-p').value), y = e.querySelector('.j-y').value;
+                if(comp || pos) jH += `<div style="margin-bottom:15px"><b>${pos}</b> * ${comp}<br><small>${y}</small></div>`;
             });
-            if(jobsHtml) mainHtml += `<h3>${dictionary[currentLang].work}</h3>${jobsHtml}`;
-
+            if(jH) html += `<h3>${dictionary[currentLang].work}</h3>${jH}`;
+            
             ['skills', 'langs', 'license', 'hobby'].forEach(k => {
-                const val = smartTranslate(document.getElementById('in-' + k).value);
-                if(val) mainHtml += `<h3>${dictionary[currentLang][k]}</h3><div style="white-space:pre-wrap; font-size:14px;">${val}</div>`;
+                const v = smartTranslate(document.getElementById('in-' + k).value);
+                if(v) html += `<h3>${dictionary[currentLang][k]}</h3><div style="white-space:pre-wrap; font-size:14px;">${v}</div>`;
             });
-            document.getElementById('main-content').innerHTML = mainHtml;
+            document.getElementById('main-content').innerHTML = html;
         }
 
         function updateStyle() { document.body.className = document.getElementById('style-select').value; }

@@ -32,13 +32,12 @@ function updatePreview() {
 
 async function renderAsyncContent(szin) {
     const d = dictionary[currentLang];
-    
-    const phone = document.getElementById('in-phone').value;
-    const email = document.getElementById('in-email').value;
-    const zip = document.getElementById('in-zip').value;
-    const city = await deepTranslate(document.getElementById('in-city').value);
-    const sName = document.getElementById('in-street-name').value;
-    const house = document.getElementById('in-house').value;
+    const zip = document.getElementById('in-zip').value || "";
+    const city = await deepTranslate(document.getElementById('in-city').value || "");
+    const sName = document.getElementById('in-street-name').value || "";
+    const house = document.getElementById('in-house').value || "";
+    const phone = document.getElementById('in-phone').value || "";
+    const email = document.getElementById('in-email').value || "";
 
     const sTypeHU = document.getElementById('in-street-type').value;
     const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
@@ -48,7 +47,7 @@ async function renderAsyncContent(szin) {
     document.getElementById('out-contact').innerHTML = `
         <div style="margin-top:10px; line-height: 1.4;">
             ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
-            ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
+            <div style="display:block;">${email ? '<b>' + d.email + ':</b> ' + email + '</div>' : ''}
             ${finalAddr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + finalAddr + '</div>' : ''}
         </div>
     `;
@@ -60,24 +59,22 @@ async function renderAsyncContent(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    // ISKOLA ÉS MUNKAHELY FIX CIKLUS
-    const sections = ['edu', 'work'];
-    for (const type of sections) {
+    // DINAMIKUS CIKLUS FIX: for...of használata az await miatt
+    for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        
-        for (const box of boxes) {
-            const mainV = box.querySelector('.e-main').value;
-            const subV = box.querySelector('.e-sub').value;
-            const descV = box.querySelector('.e-desc').value;
+        for (let box of boxes) {
+            const mRaw = box.querySelector('.e-main').value;
+            const sub = box.querySelector('.e-sub').value;
+            const descRaw = box.querySelector('.e-desc').value;
             
-            const trMain = await deepTranslate(mainV);
-            const trDesc = await deepTranslate(descV);
+            const m = await deepTranslate(mRaw);
+            const desc = await deepTranslate(descRaw);
             
-            if(trMain || subV || trDesc) {
+            if(m || sub || desc) {
                 items += `<div style="margin-bottom:12px">
-                    <b>${trMain}</b> ${subV ? '('+subV+')' : ''}<br>
-                    <span style="font-size:13px; color:#555;">${trDesc}</span>
+                    <b>${m}</b> ${sub ? '('+sub+')' : ''}<br>
+                    <span style="font-size:13px; color:#555;">${desc}</span>
                 </div>`;
             }
         }
@@ -99,11 +96,12 @@ function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
     div.innerHTML = `
-        <input type="text" class="e-main" placeholder="Iskola/Cég" oninput="updatePreview()">
+        <input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()">
         <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
-        <input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">
+        <input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">
     `;
     document.getElementById(type + '-container').appendChild(div);
+    updatePreview();
 }
 
 function loadPhoto(event) {

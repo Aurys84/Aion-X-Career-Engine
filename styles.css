@@ -1,16 +1,33 @@
-/* ALAPBEÁLLÍTÁSOK */
-:root { --main-color: #007bb5; }
-body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #111; overflow: hidden; }
+/* ============================================================
+   AION-X DASHBOARD MASTER CSS v8.3
+   ============================================================ */
+
+:root { 
+    --main-color: #007bb5; 
+    --bg-dark: #1a1a1a;
+    --panel-bg: #2c2c2c;
+    --input-bg: #111;
+}
+
+body { 
+    margin: 0; 
+    display: flex; 
+    height: 100vh; 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    background: var(--bg-dark); 
+    overflow: hidden; 
+}
 
 /* BAL OLDAL: A SÖTÉT KONTROLL PANEL */
 .editor-side { 
     width: 38%; 
-    background: #1a1a1a; 
+    background: var(--panel-bg); 
     color: #ecf0f1; 
     padding: 25px; 
     overflow-y: auto; 
     border-right: 4px solid var(--main-color); 
     box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    z-index: 10;
 }
 
 /* JOBB OLDAL: AZ ÉLŐ PAPÍR ELŐNÉZET */
@@ -21,10 +38,10 @@ body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-se
     align-items: flex-start; 
     padding: 40px; 
     overflow-y: auto; 
-    background: #525659; 
+    background: #525659; /* Profi PDF-nézegető szürke */
 }
 
-/* A4 PAPÍR LOGIKA - VÉGTELENÍTVE */
+/* A4 PAPÍR LOGIKA - DINAMIKUS MAGASSÁGGAL */
 .cv-paper { 
     width: 210mm; 
     min-height: 297mm; 
@@ -35,43 +52,111 @@ body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-se
     box-sizing: border-box; 
     position: relative;
     color: #333;
+    transition: all 0.4s ease;
 }
 
-/* EDITOR ELEMEK */
+/* EDITOR ELEMEK & SMART LABELS */
 .smart-label { 
-    display: block; margin-top: 15px; font-weight: bold; 
-    color: var(--main-color); text-transform: uppercase; font-size: 10px; 
-}
-input, textarea, select { 
-    width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; 
-    color: white; border-radius: 5px; font-size: 14px; margin-top: 5px;
+    display: block; 
+    margin-top: 18px; 
+    font-weight: bold; 
+    color: var(--main-color); 
+    text-transform: uppercase; 
+    font-size: 10px; 
+    letter-spacing: 1px;
 }
 
-/* GOMBOK ÉS DINAMIKUS MEZŐK */
+input, textarea, select { 
+    width: 100%; 
+    padding: 12px; 
+    background: var(--input-bg); 
+    border: 1px solid #444; 
+    color: white; 
+    border-radius: 6px; 
+    font-size: 14px; 
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--main-color);
+    outline: none;
+    box-shadow: 0 0 10px rgba(0,123,181,0.3);
+}
+
+/* GOMBOK ÉS DINAMIKUS BOXOK */
 .lang-grid { display: flex; gap: 8px; margin-bottom: 20px; }
-.btn-lang { flex: 1; padding: 10px; cursor: pointer; border: none; background: #333; color: white; border-radius: 4px; font-weight: bold; }
-.btn-lang.active { background: var(--main-color); }
+.btn-lang { flex: 1; padding: 12px; cursor: pointer; border: none; background: #333; color: white; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+.btn-lang.active { background: var(--main-color); box-shadow: 0 0 15px var(--main-color); }
 
 .entry-box { 
-    background: #252525; padding: 15px; border-radius: 6px; 
-    margin-bottom: 10px; border-left: 4px solid var(--main-color); 
+    background: #222; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 12px; 
+    border-left: 5px solid var(--main-color); 
 }
 
-/* PAPÍR DESIGN (Hogy szép legyen az output) */
-.cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 20px; margin-bottom: 25px; }
-h1 { margin: 0; font-size: 32px; text-transform: uppercase; }
-h3 { border-bottom: 1px solid #eee; color: var(--main-color); text-transform: uppercase; margin-top: 25px; font-size: 16px; }
+.add-btn {
+    background: #27ae60;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 0;
+    transition: 0.3s;
+}
 
-/* 10 DRASZTIKUS STÍLUS */
-.style-1 .cv-header { display: flex; align-items: center; gap: 20px; }
-.style-2 .cv-paper { border-top: 30px solid var(--main-color); }
-.style-3 .cv-header { text-align: center; }
-.style-6 .cv-paper { border-left: 50px solid var(--main-color); padding-left: 30px; }
-.style-10 .cv-paper { border: 15px double var(--main-color); }
+/* -----------------------------------------------------------
+   10 DRASZTIKUS STÍLUS DEFINÍCIÓJA
+----------------------------------------------------------- */
 
-/* NYOMTATÁS */
+/* Style 1: Modern */
+.style-1 .cv-header { border-bottom: 5px solid var(--main-color); padding-bottom: 15px; }
+
+/* Style 2: Klasszikus */
+.style-2 .cv-paper { border: 1px solid #ddd; }
+.style-2 .cv-header { border-top: 25px solid var(--main-color); padding-top: 20px; }
+
+/* Style 3: Centrált */
+.style-3 .cv-header { text-align: center; flex-direction: column; }
+.style-3 .header-text h1 { font-size: 40px; }
+
+/* Style 4: Minimalista */
+.style-4 .cv-paper { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 60px; }
+.style-4 h3 { border-bottom: 1px solid #333; color: #333; }
+
+/* Style 5: Technikai */
+.style-5 .cv-header { background: #f8f9fa; padding: 30px; border-radius: 8px; }
+
+/* Style 6: Kreatív Oldalsáv */
+.style-6 .cv-paper { border-left: 55px solid var(--main-color); padding-left: 35px; }
+
+/* Style 7: Menedzseri */
+.style-7 h1 { border-left: 10px solid var(--main-color); padding-left: 15px; font-size: 45px; }
+
+/* Style 8: Akadémiai */
+.style-8 .cv-paper { font-size: 12px; line-height: 1.8; color: #444; }
+
+/* Style 9: Junior */
+.style-9 .cv-header { background: var(--main-color); color: white; padding: 25px; border-radius: 12px; }
+.style-9 h1 { color: white; }
+
+/* Style 10: Aion-X Speciál */
+.style-10 .cv-paper { border: 15px double var(--main-color); background: #fafafa; }
+
+/* PAPÍR ELEMEK */
+h1 { margin: 0; font-size: 32px; text-transform: uppercase; color: var(--main-color); }
+h3 { border-bottom: 2px solid #eee; color: var(--main-color); text-transform: uppercase; margin-top: 25px; font-size: 15px; padding-bottom: 5px; }
+.item-box { margin-bottom: 18px; line-height: 1.4; }
+
+/* NYOMTATÁSI NÉZET */
 @media print {
-    .editor-side { display: none; }
-    .preview-side { width: 100%; padding: 0; background: white; }
-    .cv-paper { box-shadow: none; width: 100%; margin: 0; }
+    .editor-side { display: none !important; }
+    .preview-side { width: 100%; padding: 0; background: white; overflow: visible; }
+    .cv-paper { box-shadow: none; width: 100%; margin: 0; padding: 15mm; }
+    .no-print { display: none; }
 }

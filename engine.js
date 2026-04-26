@@ -1,95 +1,92 @@
-let currentLang = 'hu';
-
-function setMode(lang, btn) {
-    currentLang = lang;
-    document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    updateInterface();
-    updatePreview(); 
-}
-
-async function deepTranslate(text) {
-    if (!text || currentLang === 'hu') return text;
-    try {
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
-        const data = await res.json();
-        return data.responseData.translatedText || text;
-    } catch (e) { return text; }
-}
-
-function updateInterface() {
-    const d = dictionary[currentLang];
-    const map = {
-        'lbl-title': d.title, 'lbl-style': d.style, 'lbl-color': d.color, 'lbl-photo': d.photo,
-        'lbl-lName': d.lName, 'lbl-fName': d.fName, 'lbl-cityHeader': d.cityHeader,
-        'lbl-streetName': d.streetName, 'lbl-type': d.type, 'lbl-house': d.house,
-        'lbl-phone': d.phone, 'lbl-email': d.email, 'lbl-summary': d.summary,
-        'lbl-license': d.license, 'lbl-edu': d.edu, 'lbl-work': d.work, 'lbl-skills': d.skills,
-        'lbl-addE': d.addE, 'lbl-addW': d.addW, 'lbl-atsTitle': d.atsTitle,
-        'lbl-ats1': d.ats1, 'lbl-ats2': d.ats2, 'lbl-ats3': d.ats3, 'lbl-ats4': d.ats4
-    };
-    for (let id in map) { if (document.getElementById(id)) document.getElementById(id).innerText = map[id]; }
-}
-
-function updatePreview() {
-    const szin = document.getElementById('theme-color').value;
-    document.documentElement.style.setProperty('--main-color', szin);
-    
-    const vez = document.getElementById('in-lastName').value;
-    const ker = document.getElementById('in-firstName').value;
-    let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
-    
-    document.getElementById('out-name').innerText = fullName.toUpperCase() || "NAME";
-    document.getElementById('out-name').style.color = szin;
-    renderAsync(szin);
-}
-
-async function renderAsync(szin) {
-    const d = dictionary[currentLang];
-    const city = await deepTranslate(document.getElementById('in-city').value);
-    const sName = document.getElementById('in-street-name').value;
-    const sTypeHU = document.getElementById('in-street-type').value;
-    const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
-    const zip = document.getElementById('in-zip').value;
-    const house = document.getElementById('in-house').value;
-
-    document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px;">
-            <b>${d.phone}:</b> ${document.getElementById('in-phone').value} | <b>${d.email}:</b> ${document.getElementById('in-email').value}<br>
-            <b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+sName+' '+sType+' '+house+', '+zip : zip+' '+city+', '+sName+' '+sType+' '+house}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Aion-X Dashboard v20.1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="style-10">
+    <div class="editor-side">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+            <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
+            <h2 id="lbl-title" style="color:var(--main-color); margin:0;">AION-X PANEL</h2>
         </div>
-    `;
 
-    let html = "";
-    const sum = await deepTranslate(document.getElementById('in-summary').value);
-    if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
-    
-    for (let type of ['edu', 'work']) {
-        let items = "";
-        document.querySelectorAll('#' + type + '-container .entry-box').forEach(async box => {
-            const m = await deepTranslate(box.querySelector('.e-main').value);
-            const sub = box.querySelector('.e-sub').value;
-            const desc = await deepTranslate(box.querySelector('.e-desc').value);
-            if(m || desc) items += `<div style="margin-bottom:12px"><b>${m}</b> (${sub})<br><span>${desc}</span></div>`;
-        });
-        if(items) html += `<h3>${d[type]}</h3>` + items;
-    }
-    document.getElementById('main-content').innerHTML = html;
-}
+        <div id="ats-box" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
+            <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b><br>
+            <div id="lbl-ats1">• Használj szoftverneveket!</div>
+            <div id="lbl-ats2">• Számok (pl. +20%)!</div>
+            <div id="lbl-ats3">• Világos háttér!</div>
+            <div id="lbl-ats4">• Kulcsszavak!</div>
+        </div>
+        
+        <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
+            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
+        </div>
 
-function loadPhoto(event) {
-    const reader = new FileReader();
-    reader.onload = () => { document.getElementById('out-photo').src = reader.result; document.getElementById('out-photo-box').style.display = 'block'; };
-    reader.readAsDataURL(event.target.files[0]);
-}
+        <div style="display: flex; gap: 10px;">
+            <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
+                <select id="style-select" onchange="updateStyle()">
+                    <option value="style-10">10. Aion-X Speciál</option>
+                    <option value="style-1">1. Modern</option><option value="style-6">6. Kreatív</option>
+                </select>
+            </div>
+            <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
+                <select id="theme-color" onchange="updateTheme()">
+                    <option value="#007bb5">Aion Kék</option><option value="#e67e22">Narancs</option>
+                    <option value="#27ae60">Smaragd</option><option value="#1a1a1a">Fekete</option>
+                </select>
+            </div>
+        </div>
 
-function addEntry(type) {
-    const div = document.createElement('div');
-    div.className = 'entry-box';
-    div.innerHTML = `<input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">`;
-    document.getElementById(type + '-container').appendChild(div);
-}
+        <label class="smart-label" id="lbl-photo">FOTÓ</label>
+        <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
-function updateStyle() { document.body.className = document.getElementById('style-select').value; }
-function updateTheme() { updatePreview(); }
-window.onload = () => { updateInterface(); updatePreview(); };
+        <div style="display: flex; gap: 5px;">
+            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+        </div>
+
+        <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+        </div>
+
+        <div style="display: flex; gap: 5px; margin-top:5px;">
+            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA</label><input type="text" id="in-street-name" oninput="updatePreview()"></div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
+                <select id="in-street-type" onchange="updatePreview()">
+                    <option value="utca">utca / street</option><option value="út">út / road</option><option value="tér">tér / square</option>
+                </select>
+            </div>
+            <div style="width:20%"><label class="smart-label" id="lbl-house">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+        </div>
+
+        <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
+        
+        <div id="edu-container"></div>
+        <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
+        <div id="work-container"></div>
+        <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
+
+        <button onclick="window.print()" style="background:var(--main-color); color:white; padding:15px; width:100%; border:none; margin-top:20px; font-weight:bold; cursor:pointer; border-radius:6px;">PDF GENERÁLÁSA</button>
+    </div>
+
+    <div class="preview-side">
+        <div class="cv-paper" id="cv-paper">
+            <div class="cv-header" style="display:flex; gap:20px;">
+                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
+            </div>
+            <div id="main-content"></div>
+        </div>
+    </div>
+    <script src="dictionary.js"></script><script src="engine.js"></script>
+</body>
+</html>

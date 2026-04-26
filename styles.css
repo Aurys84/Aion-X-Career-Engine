@@ -3,28 +3,26 @@ body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-se
 .editor-side { width: 38%; background: #1a1a1a; color: #ecf0f1; padding: 20px; overflow-y: auto; border-right: 4px solid var(--main-color); }
 .preview-side { width: 62%; display: flex; justify-content: center; padding: 40px; overflow-y: auto; background: #525659; }
 .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); color: #333; position: relative; }
-
 .smart-label { display: block; margin-top: 15px; font-weight: bold; color: var(--main-color); font-size: 11px; text-transform: uppercase; }
 input, textarea, select { width: 100%; padding: 10px; background: #252525; border: 1px solid #444; color: white; border-radius: 4px; margin-top: 5px; box-sizing: border-box; }
-.btn-lang { padding: 12px; cursor: pointer; border: none; background: #333; color: white; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+.btn-lang { padding: 12px; cursor: pointer; border: none; background: #333; color: white; border-radius: 4px; font-weight: bold; flex: 1; }
 .btn-lang.active { background: var(--main-color); box-shadow: 0 0 10px var(--main-color); }
 .entry-box { background: #222; padding: 10px; margin-bottom: 10px; border-left: 4px solid var(--main-color); border-radius: 4px; }
 .add-btn { background: #27ae60; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; margin-top: 10px; font-weight: bold; }
 
 /* 10 STÍLUS */
-.style-1 .cv-header { border-bottom: 5px solid var(--main-color); }
+.style-1 .cv-header { border-bottom: 5px solid var(--main-color); padding-bottom: 15px; }
 .style-2 .cv-header { border-top: 25px solid var(--main-color); padding-top: 20px; }
-.style-3 .cv-header { text-align: center; }
+.style-3 .cv-header { text-align: center; border: 1px solid var(--main-color); padding: 20px; }
 .style-4 h3 { border-bottom: 1px solid #333; color: #333; }
-.style-5 .cv-header { background: #f8f9fa; padding: 20px; }
+.style-5 .cv-header { background: #f8f9fa; padding: 20px; border-radius: 10px; }
 .style-6 .cv-paper { border-left: 50px solid var(--main-color); padding-left: 30px; }
 .style-7 h1 { border-left: 10px solid var(--main-color); padding-left: 15px; }
-.style-8 .cv-paper { font-size: 12px; line-height: 1.8; }
-.style-9 .cv-header { background: var(--main-color); color: white; padding: 20px; border-radius: 10px; } .style-9 h1 { color: white; }
-.style-10 .cv-paper { border: 15px double var(--main-color); }
+.style-8 .cv-paper { font-size: 12px; line-height: 1.8; color: #444; }
+.style-9 .cv-header { background: var(--main-color); color: white; padding: 25px; border-radius: 15px; } .style-9 h1 { color: white; }
+.style-10 .cv-paper { border: 15px double var(--main-color); background: #fafafa; }
 
 h1 { margin: 0; font-size: 32px; text-transform: uppercase; color: var(--main-color); }
 h3 { border-bottom: 2px solid #eee; color: var(--main-color); text-transform: uppercase; margin-top: 25px; font-size: 15px; }
 
-@media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
-
+@media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; margin: 0; } }

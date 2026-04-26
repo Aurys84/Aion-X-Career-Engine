@@ -1,89 +1,62 @@
-let currentLang = 'hu';
-
-function setMode(lang, btn) {
-    currentLang = lang;
-    document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    updatePreview();
-}
-
-async function deepTranslate(text) {
-    if (!text || currentLang === 'hu') return text;
-    let found = omniDict.find(e => e.hu.toLowerCase() === text.trim().toLowerCase());
-    if (found) return found[currentLang];
-    try {
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
-        const data = await res.json();
-        return data.responseData.translatedText || text;
-    } catch (e) { return text; }
-}
-
-function addEntry(type) {
-    const container = document.getElementById(type + '-container');
-    const div = document.createElement('div');
-    div.className = 'entry-box';
-    div.innerHTML = `
-        <input type="text" placeholder="Cég-Iskola" class="e-main" oninput="updatePreview()">
-        <input type="text" placeholder="Év" class="e-sub" oninput="updatePreview()">
-        <input type="text" placeholder="Pozíció" class="e-desc" oninput="updatePreview()">
-    `;
-    container.appendChild(div);
-    updatePreview();
-}
-
-function updatePreview() {
-    const d = dictionary[currentLang];
-    const szin = document.getElementById('theme-color').value;
-    document.documentElement.style.setProperty('--main-color', szin);
-
-    // AZONNALI ADATÁTVITEL (Nincs várakozás!)
-    const n = document.getElementById('in-name').value;
-    document.getElementById('out-name').innerText = n || "NÉV / NAME";
-    document.getElementById('out-name').style.color = szin;
-
-    const zip = document.getElementById('in-zip').value;
-    const city = document.getElementById('in-city').value;
-    const street = document.getElementById('in-street').value;
-
-    document.getElementById('out-contact').innerHTML = `
-        <div><b>${d.phone}</b> ${document.getElementById('in-phone').value}</div>
-        <div><b>${d.email}</b> ${document.getElementById('in-email').value}</div>
-        <div><b>${d.addr}</b> ${zip} ${city}, ${street}</div>
-    `;
-
-    // A fordításokat külön szálon futtatjuk, hogy ne akassza meg a gépelést
-    renderMainContent(szin);
-}
-
-async function renderMainContent(szin) {
-    const d = dictionary[currentLang];
-    let mainHtml = "";
+<div class="editor-side">
+    <div class="logo-box">
+        <div class="logo-circle">A&N</div>
+        <h2 style="color:var(--main-color); margin:0;">AION-X CONTROL PANEL</h2>
+    </div>
     
-    // Jogsi
-    const lic = document.getElementById('in-license').value;
-    if(lic) mainHtml += `<h3>${d.license}</h3><p>${await deepTranslate(lic)}</p>`;
+    <div class="lang-grid" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+        <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+        <button class="btn-lang" onclick="setMode('de', this)">DE</button>
+    </div>
 
-    // Iskola és munkahely ciklus
-    for (let type of ['edu', 'work']) {
-        let itemsHtml = "";
-        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        for (let box of boxes) {
-            const m = box.querySelector('.e-main').value;
-            const s = box.querySelector('.e-sub').value;
-            const desc = box.querySelector('.e-desc').value;
-            if(m || desc) {
-                itemsHtml += `<div class="item-box"><b>${await deepTranslate(m)}</b><br><small>${s}</small><br><span style="color:${szin}">${await deepTranslate(desc)}</span></div>`;
-            }
-        }
-        if(itemsHtml) mainHtml += `<h3>${d[type]}</h3>` + itemsHtml;
-    }
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <div style="flex:1">
+            <label class="smart-label">Stílus / Style / Stil</label>
+            <select id="style-select" onchange="updateStyle()">
+                <option value="style-10">Aion-X Speciál</option>
+                <option value="style-1">Modern</option>
+                <option value="style-2">Klasszikus</option>
+            </select>
+        </div>
+        <div style="flex:1">
+            <label class="smart-label">Szín / Color</label>
+            <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:40px; width:100%; border:none; cursor:pointer;">
+        </div>
+    </div>
 
-    const skills = document.getElementById('in-skills').value;
-    if(skills) mainHtml += `<h3>${d.skills}</h3><div style="white-space:pre-wrap;">${await deepTranslate(skills)}</div>`;
+    <label class="smart-label">Név / Name / Name</label>
+    <input type="text" id="in-name" placeholder="Név" oninput="updatePreview()">
 
-    document.getElementById('main-content').innerHTML = mainHtml;
-}
+    <label class="smart-label">Tel / Phone / Telefon</label>
+    <input type="text" id="in-phone" placeholder="Telefon" oninput="updatePreview()">
 
-function updateStyle() { document.body.className = document.getElementById('style-select').value; }
-function updateTheme() { updatePreview(); }
-window.onload = updatePreview;
+    <label class="smart-label">Email / Email / Email</label>
+    <input type="email" id="in-email" placeholder="Email" oninput="updatePreview()">
+
+    <label class="smart-label">Helyszín / Location / Ort</label>
+    <div style="display: flex; gap: 5px;">
+        <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
+        <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+    </div>
+    <input type="text" id="in-street" placeholder="Utca, házszám" oninput="updatePreview()">
+
+    <label class="smart-label">Jogosítvány / License / Führerschein</label>
+    <input type="text" id="in-license" placeholder="B kategória..." oninput="updatePreview()">
+
+    <label class="smart-label">Tanulmányok / Education / Ausbildung</label>
+    <div id="edu-container"></div>
+    <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
+
+    <label class="smart-label">Tapasztalat / Experience / Erfahrung</label>
+    <div id="work-container"></div>
+    <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
+
+    <label class="smart-label">Készségek / Skills / Kenntnisse</label>
+    <textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea>
+
+    <button onclick="window.print()" class="gen-btn">NYOMTATÁS (PDF)</button>
+</div>
+
+<script src="dictionary.js"></script>
+<script src="engine.js"></script>

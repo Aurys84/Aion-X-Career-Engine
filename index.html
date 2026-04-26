@@ -3,35 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Career Engine v1.2.0</title>
+    <title>Aion-X Career Engine v1.3.0</title>
     <style>
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f0f2f5; }
+        
+        /* Bal oldal: Global Control Panel */
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid #3498db; }
-        .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #dfe4ea; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); position: relative; }
-        .control-group { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 11px; }
-        input, textarea, select { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; }
-        .lang-btns { display: flex; gap: 5px; margin-bottom: 15px; }
-        .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #333; color: #ccc; }
+        .control-group { margin-bottom: 18px; border-bottom: 1px solid #333; padding-bottom: 12px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        .lang-btns { display: flex; gap: 5px; margin-bottom: 10px; }
+        .lang-btns button { flex: 1; padding: 8px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #333; color: #ccc; }
         .active-lang { background: #3498db !important; color: white; }
+        .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .print-btn:hover { background: #2ecc71; }
+
+        /* Jobb oldal: Profi CV Preview */
+        .preview-side { width: 65%; display: flex; justify-content: center; padding: 40px; overflow-y: auto; background: #525659; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 50px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; display: flex; flex-direction: column; }
         
-        /* CV Stilus elemek */
-        .cv-header { display: flex; align-items: center; gap: 30px; margin-bottom: 20px; }
-        #photo-preview { width: 130px; height: 160px; background: #eee; border: 2px solid #ddd; object-fit: cover; display: none; }
-        .print-btn { background: #2ecc71; color: white; padding: 15px; width: 100%; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        /* CV Tartalmi elemek */
+        .cv-header { display: flex; align-items: center; gap: 30px; border-bottom: 3px solid #3498db; padding-bottom: 20px; margin-bottom: 25px; }
+        #photo-preview { width: 140px; height: 170px; background: #f9f9f9; border: 1px solid #ddd; object-fit: cover; display: none; border-radius: 4px; }
+        .header-text h1 { margin: 0; font-size: 36px; text-transform: uppercase; letter-spacing: 2px; }
+        .header-text p { margin: 5px 0 0; color: #666; font-size: 16px; }
         
+        .cv-body { display: flex; gap: 40px; flex-grow: 1; }
+        .main-col { flex: 2; }
+        .side-col { flex: 1; background: #fdfdfd; padding: 15px; border-left: 1px solid #eee; }
+        
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 25px; color: #333; text-transform: uppercase; font-size: 16px; }
+        .content-p { white-space: pre-wrap; font-size: 14px; color: #444; line-height: 1.6; margin-top: 10px; }
+
         @media print {
+            body { background: white; }
             .editor-side { display: none; }
             .preview-side { width: 100%; padding: 0; background: white; }
-            .cv-paper { box-shadow: none; margin: 0; transform: scale(1); }
+            .cv-paper { box-shadow: none; width: 100%; border: none; margin: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 24px;">Global Control</h1>
+        <h1 style="color: #3498db; font-size: 24px; margin-bottom: 5px;">Global Control</h1>
+        <p style="font-size: 10px; color: #777; margin-bottom: 20px;">SYSTEM STATUS: MATRIX ACTIVE</p>
         
         <div class="control-group">
             <label id="lbl-lang">Language</label>
@@ -43,13 +59,13 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-theme">Design Color</label>
+            <label id="lbl-theme">Matrix Style Color</label>
             <select id="theme-color" onchange="updateTheme()"></select>
         </div>
 
         <div class="control-group">
-            <label id="lbl-photo">Photo</label>
-            <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
+            <label id="lbl-photo">Professional Photo</label>
+            <input type="file" accept="image/*" onchange="loadPhoto(event)">
         </div>
 
         <div class="control-group">
@@ -58,66 +74,72 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-contact">Contact (Phone/Email)</label>
-            <input type="text" id="in-contact" oninput="updatePreview()">
+            <label id="lbl-contact">Contact Details</label>
+            <input type="text" id="in-contact" placeholder="Phone / Email / Location" oninput="updatePreview()">
         </div>
 
         <div class="control-group">
-            <label id="lbl-summary">Summary</label>
+            <label id="lbl-summary">Profile Summary</label>
             <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
         </div>
 
         <div class="control-group">
-            <label id="lbl-exp">Experience</label>
-            <textarea id="in-exp" rows="5" oninput="updatePreview()"></textarea>
+            <label id="lbl-exp">Professional Experience</label>
+            <textarea id="in-exp" rows="6" oninput="updatePreview()"></textarea>
         </div>
 
         <div class="control-group">
-            <label id="lbl-edu">Education</label>
+            <label id="lbl-edu">Education & Training</label>
             <textarea id="in-edu" rows="4" oninput="updatePreview()"></textarea>
         </div>
 
-        <button class="print-btn" onclick="window.print()" id="btn-print">PRINT TO PDF</button>
+        <button class="print-btn" onclick="window.print()" id="btn-print">GENERATE PDF</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper">
-            <div class="cv-header">
+            <div class="cv-header" id="cv-header-line">
                 <img id="photo-preview" src="">
-                <div style="flex: 1;">
-                    <h1 id="out-name" style="margin: 0; font-size: 32px;">Your Name</h1>
-                    <p id="out-contact" style="color: #666; margin: 5px 0;"></p>
+                <div class="header-text">
+                    <h1 id="out-name">Your Name</h1>
+                    <p id="out-contact"></p>
                 </div>
             </div>
-            <hr id="line" style="border: 2px solid #3498db; margin: 15px 0;">
-            <p id="out-summary" style="font-style: italic;"></p>
-            <div id="preview-content"></div>
+            
+            <div class="cv-body">
+                <div class="main-col">
+                    <p id="out-summary" style="font-style: italic; color: #555; margin-bottom: 20px;"></p>
+                    <div id="main-content"></div>
+                </div>
+                <div class="side-col" id="side-content">
+                    </div>
+            </div>
         </div>
     </div>
 
     <script>
         const dictionary = {
             hu: { 
-                lang: "Nyelv", theme: "Dizájn Szín", name: "Teljes Név", summary: "Szakmai Profil", 
-                exp: "Tapasztalat", edu: "Tanulmányok", photo: "Fotó feltöltése", 
-                contact: "Elérhetőség", print: "MENTÉS PDF-KÉNT",
-                colors: ["Aion Kék", "Éjfélkék", "Smaragd", "Norbi Narancs", "Vörös", "Lila"]
+                lang: "Nyelv", theme: "Stílus Színe", name: "Teljes Név", summary: "Szakmai Profil", 
+                exp: "Szakmai Tapasztalat", edu: "Tanulmányok", photo: "Fotó feltöltése", 
+                contact: "Elérhetőség", print: "PDF GENERÁLÁSA",
+                colors: ["Aion Kék", "Mélykék", "Smaragd", "Norbi Narancs", "Vörös", "Lila"]
             },
             en: { 
-                lang: "Language", theme: "Design Color", name: "Full Name", summary: "Professional Summary", 
-                exp: "Experience", edu: "Education", photo: "Upload Photo", 
-                contact: "Contact Info", print: "SAVE AS PDF",
-                colors: ["Aion Blue", "Midnight Blue", "Emerald", "Norbi Orange", "Red", "Purple"]
+                lang: "Language", theme: "Style Color", name: "Full Name", summary: "Professional Profile", 
+                exp: "Work Experience", edu: "Education", photo: "Upload Photo", 
+                contact: "Contact Info", print: "GENERATE PDF",
+                colors: ["Aion Blue", "Deep Blue", "Emerald", "Norbi Orange", "Red", "Purple"]
             },
             de: { 
-                lang: "Sprache", theme: "Design Farbe", name: "Vollständiger Name", summary: "Kurzprofil", 
+                lang: "Sprache", theme: "Stilfarbe", name: "Vollständiger Name", summary: "Kurzprofil", 
                 exp: "Berufserfahrung", edu: "Schulbildung", photo: "Foto hochladen", 
-                contact: "Kontakt", print: "ALS PDF SPEICHERN",
-                colors: ["Aion Blau", "Mitternachtsblau", "Smaragd", "Norbi Orange", "Rot", "Lila"]
+                contact: "Kontakt", print: "PDF GENERIEREN",
+                colors: ["Aion Blau", "Dunkelblau", "Smaragd", "Norbi Orange", "Rot", "Lila"]
             }
         };
 
-        const colorValues = ["#3498db", "#1a3a5a", "#2ecc71", "#e67e22", "#e74c3c", "#8e44ad"];
+        const colorValues = ["#3498db", "#2c3e50", "#27ae60", "#e67e22", "#c0392b", "#8e44ad"];
         let currentLang = 'hu';
 
         function changeLang(lang) {
@@ -125,12 +147,10 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            // Fordítások
             const fields = ['lang', 'theme', 'name', 'summary', 'exp', 'edu', 'photo', 'contact'];
             fields.forEach(f => document.getElementById('lbl-' + f).innerText = dictionary[lang][f]);
             document.getElementById('btn-print').innerText = dictionary[lang].print;
 
-            // Színválasztó frissítése fordítva
             const select = document.getElementById('theme-color');
             select.innerHTML = "";
             dictionary[lang].colors.forEach((colName, index) => {
@@ -139,7 +159,6 @@
                 opt.innerText = colName;
                 select.appendChild(opt);
             });
-
             updatePreview();
         }
 
@@ -152,7 +171,7 @@
         function updateTheme() {
             const color = document.getElementById('theme-color').value;
             document.getElementById('out-name').style.color = color;
-            document.getElementById('line').style.borderColor = color;
+            document.getElementById('cv-header-line').style.borderColor = color;
         }
 
         function updatePreview() {
@@ -160,9 +179,9 @@
             document.getElementById('out-contact').innerText = document.getElementById('in-contact').value;
             document.getElementById('out-summary').innerText = document.getElementById('in-summary').value;
 
-            let html = `<h3>${dictionary[currentLang].exp}</h3><p style="white-space: pre-wrap;">${document.getElementById('in-exp').value}</p>`;
-            html += `<h3>${dictionary[currentLang].edu}</h3><p style="white-space: pre-wrap;">${document.getElementById('in-edu').value}</p>`;
-            document.getElementById('preview-content').innerHTML = html;
+            let mainHtml = `<h3>${dictionary[currentLang].exp}</h3><div class="content-p">${document.getElementById('in-exp').value}</div>`;
+            mainHtml += `<h3>${dictionary[currentLang].edu}</h3><div class="content-p">${document.getElementById('in-edu').value}</div>`;
+            document.getElementById('main-content').innerHTML = mainHtml;
         }
 
         window.onload = () => { changeLang('hu'); };

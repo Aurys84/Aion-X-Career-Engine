@@ -1,17 +1,16 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Dashboard v8.4</title>
+    <title>Aion-X Dashboard v8.5</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="editor-side">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-            <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white; box-shadow: 0 0 10px rgba(255,255,255,0.2);">A&N</div>
-            <h2 style="color:var(--main-color); margin:0; font-size:20px; letter-spacing:1px;">AION-X CONTROL PANEL</h2>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+            <div style="width:40px; height:40px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
+            <h2 id="lbl-title" style="color:var(--main-color); margin:0; font-size:18px;">AION-X CONTROL PANEL</h2>
         </div>
         
         <div class="lang-grid">
@@ -20,90 +19,75 @@
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <div style="flex:1">
-                <label class="smart-label" id="lbl-style">Stílus / Style / Stil</label>
+        <div style="display: flex; gap: 10px;">
+            <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
                 <select id="style-select" onchange="updateStyle()">
                     <option value="style-10">10. Aion-X Speciál</option>
-                    <option value="style-1">1. Modern Oszlopos</option>
+                    <option value="style-1">1. Modern</option>
                     <option value="style-2">2. Klasszikus</option>
-                    <option value="style-3">3. Centrált</option>
                     <option value="style-4">4. Minimalista</option>
-                    <option value="style-5">5. Technikai</option>
-                    <option value="style-6">6. Kreatív</option>
-                    <option value="style-7">7. Menedzseri</option>
-                    <option value="style-8">8. Akadémiai</option>
-                    <option value="style-9">9. Junior</option>
                 </select>
             </div>
-            <div style="flex:1">
-                <label class="smart-label" id="lbl-color">Szín / Color / Farbe</label>
-                <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:42px; cursor:pointer; padding:2px;">
+            <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
+                <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:40px; padding:0; border:none; width:100%;">
             </div>
         </div>
 
-        <label class="smart-label" id="lbl-photo">Fotó / Photo / Foto</label>
+        <label class="smart-label" id="lbl-photo">FOTÓ</label>
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
-        <label class="smart-label" id="lbl-name">Név / Name / Name</label>
-        <input type="text" id="in-name" placeholder="Teljes Név" oninput="updatePreview()">
-        
-        <label class="smart-label" id="lbl-phone">Tel / Phone / Telefon</label>
-        <input type="text" id="in-phone" placeholder="Telefonszám" oninput="updatePreview()">
-        
-        <label class="smart-label" id="lbl-email">Email / Email / Email</label>
-        <input type="email" id="in-email" placeholder="E-mail" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-name">NÉV</label>
+        <input type="text" id="in-name" placeholder="Name" oninput="updatePreview()">
 
-        <label class="smart-label" id="lbl-city">Helyszín / Location / Ort</label>
         <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
+            <div style="flex:1"><label class="smart-label" id="lbl-phone">TEL</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()"></div>
+        </div>
+
+        <label class="smart-label" id="lbl-city">CÍM (IRSZ, VÁROS, UTCA, HÁZSZÁM)</label>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="in-zip" placeholder="9757" oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
         <div style="display: flex; gap: 5px; margin-top:5px;">
             <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()" style="width:70%">
-            <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-house" placeholder="68" oninput="updatePreview()" style="width:30%">
         </div>
 
-        <label class="smart-label" id="lbl-summary">Bemutatkozás / Profile / Profil</label>
-        <textarea id="in-summary" rows="2" oninput="updatePreview()" placeholder="Írj pár sort magadról..."></textarea>
+        <label class="smart-label" id="lbl-summary">BEMUTATKOZÁS</label>
+        <textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
 
-        <label class="smart-label" id="lbl-license">Jogosítvány / License / Führerschein</label>
-        <input type="text" id="in-license" placeholder="Pl: B kategória" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label>
+        <input type="text" id="in-license" oninput="updatePreview()">
 
-        <label class="smart-label" id="lbl-edu-h">Tanulmányok / Education / Ausbildung</label>
+        <label class="smart-label" id="lbl-edu-h">TANULMÁNYOK</label>
         <div id="edu-container"></div>
-        <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
+        <button onclick="addEntry('edu')" class="add-btn" id="btn-add-edu">+ ÚJ ISKOLA</button>
 
-        <label class="smart-label" id="lbl-work-h">Tapasztalat / Experience / Erfahrung</label>
+        <label class="smart-label" id="lbl-work-h">TAPASZTALAT</label>
         <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
+        <button onclick="addEntry('work')" class="add-btn" id="btn-add-work">+ ÚJ MUNKAHELY</button>
 
-        <label class="smart-label" id="lbl-skills">Készségek / Skills / Kenntnisse</label>
+        <label class="smart-label" id="lbl-skills">KÉSZSÉGEK</label>
         <textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea>
 
         <div class="ats-tips">
-            <b style="color:#f1c40f;" id="lbl-ats-title">ATS NINDZSA TIPPEK:</b>
-            <ul style="margin: 5px 0; padding-left: 15px; list-style-type: circle;">
-                <li id="lbl-ats-1">Használj konkrét szoftverneveket!</li>
-                <li id="lbl-ats-2">Eredmények számokkal (pl. +20%).</li>
-                <li id="lbl-ats-3">Kerüld a grafikát a szöveg mögött.</li>
-            </ul>
+            <b id="lbl-ats-title">ATS TIPPEK:</b><br>
+            <span id="lbl-ats-1">• Kulcsszavak!</span> <span id="lbl-ats-2">• Számok!</span>
         </div>
-
-        <button onclick="window.print()" class="add-btn" style="background:var(--main-color); padding:20px; font-size:16px; margin-top:20px;">PDF GENERÁLÁSA</button>
+        <button onclick="window.print()" class="add-btn" style="background:var(--main-color); margin-top:15px;">PDF MENTÉS</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
-            <div style="position:absolute; bottom:15px; right:15px; opacity:0.1; font-weight:bold; font-size:12px; pointer-events:none;">AION-X MATRIXLB</div>
-            
-            <div class="cv-header" style="display:flex; gap:25px; align-items:flex-start;">
-                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ddd; overflow:hidden; background:#f9f9f9;">
+            <div style="position:absolute; bottom:15px; right:15px; opacity:0.1; font-weight:bold;">AION-X MATRIXLB</div>
+            <div class="cv-header" style="display:flex; gap:20px;">
+                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;">
                     <img id="out-photo" src="" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div class="header-text">
                     <h1 id="out-name">NAME</h1>
-                    <div id="out-contact" style="font-size:13px; margin-top:10px; line-height:1.4;"></div>
+                    <div id="out-contact" style="font-size:13px; margin-top:10px;"></div>
                 </div>
             </div>
             <div id="main-content"></div>

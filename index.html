@@ -3,82 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion Mátrix - Profi Önéletrajz v7.1</title>
+    <title>Aion-X Dashboard v7.2</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a1a; color: #ecf0f1; padding: 20px; margin: 0; }
-        .container { max-width: 800px; background: #2c2c2c; padding: 35px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: auto; border: 1px solid #444; }
-        h2 { color: #007bb5; text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+        :root { --main-color: #007bb5; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #1a1a1a; overflow: hidden; }
         
-        .smart-label { font-weight: bold; font-size: 13px; color: #007bb5; display: block; margin-top: 20px; border-bottom: 1px solid #444; padding-bottom: 5px; }
-        .smart-label span { color: #888; font-weight: normal; font-size: 11px; }
+        /* BAL OLDAL - EDITOR */
+        .editor-side { width: 40%; background: #2c2c2c; color: #ecf0f1; padding: 20px; overflow-y: auto; border-right: 4px solid var(--main-color); }
+        .editor-side h2 { color: var(--main-color); font-size: 18px; text-transform: uppercase; margin-top: 0; }
         
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #444; background: #1a1a1a; color: white; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        input:focus { border-color: #007bb5; outline: none; box-shadow: 0 0 8px rgba(0,123,181,0.5); }
+        /* JOBB OLDAL - ÉLŐ PREVIEW */
+        .preview-side { width: 60%; background: #525659; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 30px rgba(0,0,0,0.5); color: #333; height: auto; }
 
-        .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
-        .btn-lang { padding: 12px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; background: #444; transition: 0.3s; }
-        .btn-lang.active { background: #007bb5; transform: scale(0.95); box-shadow: 0 0 15px rgba(0,123,181,0.5); }
+        /* OKOS VEZÉRLŐK */
+        .smart-label { font-weight: bold; font-size: 11px; color: var(--main-color); display: block; margin-top: 15px; text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
         
-        .dynamic-entry { background: #252525; padding: 15px; border: 1px dashed #555; border-radius: 8px; margin-bottom: 15px; }
-        .btn-add { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; transition: 0.3s; }
-        .btn-add:hover { background: #2ecc71; }
+        .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 10px 0; }
+        .btn-lang { padding: 10px; border: none; border-radius: 4px; cursor: pointer; background: #444; color: #ccc; font-weight: bold; font-size: 11px; }
+        .btn-lang.active { background: var(--main-color); color: white; }
 
-        .gen-btn { width: 100%; padding: 20px; background: #007bb5; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; margin-top: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        #kep-preview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; display: none; margin: 10px auto; border: 3px solid #007bb5; }
+        .ats-box { background: #1e3799; padding: 12px; border-radius: 4px; font-size: 11px; line-height: 1.4; border-left: 5px solid #f1c40f; margin-bottom: 20px; }
+        .btn-add { background: #27ae60; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; margin: 10px 0; font-weight: bold; }
+
+        /* NYOMTATÁSI DESIGN ELEMEK */
+        .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 20px; }
+        .contact-info { font-size: 12px; line-height: 1.4; }
+        h3 { border-bottom: 1px solid #eee; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 20px; }
         
-        .ats-info { background: #1e3799; padding: 15px; border-radius: 6px; font-size: 12px; line-height: 1.4; border-left: 5px solid #007bb5; margin-bottom: 20px; }
+        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Aion Mátrix - Career Engine v7.1</h2>
+<body class="style-1">
 
-        <div class="ats-info">
-            <strong>🚀 INTEL:</strong> A felület 3 nyelven segít, de a papír csak a választott célnyelven generálódik!
-        </div>
-
-        <label class="smart-label">Profilkép <span>(Profile Photo / Profilbild)</span></label>
-        <input type="file" id="kep-input" accept="image/*" onchange="previewKep()">
-        <img id="kep-preview">
-
-        <label class="smart-label">Célnyelv választása <span>(Select Target Language / Zielsprache wählen)</span></label>
-        <div class="lang-grid">
-            <button class="btn-lang active" onclick="setMode('hu', this)">Magyar (HU)</button>
-            <button class="btn-lang" onclick="setMode('en', this)">English (EN)</button>
-            <button class="btn-lang" onclick="setMode('de', this)">Deutsch (DE)</button>
-        </div>
+    <div class="editor-side">
+        <h2>Aion-X Editor Dashboard</h2>
         
-        <label class="smart-label">Dizájn Szín <span>(Design Color / Designfarbe)</span></label>
-        <select id="szinvalaszto">
-            <option value="#007bb5">Aion Kék</option>
-            <option value="#1a3a5a">Midnight Blue</option>
-            <option value="#2ecc71">Emerald Green</option>
-            <option value="#e67e22">Norbi Orange</option>
-            <option value="#b33939">Ruby Red</option>
-            <option value="#2c3e50">Slate Gray</option>
-        </select>
+        <div class="ats-box">
+            <strong>🚀 GIGA ATS TIPPEK:</strong><br>
+            • Nevezd meg a szoftvereket (SAP, Minitab)!<br>
+            • Használj számokat: "Napi 200 vendég".<br>
+            • Pozíció: Mindig iparági standardot írj!<br>
+            • Fotó: Világos háttér, profi öltözet.
+        </div>
 
-        <label class="smart-label">Személyes adatok <span>(Personal Data / Persönliche Daten)</span></label>
-        <input type="text" id="nev" placeholder="Teljes Név / Full Name / Name">
-        <input type="text" id="cim" placeholder="Város, Utca, Házszám / Address / Adresse">
-        <input type="text" id="tel" placeholder="Telefonszám / Phone / Telefon">
-        <input type="email" id="email" placeholder="E-mail cím">
+        <div class="lang-grid">
+            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
+        </div>
 
-        <label class="smart-label">Bemutatkozás <span>(Profile Summary / Über mich)</span></label>
-        <textarea id="bemutat" placeholder="Írj pár sort magadról... (Summary...)" rows="3"></textarea>
+        <div style="display: flex; gap: 5px;">
+            <div style="flex:1"><label class="smart-label">Stílus</label>
+                <select id="style-select" onchange="updateStyle()">
+                    <option value="style-1">Modern Oszlopos</option>
+                    <option value="style-2">Klasszikus</option>
+                    <option value="style-3">Centrált</option>
+                    <option value="style-4">Minimalista</option>
+                    <option value="style-5">Technikai</option>
+                    <option value="style-6">Kreatív</option>
+                    <option value="style-7">Menedzseri</option>
+                    <option value="style-8">Akadémiai</option>
+                    <option value="style-9">Junior</option>
+                    <option value="style-10">Aion-X Speciál</option>
+                </select>
+            </div>
+            <div style="flex:1"><label class="smart-label">Szín</label>
+                <select id="theme-color" onchange="updateTheme()">
+                    <option value="#007bb5">Aion Kék</option>
+                    <option value="#e67e22">Norbi Narancs</option>
+                    <option value="#1a1a1a">Éjfél</option>
+                    <option value="#27ae60">Smaragd</option>
+                    <option value="#c0392b">Vörös</option>
+                </select>
+            </div>
+        </div>
 
-        <label class="smart-label">Tanulmányok <span>(Education / Ausbildung)</span></label>
-        <div id="edu-list"></div>
-        <button class="btn-add" id="btn-add-edu" onclick="addEntry('edu')">+ ISKOLA HOZZÁADÁSA (ADD EDU)</button>
+        <label class="smart-label">Név & Elérhetőség</label>
+        <input type="text" id="in-name" placeholder="Teljes Név" oninput="updatePreview()">
+        <input type="text" id="in-phone" placeholder="Telefonszám" oninput="updatePreview()">
+        <input type="email" id="in-email" placeholder="E-mail cím" oninput="updatePreview()">
 
-        <label class="smart-label">Tapasztalat <span>(Experience / Erfahrung)</span></label>
-        <div id="work-list"></div>
-        <button class="btn-add" id="btn-add-work" onclick="addEntry('work')">+ MUNKAHELY HOZZÁADÁSA (ADD JOB)</button>
+        <label class="smart-label">Cím (Bontva)</label>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+        </div>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()" style="width:70%">
+            <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()" style="width:30%">
+        </div>
 
-        <label class="smart-label">Készségek <span>(Skills / Fähigkeiten)</span></label>
-        <input type="text" id="kesz" placeholder="Szoftverek, nyelvek, készségek... (Skills...)">
+        <label class="smart-label">Iskolák</label>
+        <div id="edu-container"></div>
+        <button class="btn-add" onclick="addEntry('edu')">+ ÚJ ISKOLA</button>
 
-        <button class="gen-btn" onclick="generalas()">GENERÁLÁS ÉS NYOMTATÁS</button>
+        <label class="smart-label">Múlt</label>
+        <div id="work-container"></div>
+        <button class="btn-add" onclick="addEntry('work')">+ ÚJ MUNKAHELY</button>
+
+        <label class="smart-label">Tartalom</label>
+        <textarea id="in-summary" placeholder="Bemutatkozás..." rows="2" oninput="updatePreview()"></textarea>
+        <textarea id="in-skills" placeholder="Készségek..." rows="2" oninput="updatePreview()"></textarea>
+        
+        <button onclick="window.print()" style="background:#27ae60; color:white; padding:15px; width:100%; border:none; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:20px;">PDF GENERÁLÁSA</button>
+    </div>
+
+    <div class="preview-side">
+        <div class="cv-paper" id="cv-paper">
+            <div class="cv-header">
+                <div class="header-text">
+                    <h1 id="out-name" style="margin:0; font-size: 28px; color: var(--main-color);">NAME</h1>
+                    <div id="out-contact" class="contact-info"></div>
+                </div>
+            </div>
+            <div id="main-content"></div>
+        </div>
     </div>
 
     <script src="dictionary.js"></script>

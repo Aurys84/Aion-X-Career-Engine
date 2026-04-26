@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v16.0</title>
+    <title>Aion-X Dashboard v17.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -14,8 +14,9 @@
 
         <div id="ats-box" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
             <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b><br>
-            <div>• Használj szoftverneveket!</div>
-            <div>• Számok (pl. +20% hatékonyság)!</div>
+            <div id="lbl-ats1">• Használj szoftverneveket (pl. SAP, Minitab)!</div>
+            <div id="lbl-ats2">• Az eredményeket számokkal írd le (+20%)!</div>
+            <div id="lbl-ats3">• Fotó: Világos háttér, profi öltözet!</div>
         </div>
         
         <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
@@ -32,7 +33,7 @@
                     <option value="style-3">3. Centrált</option><option value="style-4">4. Minimalista</option>
                     <option value="style-5">5. Tech</option><option value="style-6">6. Kreatív</option>
                     <option value="style-7">7. Vezetői</option><option value="style-8">8. Akadémiai</option>
-                    <option value="style-9">9. Junior</option>
+                    <option value="style-9">9. Junior Bold</option>
                 </select>
             </div>
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
@@ -49,22 +50,31 @@
         <label class="smart-label" id="lbl-photo">FOTÓ</label>
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
-        <label class="smart-label" id="lbl-name">NÉV</label>
-        <input type="text" id="in-name" placeholder="Vezetéknév Keresztnév" oninput="updatePreview()">
+        <div style="display: flex; gap: 5px;">
+            <div style="flex:1"><label class="smart-label">VEZETÉKNÉV</label><input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label">KERESZTNÉV</label><input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()"></div>
+        </div>
 
-        <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-
-        <label class="smart-label" id="lbl-city">IRSZ / VÁROS / UTCA / HÁZ</label>
+        <label class="smart-label" id="lbl-city">IRSZ / VÁROS</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
         <div style="display: flex; gap: 5px; margin-top:5px;">
-            <input type="text" id="in-street" placeholder="Utca név (pl. Petőfi)" oninput="updatePreview()" style="width:70%">
-            <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()" style="width:30%">
+            <div style="flex:1"><label class="smart-label">UTCA NEVE</label><input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()"></div>
+            <div style="flex:1">
+                <label class="smart-label">TÍPUS</label>
+                <select id="in-street-type" onchange="updatePreview()">
+                    <option value="utca">utca / street / straße</option>
+                    <option value="út">út / road / straße</option>
+                    <option value="tér">tér / square / platz</option>
+                </select>
+            </div>
+            <div style="width:20%"><label class="smart-label">HÁZ</label><input type="text" id="in-house" placeholder="68" oninput="updatePreview()"></div>
         </div>
 
+        <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
         <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
         <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label><input type="text" id="in-license" oninput="updatePreview()">
         

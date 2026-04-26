@@ -28,13 +28,13 @@ function updatePreview() {
     
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     document.getElementById('out-name').style.color = szin;
-    renderAsyncContent(szin);
+    renderSync(szin);
 }
 
-async function renderAsyncContent(szin) {
+async function renderSync(szin) {
     const d = dictionary[currentLang];
-    const city = await safeTranslate(document.getElementById('in-city').value || "");
     const zip = document.getElementById('in-zip').value || "";
+    const city = await safeTranslate(document.getElementById('in-city').value || "");
     const sName = document.getElementById('in-street-name').value || "";
     const house = document.getElementById('in-house').value || "";
     const phone = document.getElementById('in-phone').value || "";
@@ -43,8 +43,6 @@ async function renderAsyncContent(szin) {
     const sTypeHU = document.getElementById('in-street-type').value;
     const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
     const fullStreet = sName ? sName + " " + sType : "";
-
-    // CÍM TISZTÍTÓ: Nincs több felesleges vessző
     const addr = [zip, city, fullStreet, house].filter(x => x && x.trim() !== "").join(", ");
 
     document.getElementById('out-contact').innerHTML = `
@@ -62,14 +60,14 @@ async function renderAsyncContent(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    // DINAMIKUS CIKLUS FIX: Mindent kényszerítve renderel
+    // DINAMIKUS MEZŐK: Gépeléskor azonnal megjelennek, nem várnak a fordítóra!
     for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
         for (let box of boxes) {
-            const m = await safeTranslate(box.querySelector('.e-main').value);
+            const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
-            const desc = await safeTranslate(box.querySelector('.e-desc').value);
+            const desc = box.querySelector('.e-desc').value;
             if(m || sub || desc) {
                 items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
             }

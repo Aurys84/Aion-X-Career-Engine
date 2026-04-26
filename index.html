@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v5.0.0</title>
+    <title>Aion-X Global Control v5.2.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; overflow: hidden; }
@@ -13,45 +13,41 @@
         .logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
         .logo-icon { width: 40px; height: 40px; border: 3px solid var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--main-color); font-size: 22px; }
         
-        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 20px; }
-        .btn-lang { padding: 10px; font-size: 11px; cursor: pointer; background: #333; color: #ccc; border: 1px solid #444; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+        .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .btn-lang { padding: 12px; cursor: pointer; background: #333; color: #ccc; border: 1px solid #444; border-radius: 5px; font-weight: bold; transition: 0.3s; }
         .btn-lang.active { background: var(--main-color); color: white; transform: scale(1.05); }
 
-        .ats-box { background: #2c3e50; border-left: 5px solid #f1c40f; padding: 15px; margin-bottom: 25px; font-size: 11px; border-radius: 0 4px 4px 0; }
-        .ats-box p { margin: 5px 0; color: #bdc3c7; line-height: 1.4; }
-
+        .ats-box { background: #2c3e50; border-left: 5px solid #f1c40f; padding: 15px; margin-bottom: 25px; font-size: 11px; }
         .control-group { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 5px; font-size: 13px; box-sizing: border-box; }
         
-        .entry-box { background: #252525; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid var(--main-color); position: relative; }
-        .add-btn { background: var(--main-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 20px; transition: 0.3s; }
+        .entry-box { background: #252525; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid var(--main-color); }
+        .add-btn { background: var(--main-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
 
-        /* PREVIEW PANEL - PROFI PAPÍR */
-        .preview-side { width: 65%; display: flex; justify-content: center; padding: 40px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 50px; box-shadow: 0 0 30px rgba(0,0,0,0.6); box-sizing: border-box; color: #333; transition: 0.4s ease; }
+        /* PREVIEW PANEL - A4 OPTIMALIZÁLÁS */
+        .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 45px; box-shadow: 0 0 30px rgba(0,0,0,0.6); box-sizing: border-box; color: #333; transition: 0.4s ease; }
         
-        /* 10 DRASZTIKUS STÍLUS DEFINÍCIÓJA */
-        .style-1 .cv-body { display: flex; gap: 40px; }
-        .style-2 .cv-paper { border-top: 30px solid var(--main-color); border-bottom: 5px solid #eee; }
+        /* 10 DRASZTIKUS STÍLUS */
+        .style-1 .cv-body { display: flex; gap: 40px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 20px; }
+        .style-2 .cv-paper { border-top: 30px solid var(--main-color); border-bottom: 10px solid #eee; }
         .style-3 .cv-header { flex-direction: column; text-align: center; border-bottom: 1px solid #eee; }
         .style-4 .cv-paper { font-family: 'Courier New', Courier, monospace; letter-spacing: -0.5px; }
-        .style-5 .cv-header { background: #f4f4f4; border: 2px solid #ddd; padding: 30px; }
+        .style-5 .cv-header { background: #f4f4f4; border: 2px solid #ddd; padding: 25px; }
         .style-6 .cv-paper { border-left: 55px solid var(--main-color); padding-left: 40px; }
         .style-7 .header-text h1 { font-size: 55px; border-bottom: 10px solid var(--main-color); line-height: 0.9; }
         .style-8 .cv-paper { line-height: 2.2; font-size: 11px; }
         .style-9 #photo-preview { border-radius: 50%; border: 6px solid var(--main-color); width: 140px; height: 140px; }
         .style-10 .cv-paper { border: 20px double var(--main-color); background: #fafafa; }
 
-        .cv-header { border-bottom: 4px solid var(--main-color); padding-bottom: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 25px; }
+        .cv-header { border-bottom: 4px solid var(--main-color); padding-bottom: 20px; margin-bottom: 25px; display: flex; align-items: center; gap: 25px; }
         #photo-preview { width: 140px; height: 180px; object-fit: cover; border: 1px solid #ddd; display: none; }
-        .contact-row { margin-bottom: 6px; font-size: 14px; }
-        .contact-label { font-weight: bold; color: var(--main-color); margin-right: 10px; }
+        .contact-info { font-size: 14px; line-height: 1.5; color: #444; }
+        .contact-label { font-weight: bold; color: var(--main-color); margin-right: 8px; }
         
-        h3 { border-bottom: 1px solid #eee; padding-bottom: 8px; color: var(--main-color); text-transform: uppercase; font-size: 16px; margin-top: 30px; }
-        
-        /* DINAMIKUS ELRENDEZÉS: ISKOLA/MUNKAHELY -> ÉV -> LEÍRÁS */
-        .item-box { margin-bottom: 20px; }
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 8px; color: var(--main-color); text-transform: uppercase; font-size: 16px; margin-top: 25px; }
+        .item-box { margin-bottom: 15px; }
         .item-main { font-weight: bold; font-size: 16px; color: #2c3e50; display: block; }
         .item-sub { font-style: italic; color: #7f8c8d; font-size: 13px; display: block; margin: 2px 0; }
         .item-desc { font-weight: 600; font-size: 14px; color: var(--main-color); text-transform: uppercase; display: block; }
@@ -62,25 +58,18 @@
 <body class="style-1">
 
     <div class="editor-side">
-        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color:#3498db; font-size:24px; margin:0;">Career Engine</h1></div>
+        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color:#3498db; font-size:24px; margin:0;">Aion Engine</h1></div>
         
-        <div class="ats-box">
-            <strong id="ats-title" style="color:#f1c40f;">ATS STRATEGY BOARD</strong>
-            <div id="ats-tips"></div>
-        </div>
-
-        <label id="lbl-mode-title">Nyelvi mód (Keresztfordítás aktív):</label>
         <div class="lang-grid">
-            <button class="btn-lang active" onclick="setMode('hu', this)">Magyar</button>
-            <button class="btn-lang" onclick="setMode('en-mix', this)">HU+EN Mix</button>
-            <button class="btn-lang" onclick="setMode('de-mix', this)">HU+DE Mix</button>
-            <button class="btn-lang" onclick="setMode('en-only', this)">Only EN</button>
-            <button class="btn-lang" onclick="setMode('de-only', this)">Only DE</button>
+            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div class="control-group"><label id="lbl-style">Interface Style (1-10)</label><select id="style-select" onchange="updateStyle()"></select></div>
-        <div class="control-group"><label id="lbl-theme">System Color (1-10)</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-style">Stílus Választó</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">Rendszer Szín</label><select id="theme-color" onchange="updateTheme()"></select></div>
         <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        
         <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
         <div style="display: flex; gap: 8px;">
@@ -95,11 +84,11 @@
         <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
 
-        <h4 id="lbl-edu-h" style="color: var(--main-color); margin-top: 20px;">EDUCATION</h4>
+        <h4 id="lbl-edu-h" style="color:var(--main-color); margin-top:20px;">EDUCATION</h4>
         <div id="edu-container"></div>
         <button class="add-btn" onclick="addEntry('edu')" id="btn-add-edu">+ ADD EDUCATION</button>
 
-        <h4 id="lbl-work-h" style="color: var(--main-color); margin-top: 20px;">WORK HISTORY</h4>
+        <h4 id="lbl-work-h" style="color:var(--main-color); margin-top:20px;">WORK HISTORY</h4>
         <div id="work-container"></div>
         <button class="add-btn" onclick="addEntry('work')" id="btn-add-job">+ ADD WORKPLACE</button>
 
@@ -113,92 +102,93 @@
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
-            <div class="cv-header" id="cv-header"><img id="photo-preview" src=""><div class="header-text"><h1 id="out-name" style="margin:0; font-size: 32px;">NAME</h1><div class="contact-info" id="out-contact"></div></div></div>
+            <div class="cv-header" id="cv-header">
+                <img id="photo-preview" src="">
+                <div class="header-text"><h1 id="out-name" style="margin:0; font-size: 32px;">NAME</h1><div class="contact-info" id="out-contact"></div></div>
+            </div>
             <div id="main-content"></div>
         </div>
     </div>
 
     <script>
-        // OMNI-DIRECTIONAL DEEP DICTIONARY (Keresztfordító Puffer)
         const omniDict = [
-            { hu: "vagyonőr", en: "Security Guard", de: "Sicherheitskraft" },
-            { hu: "ügyletvezető", en: "Business Manager", de: "Geschäftsführer" },
-            { hu: "középfok", en: "intermediate", de: "Mittelstufe" },
+            { hu: "Vagyonőr", en: "Security Guard", de: "Sicherheitskraft" },
+            { hu: "Ügyletvezető", en: "Business Manager", de: "Geschäftsführer" },
+            { hu: "Takarító", en: "Cleaner", de: "Reinigungskraft" },
+            { hu: "Általános iskola", en: "Primary School", de: "Grundschule" },
+            { hu: "Érettségi", en: "High School Diploma", de: "Abitur" },
+            { hu: "Szakmunkásképző", en: "Vocational School", de: "Berufsschule" },
             { hu: "utca", en: "street", de: "straße" },
-            { hu: "B kategória", en: "Category B", de: "Klasse B" },
-            { hu: "jogosítvány", en: "driving license", de: "Führerschein" },
-            { hu: "zenehallgatás", en: "listening to music", de: "Musik hören" },
-            { hu: "általános iskola", en: "Primary School", de: "Grundschule" },
-            { hu: "érettségi", en: "High School Diploma", de: "Abitur" },
-            { hu: "szakmunkásképző", en: "Vocational School", de: "Berufsschule" }
+            { hu: "középfok", en: "intermediate", de: "Mittelstufe" },
+            { hu: "precíz", en: "precise", de: "präzise" },
+            { hu: "pontos", en: "accurate", de: "genau" }
         ];
 
         const dictionary = {
-            hu: { name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", phone:"Tel", email:"Email", summary:"Bemutatkozás", work:"Munkahelyek", edu:"Iskolák", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", addW:"+ Munkahely", addE:"+ Iskola", print:"PDF MENTÉS", tips:["1. Tiszta szöveg.", "2. Kulcsszavak.", "3. Iskolák/Múlt külön.", "4. Üres mezők rejtve."], styles:["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors:["Aion Kék", "Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"] },
-            en: { name:"Name", zip:"ZIP", city:"City", street:"Street", house:"No.", phone:"Phone", email:"Email", summary:"Summary", work:"Experience", edu:"Education", skills:"Skills", license:"License", hobby:"Hobbies", addW:"+ Add Job", addE:"+ Add Edu", print:"SAVE PDF", tips:["1. Clean text.", "2. Keywords.", "3. Edu/Job separate.", "4. Empty hidden."], styles:["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors:["Aion Blue", "Orange", "Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"] },
-            de: { name:"Name", zip:"PLZ", city:"Stadt", street:"Straße", house:"Hausnr.", phone:"Tel.", email:"Email", summary:"Profil", work:"Erfahrung", edu:"Ausbildung", skills:"Kenntnisse", license:"Führerschein", hobby:"Hobby", addW:"+ Job", addE:"+ Schule", print:"PDF SPEICHERN", tips:["1. Klarer Text.", "2. Keywords.", "3. Verlauf getrennt.", "4. Felder aus."], styles:["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors:["Aion Blau", "Orange", "Schwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"] }
+            hu: { name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", phone:"Tel:", email:"Email:", summary:"Profil", work:"Munkahelyek", edu:"Iskolák", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", addW:"+ Munkahely", addE:"+ Iskola", addr:"Cím:", styles:["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors:["Aion Kék", "Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"] },
+            en: { name:"Name", zip:"ZIP", city:"City", street:"Street", house:"No.", phone:"Phone:", email:"Email:", summary:"Summary", work:"Experience", edu:"Education", skills:"Skills", license:"License", hobby:"Hobbies", addW:"+ Add Job", addE:"+ Add Edu", addr:"Address:", styles:["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors:["Aion Blue", "Orange", "Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"] },
+            de: { name:"Name", zip:"PLZ", city:"Stadt", street:"Straße", house:"Hausnr.", phone:"Tel:", email:"Email:", summary:"Profil", work:"Erfahrung", edu:"Ausbildung", skills:"Kenntnisse", license:"Führerschein", hobby:"Hobby", addW:"+ Job", addE:"+ Schule", addr:"Adresse:", styles:["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors:["Aion Blau", "Orange", "Schwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"] }
         };
 
         const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#34495e"];
-        let currentMode = 'hu', jobCount = 0;
+        let currentLang = 'hu';
 
-        function setMode(mode, btn) {
-            currentMode = mode;
+        function setMode(lang, btn) {
+            currentLang = lang;
             document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             updatePreview();
         }
 
-        function omniTranslate(text, force) {
-            if (!text || currentMode === 'hu' || (currentMode.includes('mix') && !force)) return text;
-            let targetLang = currentMode.split('-')[0], res = text;
-            omniDict.forEach(entry => {
-                for (let key in entry) {
-                    let reg = new RegExp(entry[key], "gi");
-                    if (text.match(reg)) { res = res.replace(reg, entry[targetLang]); break; }
-                }
-            });
-            return res;
+        function omniTranslate(text) {
+            if (!text || currentLang === 'hu') return text;
+            let words = text.split(/\s+/);
+            return words.map(word => {
+                let clean = word.toLowerCase().replace(/[.,!?;:]/g, "");
+                let entry = omniDict.find(e => e.hu.toLowerCase() === clean || e.en.toLowerCase() === clean || e.de.toLowerCase() === clean);
+                return entry ? word.replace(new RegExp(clean, "gi"), entry[currentLang]) : word;
+            }).join(" ");
         }
 
         function addEntry(type) {
             const container = document.getElementById(type + '-container');
             const div = document.createElement('div'); div.className = 'entry-box';
-            div.innerHTML = `<input type="text" placeholder="Név / Name" class="e-main" oninput="updatePreview()"><input type="text" placeholder="Év / Year" class="e-sub" style="margin:5px 0" oninput="updatePreview()"><input type="text" placeholder="Beosztás-Szak / Position" class="e-desc" oninput="updatePreview()">`;
+            div.innerHTML = `<input type="text" placeholder="Cég-Iskola" class="e-main" oninput="updatePreview()"><input type="text" placeholder="Év" class="e-sub" style="margin:5px 0" oninput="updatePreview()"><input type="text" placeholder="Pozíció-Szak" class="e-desc" oninput="updatePreview()">`;
             container.appendChild(div);
         }
 
         function updatePreview() {
-            let lang = currentMode === 'hu' ? 'hu' : currentMode.split('-')[0], force = currentMode.includes('only');
-            ['name','zip','city','street','house','phone','email','summary','skills','license','hobby'].forEach(f => { document.getElementById('lbl-'+f).innerText = dictionary[lang][f]; });
-            document.getElementById('lbl-work-h').innerText = dictionary[lang].work;
-            document.getElementById('lbl-edu-h').innerText = dictionary[lang].edu;
-            document.getElementById('btn-add-job').innerText = dictionary[lang].addW;
-            document.getElementById('btn-add-edu').innerText = dictionary[lang].addE;
-            document.getElementById('ats-tips').innerHTML = dictionary[lang].tips.map(t => `<p>${t}</p>`).join("");
-
+            ['name','zip','city','street','house','phone','email','summary','skills','license','hobby'].forEach(f => { document.getElementById('lbl-'+f).innerText = dictionary[currentLang][f]; });
+            document.getElementById('lbl-work-h').innerText = dictionary[currentLang].work;
+            document.getElementById('lbl-edu-h').innerText = dictionary[dictionary[currentLang] === 'hu' ? 'hu' : currentLang].edu;
+            
             const n = document.getElementById('in-name').value;
-            document.getElementById('out-name').innerText = (force && n.includes(" ")) ? n.split(" ").reverse().join(" ") : n || "NAME";
-
-            const z = document.getElementById('in-zip').value, c = omniTranslate(document.getElementById('in-city').value, force), s = omniTranslate(document.getElementById('in-street').value, force), h = document.getElementById('in-house').value;
-            document.getElementById('out-contact').innerHTML = `<b>${dictionary[lang].name}:</b> ${force ? z+' '+c+', '+s+' '+h : c+', '+s+' '+h+', '+z}`;
+            document.getElementById('out-name').innerText = (currentLang !== 'hu' && n.includes(" ")) ? n.split(" ").reverse().join(" ") : n || "NAME";
+            
+            const z = document.getElementById('in-zip').value, c = omniTranslate(document.getElementById('in-city').value), s = omniTranslate(document.getElementById('in-street').value), h = document.getElementById('in-house').value;
+            const ph = document.getElementById('in-phone').value, em = document.getElementById('in-email').value;
+            
+            document.getElementById('out-contact').innerHTML = `
+                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].phone}</span> ${ph}</div>
+                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].email}</span> ${em}</div>
+                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].addr}</span> ${currentLang !== 'hu' ? z+' '+c+', '+s+' '+h : c+', '+s+' '+h+', '+z}</div>`;
 
             let mainHtml = "";
-            const sum = omniTranslate(document.getElementById('in-summary').value, force);
+            const sum = omniTranslate(document.getElementById('in-summary').value);
             if(sum) mainHtml += `<p><i>${sum}</i></p>`;
 
             ['edu', 'work'].forEach(type => {
                 let itemsHtml = "";
                 document.querySelectorAll('#'+type+'-container .entry-box').forEach(e => {
-                    const m = e.querySelector('.e-main').value, sub = e.querySelector('.e-sub').value, d = omniTranslate(e.querySelector('.e-desc').value, force);
+                    const m = e.querySelector('.e-main').value, sub = e.querySelector('.e-sub').value, d = omniTranslate(e.querySelector('.e-desc').value);
                     if(m || d) itemsHtml += `<div class="item-box"><span class="item-main">${m}</span><span class="item-sub">${sub}</span><span class="item-desc">${d}</span></div>`;
                 });
-                if(itemsHtml) mainHtml += `<h3>${dictionary[lang][type]}</h3>` + itemsHtml;
+                if(itemsHtml) mainHtml += `<h3>${dictionary[currentLang][type]}</h3>` + itemsHtml;
             });
 
             ['skills', 'license', 'hobby'].forEach(k => {
-                const val = omniTranslate(document.getElementById('in-' + k).value, force);
-                if(val) mainHtml += `<h3>${dictionary[lang][k]}</h3><div style="white-space:pre-wrap;">${val}</div>`;
+                const val = omniTranslate(document.getElementById('in-' + k).value);
+                if(val) mainHtml += `<h3>${dictionary[currentLang][k]}</h3><div style="white-space:pre-wrap;">${val}</div>`;
             });
             document.getElementById('main-content').innerHTML = mainHtml;
         }

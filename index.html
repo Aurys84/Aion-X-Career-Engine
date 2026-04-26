@@ -1,102 +1,97 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <title>Aion-X Dashboard v7.8</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .watermark { position: absolute; bottom: 10px; right: 10px; opacity: 0.1; font-weight: bold; font-size: 14px; pointer-events: none; }
-        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .logo-circle { width: 40px; height: 40px; background: var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; border: 2px solid white; }
-        .ats-tips { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f1c40f; font-size: 12px; }
-        .photo-preview { width: 100px; height: 120px; border: 2px dashed #444; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; }
-        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-    </style>
-</head>
-<body>
-    <div class="editor-side">
-        <div class="logo-box">
-            <div class="logo-circle">A&N</div>
-            <h2 style="color:var(--main-color); margin:0;">AION-X CONTROL PANEL</h2>
-        </div>
-        
-        <div class="lang-grid">
-            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
-            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
-            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
-        </div>
-
-        <label class="smart-label">Fénykép / Photo</label>
-        <div class="photo-preview" id="photo-p"><span style="color:#888; font-size:10px;">Nincs kép</span></div>
-        <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
-
-        <div style="display: flex; gap: 10px;">
-            <div style="flex:1">
-                <label class="smart-label">Stílus / Style</label>
-                <select id="style-select" onchange="updateStyle()">
-                    <option value="style-10">10. Aion-X Speciál</option>
-                    <option value="style-1">1. Modern Oszlopos</option>
-                    <option value="style-2">2. Klasszikus</option>
-                    <option value="style-4">4. Minimalista</option>
-                </select>
-            </div>
-            <div style="flex:1">
-                <label class="smart-label">Szín / Color</label>
-                <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:45px; padding:2px;">
-            </div>
-        </div>
-
-        <label id="lbl-name" class="smart-label">Név / Name</label>
-        <input type="text" id="in-name" placeholder="Teljes Név" oninput="updatePreview()">
-        
-        <label id="lbl-city" class="smart-label">Helyszín / Location</label>
-        <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
-            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
-        </div>
-        <input type="text" id="in-street" placeholder="Utca és házszám" oninput="updatePreview()">
-
-        <label id="lbl-license" class="smart-label">Jogosítvány / License</label>
-        <input type="text" id="in-license" placeholder="Pl: B kategória, targonca" oninput="updatePreview()">
-
-        <label id="lbl-edu-h" class="smart-label">Tanulmányok / Education</label>
-        <div id="edu-container"></div>
-        <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
-
-        <label id="lbl-work-h" class="smart-label">Tapasztalat / Experience</label>
-        <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
-
-        <label id="lbl-skills" class="smart-label">Készségek / Skills</label>
-        <textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea>
-
-        <div class="ats-tips">
-            <b style="color:#f1c40f;">ATS Nindzsa Tippek:</b><br>
-            • Használj kulcsszavakat (precíz, pontos, B kategória).<br>
-            • A PDF legyen tiszta, ne használj túl sok grafikát a szöveg felett.<br>
-            • A fordítás legyen konzisztens (ne keverd a nyelveket).
-        </div>
-
-        <button onclick="window.print()" class="gen-btn" style="margin-top:20px;">NYOMTATÁS (PDF)</button>
+<div class="editor-side">
+    <div class="logo-box">
+        <div class="logo-circle">A&N</div>
+        <h2 style="color:var(--main-color); margin:0;">AION-X CONTROL PANEL</h2>
+    </div>
+    
+    <div class="lang-grid" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+        <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+        <button class="btn-lang" onclick="setMode('de', this)">DE</button>
     </div>
 
-    <div class="preview-side">
-        <div class="cv-paper" id="cv-paper">
-            <div class="watermark">AION-X MATRIXLB</div>
-            <div class="cv-header" style="display:flex; gap:20px; align-items:flex-start;">
-                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;">
-                    <img id="out-photo" src="" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <div class="header-text">
-                    <h1 id="out-name">NAME</h1>
-                    <div id="out-contact"></div>
-                </div>
-            </div>
-            <div id="main-content"></div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <div style="flex:1">
+            <label class="smart-label">Stílus / Style / Stil</label>
+            <select id="style-select" onchange="updateStyle()">
+                <option value="style-10">Aion-X Speciál</option>
+                <option value="style-1">Modern</option>
+                <option value="style-2">Klasszikus</option>
+            </select>
+        </div>
+        <div style="flex:1">
+            <label class="smart-label">Szín / Color</label>
+            <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:40px; width:100%; border:none; cursor:pointer;">
         </div>
     </div>
 
-    <script src="dictionary.js"></script>
-    <script src="engine.js"></script>
-</body>
-</html>
+    <label class="smart-label">Név / Name / Name</label>
+    <input type="text" id="in-name" placeholder="Név" oninput="updatePreview()">
+
+    <label class="smart-label">Helyszín / Location / Ort</label>
+    <div style="display: flex; gap: 5px;">
+        <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
+        <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+    </div>
+    
+    ```
+
+### 📂 `engine.js` – A villámgyors adatbevitelért (Cseréld!)
+
+```javascript
+let currentLang = 'hu';
+
+function setMode(lang, btn) {
+    currentLang = lang;
+    document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updatePreview();
+}
+
+async function deepTranslate(text) {
+    if (!text || currentLang === 'hu') return text;
+    let found = omniDict.find(e => e.hu.toLowerCase() === text.trim().toLowerCase());
+    if (found) return found[currentLang];
+    
+    // Csak akkor hívjuk az API-t, ha tényleg kell, és nem akasztjuk meg a preview-t
+    try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
+        const data = await res.json();
+        return data.responseData.translatedText || text;
+    } catch (e) { return text; }
+}
+
+function updatePreview() {
+    const d = dictionary[currentLang];
+    const szin = document.getElementById('theme-color').value;
+    document.documentElement.style.setProperty('--main-color', szin);
+
+    // AZONNALI KIÍRÁS (Nincs await, hogy ne akadjon el!)
+    const n = document.getElementById('in-name').value;
+    document.getElementById('out-name').innerText = n || "NÉV / NAME";
+    document.getElementById('out-name').style.color = szin;
+
+    const zip = document.getElementById('in-zip').value;
+    const city = document.getElementById('in-city').value;
+    
+    document.getElementById('out-contact').innerHTML = `
+        <div><b>${d.phone}</b> ${document.getElementById('in-phone').value}</div>
+        <div><b>${d.email}</b> ${document.getElementById('in-email').value}</div>
+        <div><b>${d.addr}</b> ${zip} ${city}</div>
+    `;
+
+    // A bonyolultabb fordításokat (pl. summary) külön szálon futtatjuk
+    renderMainContent(szin);
+}
+
+async function renderMainContent(szin) {
+    const d = dictionary[currentLang];
+    let mainHtml = "";
+    
+    const sum = document.getElementById('in-summary').value;
+    if(sum) mainHtml += `<p><i>${await deepTranslate(sum)}</i></p>`;
+
+    // ... ide jön az edu és work ciklusod az előző engine.js-ből ...
+
+    document.getElementById('main-content').innerHTML = mainHtml;
+}

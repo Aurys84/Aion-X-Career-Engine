@@ -2,12 +2,23 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v7.7</title>
+    <title>Aion-X Dashboard v7.8</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .watermark { position: absolute; bottom: 10px; right: 10px; opacity: 0.1; font-weight: bold; font-size: 14px; pointer-events: none; }
+        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .logo-circle { width: 40px; height: 40px; background: var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; border: 2px solid white; }
+        .ats-tips { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f1c40f; font-size: 12px; }
+        .photo-preview { width: 100px; height: 120px; border: 2px dashed #444; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #eee; }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
 </head>
 <body>
     <div class="editor-side">
-        <h2 style="color:var(--main-color)">AION-X CONTROL PANEL</h2>
+        <div class="logo-box">
+            <div class="logo-circle">A&N</div>
+            <h2 style="color:var(--main-color); margin:0;">AION-X CONTROL PANEL</h2>
+        </div>
         
         <div class="lang-grid">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
@@ -15,55 +26,38 @@
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
+        <label class="smart-label">Fénykép / Photo</label>
+        <div class="photo-preview" id="photo-p"><span style="color:#888; font-size:10px;">Nincs kép</span></div>
+        <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
+
         <div style="display: flex; gap: 10px;">
             <div style="flex:1">
                 <label class="smart-label">Stílus / Style</label>
                 <select id="style-select" onchange="updateStyle()">
-                    <option value="style-1">1. Modern Oszlopos</option>
-                    <option value="style-2">2. Klasszikus Keretes</option>
-                    <option value="style-3">3. Centrált Üzleti</option>
-                    <option value="style-4">4. Minimalista</option>
-                    <option value="style-5">5. Technikai Sávos</option>
-                    <option value="style-6">6. Kreatív Oldalsáv</option>
-                    <option value="style-7">7. Menedzseri Bold</option>
-                    <option value="style-8">8. Akadémiai Sűrű</option>
-                    <option value="style-9">9. Junior Modern</option>
                     <option value="style-10">10. Aion-X Speciál</option>
+                    <option value="style-1">1. Modern Oszlopos</option>
+                    <option value="style-2">2. Klasszikus</option>
+                    <option value="style-4">4. Minimalista</option>
                 </select>
             </div>
             <div style="flex:1">
                 <label class="smart-label">Szín / Color</label>
-                <select id="theme-color" onchange="updateTheme()">
-                    <option value="#007bb5">Aion Kék</option>
-                    <option value="#e67e22">Norbi Narancs</option>
-                    <option value="#1a1a1a">Mély Fekete</option>
-                    <option value="#27ae60">Smaragd Zöld</option>
-                    <option value="#c0392b">Vörös</option>
-                    <option value="#8e44ad">Lila</option>
-                    <option value="#2c3e50">Pala Szürke</option>
-                    <option value="#f39c12">Arany</option>
-                    <option value="#d35400">Tégla</option>
-                    <option value="#16a085">Türkiz</option>
-                </select>
+                <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:45px; padding:2px;">
             </div>
         </div>
 
         <label id="lbl-name" class="smart-label">Név / Name</label>
         <input type="text" id="in-name" placeholder="Teljes Név" oninput="updatePreview()">
         
-        <label id="lbl-phone" class="smart-label">Tel / Phone</label>
-        <input type="text" id="in-phone" placeholder="Telefonszám" oninput="updatePreview()">
-        
-        <label id="lbl-email" class="smart-label">Email</label>
-        <input type="email" id="in-email" placeholder="E-mail" oninput="updatePreview()">
-
         <label id="lbl-city" class="smart-label">Helyszín / Location</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
-        <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()">
-        <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()">
+        <input type="text" id="in-street" placeholder="Utca és házszám" oninput="updatePreview()">
+
+        <label id="lbl-license" class="smart-label">Jogosítvány / License</label>
+        <input type="text" id="in-license" placeholder="Pl: B kategória, targonca" oninput="updatePreview()">
 
         <label id="lbl-edu-h" class="smart-label">Tanulmányok / Education</label>
         <div id="edu-container"></div>
@@ -73,18 +67,26 @@
         <div id="work-container"></div>
         <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
 
-        <label id="lbl-summary" class="smart-label">Profil / Summary</label>
-        <textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
-
         <label id="lbl-skills" class="smart-label">Készségek / Skills</label>
         <textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea>
 
-        <button onclick="window.print()" class="gen-btn">NYOMTATÁS (PDF)</button>
+        <div class="ats-tips">
+            <b style="color:#f1c40f;">ATS Nindzsa Tippek:</b><br>
+            • Használj kulcsszavakat (precíz, pontos, B kategória).<br>
+            • A PDF legyen tiszta, ne használj túl sok grafikát a szöveg felett.<br>
+            • A fordítás legyen konzisztens (ne keverd a nyelveket).
+        </div>
+
+        <button onclick="window.print()" class="gen-btn" style="margin-top:20px;">NYOMTATÁS (PDF)</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
-            <div class="cv-header">
+            <div class="watermark">AION-X MATRIXLB</div>
+            <div class="cv-header" style="display:flex; gap:20px; align-items:flex-start;">
+                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;">
+                    <img id="out-photo" src="" style="width:100%; height:100%; object-fit:cover;">
+                </div>
                 <div class="header-text">
                     <h1 id="out-name">NAME</h1>
                     <div id="out-contact"></div>

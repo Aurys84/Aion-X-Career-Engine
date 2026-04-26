@@ -1,118 +1,110 @@
-let mode = 'hu';
-let profilKepData = "";
+let currentLang = 'hu';
 
-function previewKep() {
-    const file = document.getElementById('kep-input').files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-        profilKepData = reader.result;
-        document.getElementById('kep-preview').src = reader.result;
-        document.getElementById('kep-preview').style.display = 'block';
+// 1. OKOS FELÜLET FRISSÍTÉSE (Hogy 3 nyelvű legyen a bal oldal)
+function updateInterface() {
+    // Ezek a címkék mindig 3 nyelven segítik Norbit
+    const labels = {
+        'lbl-name': 'Név / Name / Name',
+        'lbl-phone': 'Tel / Phone / Telefon',
+        'lbl-email': 'Email / Email / Email',
+        'lbl-zip': 'Irsz / ZIP / PLZ',
+        'lbl-city': 'Város / City / Stadt',
+        'lbl-street': 'Utca / Street / Straße',
+        'lbl-house': 'Házszám / No / Hausnr.',
+        'lbl-edu-h': 'Tanulmányok / Education / Ausbildung',
+        'lbl-work-h': 'Tapasztalat / Experience / Erfahrung',
+        'lbl-summary': 'Bemutatkozás / Summary / Profil',
+        'lbl-skills': 'Készségek / Skills / Kenntnisse',
+        'lbl-license': 'Jogosítvány / License / Führerschein',
+        'lbl-hobby': 'Hobbi / Hobbies / Hobby'
     };
-    if (file) reader.readAsDataURL(file);
+
+    for (let id in labels) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = labels[id];
+    }
 }
 
-function setMode(m, btn) {
-    mode = m;
+function setMode(lang, btn) {
+    currentLang = lang;
     document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    // Itt a titok: frissítjük a papírt a választott nyelvre
+    updatePreview();
+}
+
+async function deepTranslate(text) {
+    if (!text || currentLang === 'hu') return text;
+    // Belső szótár csekkolás (dictionary.js-ből)
+    let found = omniDict.find(e => e.hu.toLowerCase() === text.toLowerCase());
+    if (found) return found[currentLang];
+
+    // API Fallback (Plébános és társai)
+    try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
+        const data = await res.json();
+        return data.responseData.translatedText || text;
+    } catch (e) { return text; }
 }
 
 function addEntry(type) {
-    const container = document.getElementById(type + '-list');
+    const container = document.getElementById(type + '-container');
     const div = document.createElement('div');
-    div.className = 'dynamic-entry';
+    div.className = 'entry-box';
     div.innerHTML = `
-        <input type="text" placeholder="Intézmény-Cég / Institution-Company" class="e-main">
-        <input type="text" placeholder="Év / Year" class="e-sub" style="width:30%">
-        <input type="text" placeholder="Beosztás / Role" class="e-desc">
+        <input type="text" placeholder="Iskola-Cég / School-Company" class="e-main" oninput="updatePreview()">
+        <input type="text" placeholder="Év / Year" class="e-sub" style="margin:5px 0" oninput="updatePreview()">
+        <input type="text" placeholder="Beosztás / Role" class="e-desc" oninput="updatePreview()">
     `;
     container.appendChild(div);
+    updatePreview();
 }
 
-async function translate(text, lang) {
-    if (!text || mode === 'hu') return "";
-    try {
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${lang}`);
-        const data = await res.json();
-        return data.responseData.translatedText || "";
-    } catch (e) { return ""; }
-}
+async function updatePreview() {
+    const d = dictionary[currentLang];
+    const szin = document.getElementById('theme-color').value;
+    document.documentElement.style.setProperty('--main-color', szin);
 
-async function generalas() {
-    const lang = mode; // Csak hu, en, de (mivel kivettük a mixet)
-    const szin = document.getElementById('szinvalaszto').value;
-    const btn = document.querySelector('.gen-btn');
-    btn.innerText = "SZINKRONIZÁLÁS...";
+    // Kapcsolat
+    const n = document.getElementById('in-name').value;
+    document.getElementById('out-name').innerText = (currentLang !== 'hu' && n.includes(" ")) ? n.split(" ").reverse().join(" ") : n || "NAME";
+    document.getElementById('out-name').style.color = szin;
 
-    const adatok = {
-        nev: document.getElementById('nev').value,
-        cim: document.getElementById('cim').value,
-        tel: document.getElementById('tel').value,
-        email: document.getElementById('email').value,
-        bemutat: document.getElementById('bemutat').value,
-        kesz: document.getElementById('kesz').value
-    };
+    const city = await deepTranslate(document.getElementById('in-city').value);
+    const street = await deepTranslate(document.getElementById('in-street').value);
+    
+    document.getElementById('out-contact').innerHTML = `
+        <div><b>${d.phone}</b> ${document.getElementById('in-phone').value}</div>
+        <div><b>${d.email}</b> ${document.getElementById('in-email').value}</div>
+        <div><b>${d.addr}</b> ${document.getElementById('in-zip').value} ${city}, ${street} ${document.getElementById('in-house').value}</div>
+    `;
 
-    // Fordítások indítása
-    const trNev = await translate(adatok.nev, lang);
-    const trCim = await translate(adatok.cim, lang);
-    const trBemutat = await translate(adatok.bemutat, lang);
-    const trKesz = await translate(adatok.kesz, lang);
+    // Szekciók
+    let mainHtml = "";
+    const sum = await deepTranslate(document.getElementById('in-summary').value);
+    if(sum) mainHtml += `<p><i>${sum}</i></p>`;
 
-    const L = (k) => interfaceDict[lang][k];
-
-    // Iskolák és munkahelyek feldolgozása
-    const processSection = async (type) => {
-        let h = "";
-        const items = document.querySelectorAll('#' + type + '-list .dynamic-entry');
-        for (let item of items) {
-            const m = item.querySelector('.e-main').value;
-            const s = item.querySelector('.e-sub').value;
-            const d = item.querySelector('.e-desc').value;
-            const trD = await translate(d, lang);
-            h += `<div style="margin-bottom:15px">
-                <strong style="font-size:14px;">${m}</strong><br>
-                <small style="color:#666;">${s}</small><br>
-                <span style="font-weight:bold; color:${szin}; text-transform:uppercase;">${trD || d}</span>
-            </div>`;
+    for (let type of ['edu', 'work']) {
+        let itemsHtml = "";
+        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
+        for (let box of boxes) {
+            const m = await deepTranslate(box.querySelector('.e-main').value);
+            const s = box.querySelector('.e-sub').value;
+            const desc = await deepTranslate(box.querySelector('.e-desc').value);
+            if(m || desc) itemsHtml += `<div class="item-box"><b>${m}</b><br><small>${s}</small><br><span style="color:${szin}">${desc}</span></div>`;
         }
-        return h;
-    };
+        if(itemsHtml) mainHtml += `<h3>${d[type]}</h3>` + itemsHtml;
+    }
 
-    const eduHtml = await processSection('edu');
-    const workHtml = await processSection('work');
+    // Skillek
+    const sk = await deepTranslate(document.getElementById('in-skills').value);
+    if(sk) mainHtml += `<h3>${d.skills}</h3><div style="white-space:pre-wrap;">${sk}</div>`;
 
-    const htmlContent = `
-        <html><head><style>
-            body { font-family: sans-serif; display: flex; margin: 0; min-height: 100vh; }
-            .sidebar { background: ${szin}; color: white; width: 30%; padding: 30px; -webkit-print-color-adjust: exact; }
-            .main { width: 70%; padding: 40px; background: white; }
-            .p-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; margin-bottom: 20px; }
-            h1 { margin:0; text-transform: uppercase; color: ${szin}; font-size: 24px; }
-            h3 { border-bottom: 2px solid ${szin}; color: ${szin}; text-transform: uppercase; font-size: 14px; margin-top: 25px; }
-            .sidebar h3 { color: white; border-bottom: 1px solid rgba(255,255,255,0.3); }
-            p { font-size: 13px; line-height: 1.6; margin-bottom: 10px; white-space: pre-line; }
-            @media print { .no-print { display:none; } }
-        </style></head>
-        <body>
-            <div class="sidebar">
-                ${profilKepData ? `<img src="${profilKepData}" class="p-img">` : ''}
-                <h3>${L('c')}</h3><p>${trCim || adatok.cim}</p>
-                <p>${adatok.tel}<br>${adatok.email}</p>
-                ${adatok.kesz ? `<h3>${L('s')}</h3><p>${trKesz || adatok.kesz}</p>` : ''}
-            </div>
-            <div class="main">
-                <h1>${trNev || adatok.nev}</h1>
-                ${adatok.bemutat ? `<h3>${L('p')}</h3><p>${trBemutat || adatok.bemutat}</p>` : ''}
-                ${eduHtml ? `<h3>${L('e')}</h3>${eduHtml}` : ''}
-                ${workHtml ? `<h3>${L('ex')}</h3>${workHtml}` : ''}
-            </div>
-            <button onclick="window.print()" style="position:fixed; top:10px; right:10px;" class="no-print">NYOMTATÁS</button>
-        </body></html>`;
-
-    const win = window.open("", "_blank");
-    win.document.write(htmlContent);
-    win.document.close();
-    btn.innerText = "GENERÁLÁS";
+    document.getElementById('main-content').innerHTML = mainHtml;
 }
+
+function updateStyle() { document.body.className = document.getElementById('style-select').value; }
+function updateTheme() { updatePreview(); }
+
+// Betöltéskor 3 nyelvű felület beállítása
+window.onload = () => { updateInterface(); updatePreview(); };

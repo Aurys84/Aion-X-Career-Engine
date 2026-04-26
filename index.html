@@ -3,47 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v2.5.0</title>
+    <title>Aion-X Global Control v2.6.0</title>
     <style>
         :root { --main-color: #3498db; }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
-        .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
-        .control-group { margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; transition: 0.3s; }
+        
+        /* EDITOR PANEL */
+        .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 20px; overflow-y: auto; border-right: 4px solid var(--main-color); }
+        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .logo-icon { width: 35px; height: 35px; border: 3px solid var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--main-color); font-size: 20px; }
+        
+        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 11px; }
+        .ats-box p { margin: 3px 0; color: #bdc3c7; }
+
+        .control-group { margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
         label { display: block; margin-bottom: 3px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+        
         .lang-btns { display: flex; gap: 4px; margin-bottom: 15px; }
         .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
         .active-lang { background: var(--main-color) !important; color: white !important; }
         
-        /* Logo */
-        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .logo-icon { width: 30px; height: 30px; border: 3px solid #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #3498db; font-size: 18px; }
-
-        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 15px; font-size: 11px; }
-        .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        
-        /* Preview Side */
+        /* PREVIEW PANEL */
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: 0.3s; position: relative; }
         
-        /* 10 STÍLUS */
+        /* 10 DRASZTIKUS STÍLUS */
         .style-1 .cv-body { display: flex; gap: 30px; }
-        .style-2 .cv-paper { border-top: 20px solid var(--main-color); }
+        .style-2 .cv-paper { border-top: 25px solid var(--main-color); }
         .style-3 .cv-header { flex-direction: column; text-align: center; }
-        .style-4 .cv-paper { font-family: 'Courier New', Courier, monospace; }
-        .style-5 .cv-header { background: #f4f4f4; border: 1px solid #ddd; padding: 20px; }
-        .style-6 .cv-paper { border-left: 40px solid var(--main-color); padding-left: 30px; }
-        .style-7 .header-text h1 { font-size: 48px; border-bottom: 8px solid var(--main-color); }
-        .style-8 .cv-paper { line-height: 2; font-size: 11px; }
-        .style-9 #photo-preview { border-radius: 50%; border: 4px solid var(--main-color); }
-        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fcfcfc; }
+        .style-4 .cv-paper { font-family: 'Courier New', monospace; font-size: 12px; }
+        .style-5 .cv-header { background: #f4f4f4; padding: 20px; border: 1px solid #ddd; }
+        .style-6 .cv-paper { border-left: 45px solid var(--main-color); }
+        .style-7 .header-text h1 { font-size: 50px; border-bottom: 6px solid var(--main-color); }
+        .style-8 .cv-paper { line-height: 2; color: #444; }
+        .style-9 #photo-preview { border-radius: 50%; border: 5px solid var(--main-color); }
+        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fafafa; }
 
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
-        #photo-preview { width: 130px; height: 150px; object-fit: cover; display: none; border-radius: 4px; }
-        .contact-info { font-size: 13px; color: #444; margin-top: 8px; }
-        .contact-row { display: block; margin-bottom: 3px; }
+        #photo-preview { width: 130px; height: 160px; object-fit: cover; border: 1px solid #ddd; display: none; }
+        .contact-info { font-size: 13px; color: #666; margin-top: 5px; }
+        .contact-row { margin-bottom: 3px; }
         .contact-label { font-weight: bold; color: var(--main-color); margin-right: 5px; }
-        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 20px; }
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 25px; }
 
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
     </style>
@@ -51,15 +53,18 @@
 <body class="style-1">
 
     <div class="editor-side">
-        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color: #3498db; font-size: 20px; margin: 0;">Global Control</h1></div>
+        <div class="logo-box">
+            <div class="logo-icon">X</div>
+            <h1 style="color: #3498db; font-size: 20px; margin: 0;">Global Control</h1>
+        </div>
         
         <div class="ats-box">
-            <strong id="ats-title">ATS STRATEGY:</strong>
-            <ul id="ats-list" style="margin:5px 0 0; padding-left:15px; color:#bdc3c7;"></ul>
+            <strong id="ats-title" style="color: #f1c40f;">ATS TIPS:</strong>
+            <p id="tip-1"></p><p id="tip-2"></p><p id="tip-3"></p>
         </div>
 
         <div class="control-group">
-            <label id="lbl-lang">Language / Fordítás</label>
+            <label id="lbl-lang">Language Selection</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -67,9 +72,9 @@
             </div>
         </div>
 
-        <div class="control-group"><label id="lbl-style">Style (10)</label><select id="style-select" onchange="updateStyle()"></select></div>
-        <div class="control-group"><label id="lbl-theme">Color (10)</label><select id="theme-color" onchange="updateTheme()"></select></div>
-        <div class="control-group"><label id="lbl-photo">Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        <div class="control-group"><label id="lbl-style">Style (10 Types)</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">System Color (10 Types)</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
         <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
         <div style="display: flex; gap: 5px;">
@@ -90,7 +95,7 @@
         <div class="control-group"><label id="lbl-license">License</label><input type="text" id="in-license" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-hobby">Hobby</label><input type="text" id="in-hobby" oninput="updatePreview()"></div>
 
-        <button class="print-btn" onclick="window.print()" id="btn-print">PRINT PDF</button>
+        <button class="print-btn" onclick="window.print()" id="btn-print">GENERATE PDF</button>
     </div>
 
     <div class="preview-side">
@@ -98,7 +103,7 @@
             <div class="cv-header" id="cv-header">
                 <img id="photo-preview" src="">
                 <div class="header-text">
-                    <h1 id="out-name" style="margin:0; font-size: 28px;">Name</h1>
+                    <h1 id="out-name" style="margin:0; font-size: 28px;">Your Name</h1>
                     <div class="contact-info" id="out-contact"></div>
                 </div>
             </div>
@@ -107,64 +112,49 @@
     </div>
 
     <script>
-        // SMART TRANSLATOR DICTIONARY
-        const smartDict = {
-            "Budapest": { en: "Budapest", de: "Budapest" },
-            "Debrecen": { en: "Debrecen", de: "Debrecen" },
-            "utca": { en: "street", de: "Straße" },
-            "tér": { en: "square", de: "Platz" },
-            "út": { en: "road", de: "Straße" },
-            "Magyarország": { en: "Hungary", de: "Ungarn" },
-            "Targonca": { en: "Forklift", de: "Gabelstapler" },
-            "Raktár": { en: "Warehouse", de: "Lagerhaus" },
-            "Sofőr": { en: "Driver", de: "Fahrer" },
-            "B kategória": { en: "Category B", de: "Klasse B" },
-            "Angol": { en: "English", de: "Englisch" },
-            "Német": { en: "German", de: "Deutsch" }
-        };
-
         const dictionary = {
             hu: { 
-                lang: "Nyelvválasztás", style: "Stílus (10)", theme: "Rendszer Szín (10)", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Telefon", email: "E-mail", summary: "Bemutatkozás", exp: "Tapasztalat", skills: "Készségek", langs: "Nyelv", license: "Jogosítvány", hobby: "Hobbi", print: "PDF MENTÉS", photo: "Fotó",
-                atsTitle: "ATS STRATÉGIA:", atsTips: ["Használj kulcsszavakat.", "A tiszta szöveg a nyerő.", "Üres mezők elrejtve."],
+                lang: "Nyelv", style: "Stílus (10 típus)", theme: "Rendszer Szín (10)", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Telefon", email: "E-mail", summary: "Bemutatkozás", exp: "Tapasztalat", skills: "Készségek", langs: "Nyelvek", license: "Jogosítvány", hobby: "Hobbi", print: "PDF MENTÉS", photo: "Fotó feltöltése",
+                tips: ["1. Használj kulcsszavakat.", "2. A tiszta szöveg a nyerő.", "3. Üres mezők automatikusan elrejtve."],
                 labels: { p: "Tel:", e: "Email:", a: "Cím:" },
-                styles: ["Modern", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzser", "Akadémiai", "Junior", "Aion-X"],
-                colors: ["Aion Kék", "Narancs", "Fekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
+                styles: ["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"],
+                colors: ["Aion Kék", "Norbi Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
             },
             en: { 
-                lang: "Language", style: "Style (10)", theme: "Color (10)", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobby", print: "SAVE PDF", photo: "Photo",
-                atsTitle: "ATS STRATEGY:", atsTips: ["Use keywords.", "Clean text is best.", "Empty fields hidden."],
+                lang: "Language", style: "Style (10 Types)", theme: "System Color (10)", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobby", print: "SAVE PDF", photo: "Upload Photo",
+                tips: ["1. Use industry keywords.", "2. Simple text is better.", "3. Empty fields are hidden."],
                 labels: { p: "Phone:", e: "Email:", a: "Address:" },
-                styles: ["Modern", "Classic", "Centered", "Minimal", "Technical", "Creative", "Manager", "Academic", "Junior", "Aion-X"],
-                colors: ["Aion Blue", "Orange", "Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
+                styles: ["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"],
+                colors: ["Aion Blue", "Norbi Orange", "Deep Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
             },
             de: { 
-                lang: "Sprache", style: "Stil (10)", theme: "Farbe (10)", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel.", email: "Email", summary: "Profil", exp: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobby", print: "PDF SPEICHERN", photo: "Foto",
-                atsTitle: "ATS STRATEGIE:", atsTips: ["Keywords nutzen.", "Klarer Text.", "Felder ausgeblendet."],
+                lang: "Sprache", style: "Layout (10 Stile)", theme: "Farbe (10 Stile)", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel.", email: "Email", summary: "Profil", exp: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobby", print: "PDF SPEICHERN", photo: "Foto",
+                tips: ["1. Keywords verwenden.", "2. Klarer Text ist wichtig.", "3. Leere Felder ausgeblendet."],
                 labels: { p: "Tel:", e: "Email:", a: "Adresse:" },
-                styles: ["Modern", "Klassisch", "Zentriert", "Minimal", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"],
-                colors: ["Aion Blau", "Orange", "Schwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
+                styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"],
+                colors: ["Aion Blau", "Norbi Orange", "Tiefschwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
             }
         };
 
-        let currentLang = 'hu';
         const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#95a5a6", "#1abc9c", "#34495e"];
+        let currentLang = 'hu';
 
         function changeLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
+            // Fordítások
             const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp', 'skills', 'langs', 'license', 'hobby'];
             fields.forEach(f => { document.getElementById('lbl-' + f).innerText = dictionary[lang][f]; });
             
-            document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
-            const list = document.getElementById('ats-list'); list.innerHTML = "";
-            dictionary[lang].atsTips.forEach(tip => { let li = document.createElement('li'); li.innerText = tip; list.appendChild(li); });
+            dictionary[lang].tips.forEach((t, i) => { document.getElementById('tip-' + (i+1)).innerText = t; });
             document.getElementById('btn-print').innerText = dictionary[lang].print;
 
+            // Listák frissítése
             const styleS = document.getElementById('style-select'); styleS.innerHTML = "";
-            dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-"+(i+1); o.innerText = s; styleS.appendChild(o); });
+            dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s; styleS.appendChild(o); });
+            
             const colorS = document.getElementById('theme-color'); colorS.innerHTML = "";
             dictionary[lang].colors.forEach((c, i) => { let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c; colorS.appendChild(o); });
 
@@ -173,22 +163,57 @@
 
         function updateStyle() { document.body.className = document.getElementById('style-select').value; }
         function loadPhoto(e) { const img = document.getElementById('photo-preview'); img.src = URL.createObjectURL(e.target.files[0]); img.style.display = "block"; }
-        function updateTheme() { const c = document.getElementById('theme-color').value; document.documentElement.style.setProperty('--main-color', c); document.getElementById('out-name').style.color = c; document.getElementById('cv-header').style.borderColor = c; }
-
-        // KERESZTBE FORDÍTÓ MOTOR
-        function smartTranslate(text, targetLang) {
-            if (!text || targetLang === 'hu') return text;
-            let translated = text;
-            for (let word in smartDict) {
-                let regex = new RegExp(word, "gi");
-                if (smartDict[word][targetLang]) {
-                    translated = translated.replace(regex, smartDict[word][targetLang]);
-                }
-            }
-            return translated;
+        function updateTheme() { 
+            const c = document.getElementById('theme-color').value;
+            document.documentElement.style.setProperty('--main-color', c);
+            document.getElementById('out-name').style.color = c;
+            document.getElementById('cv-header').style.borderColor = c;
         }
 
-        function flipName(name, targetLang) {
+        // KERESZTBE FORDÍTÓ LOGIKA (Név és Cím)
+        function flipName(name, lang) {
             if (!name) return "";
-            let parts = name.split(" ");
-            if (parts.length >= 2 && targetLang !== 'hu') return parts[1] + " "
+            let parts = name.trim().split(" ");
+            if (parts.length >= 2 && lang !== 'hu') return parts[parts.length - 1] + " " + parts.slice(0, -1).join(" ");
+            return name;
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('in-name').value;
+            const zip = document.getElementById('in-zip').value;
+            const city = document.getElementById('in-city').value;
+            const street = document.getElementById('in-street').value;
+            const house = document.getElementById('in-house').value;
+            const phone = document.getElementById('in-phone').value;
+            const email = document.getElementById('in-email').value;
+
+            // NÉV FORDÍTÁSA
+            document.getElementById('out-name').innerText = flipName(name, currentLang) || dictionary[currentLang].name;
+            
+            // CÍM KERESZTBE FORDÍTÁSA
+            let addr = (currentLang !== 'hu') ? `${zip} ${city}, ${street} ${house}` : `${city}, ${street} ${house}, ${zip}`;
+            
+            const labels = dictionary[currentLang].labels;
+            let contactHtml = "";
+            if(phone) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.p}</span>${phone}</div>`;
+            if(email) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.e}</span>${email}</div>`;
+            if(city || street) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.a}</span>${addr}</div>`;
+            document.getElementById('out-contact').innerHTML = contactHtml;
+
+            // DINAMIKUS MEZŐK (Csak ha be van írva)
+            let mainHtml = "";
+            const sum = document.getElementById('in-summary').value;
+            if(sum) mainHtml += `<p style="font-style:italic; margin-bottom:20px; color:#555;">${sum}</p>`;
+            
+            const sections = ['exp', 'skills', 'langs', 'license', 'hobby'];
+            sections.forEach(s => {
+                const val = document.getElementById('in-' + s).value;
+                if(val) mainHtml += `<h3>${dictionary[currentLang][s]}</h3><div style="white-space:pre-wrap; font-size:13px;">${val}</div>`;
+            });
+            document.getElementById('main-content').innerHTML = mainHtml;
+        }
+
+        window.onload = () => { changeLang('hu'); updateTheme(); };
+    </script>
+</body>
+</html>

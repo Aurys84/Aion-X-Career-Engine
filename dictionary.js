@@ -27,3 +27,9 @@ const dictionary = {
         ats3: "• Foto: Heller Hintergrund, professionell.", ats4: "• Schlüsselwörter: Achte auf die Anzeige!"
     }
 };
+
+const omniDict = [
+    { hu: "utca", en: "street", de: "straße" },
+    { hu: "út", en: "road", de: "straße" },
+    { hu: "tér", en: "square", de: "platz" }
+];

@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v26.1</title>
+    <title>Aion-X Dashboard v27.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -14,10 +14,10 @@
 
         <div id="ats-box" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
             <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b><br>
-            <div id="lbl-ats1">• Használj szoftverneveket (SAP, Minitab)!</div>
-            <div id="lbl-ats2">• Eredmények számokkal (+20%)!</div>
-            <div id="lbl-ats3">• Fotó: Világos háttér!</div>
-            <div id="lbl-ats4">• Kulcsszavak az álláshirdetésből!</div>
+            <div id="lbl-ats1">• Használj szoftverneveket!</div>
+            <div id="lbl-ats2">• Számok (pl. +20%)!</div>
+            <div id="lbl-ats3">• Világos háttér!</div>
+            <div id="lbl-ats4">• Kulcsszavak!</div>
         </div>
         
         <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
@@ -58,12 +58,12 @@
 
         <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
         <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" oninput="updatePreview()" style="width:30%">
-            <input type="text" id="in-city" oninput="updatePreview()" style="width:70%">
+            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
 
         <div style="display: flex; gap: 5px; margin-top:5px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA</label><input type="text" id="in-street-name" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA NEVE</label><input type="text" id="in-street-name" oninput="updatePreview()"></div>
             <div style="flex:1">
                 <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
@@ -77,11 +77,8 @@
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
         <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
 
-        <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label>
         <div id="edu-container"></div>
         <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
-
-        <label class="smart-label" id="lbl-work">TAPASZTALAT</label>
         <div id="work-container"></div>
         <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
 
@@ -91,7 +88,7 @@
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header" style="display:flex; gap:20px;">
-                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
             </div>
             <div id="main-content"></div>

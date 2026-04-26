@@ -13,7 +13,8 @@ async function deepTranslate(text) {
     try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
-        return data.responseData.translatedText || text;
+        const tr = data.responseData.translatedText;
+        return (tr && !tr.includes("PLEASE SELECT")) ? tr : text;
     } catch (e) { return text; }
 }
 
@@ -27,29 +28,29 @@ function updatePreview() {
     
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     document.getElementById('out-name').style.color = szin;
-
     renderAsync(szin);
 }
 
 async function renderAsync(szin) {
     const d = dictionary[currentLang];
-    const zip = document.getElementById('in-zip').value || "";
-    const city = await deepTranslate(document.getElementById('in-city').value || "");
-    const sName = document.getElementById('in-street-name').value || "";
-    const house = document.getElementById('in-house').value || "";
-    const phone = document.getElementById('in-phone').value || "";
-    const email = document.getElementById('in-email').value || "";
+    
+    const phone = document.getElementById('in-phone').value;
+    const email = document.getElementById('in-email').value;
+    const zip = document.getElementById('in-zip').value;
+    const city = await deepTranslate(document.getElementById('in-city').value);
+    const sName = document.getElementById('in-street-name').value;
+    const house = document.getElementById('in-house').value;
 
     const sTypeHU = document.getElementById('in-street-type').value;
     const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
     const fullStreet = sName ? sName + " " + sType : "";
+    const finalAddr = [city, fullStreet, house, zip].filter(x => x).join(", ");
 
-    // EMAIL FIX: block elemre tettem az emailt, így garantáltan alá kerül!
     document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px; line-height: 1.4;">
-            ${phone ? '<b>' + d.phone + ':</b> ' + phone : ''}
-            <div style="display:block;">${email ? '<b>' + d.email + ':</b> ' + email : ''}</div>
-            <div style="margin-top:5px;"><b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+fullStreet+' '+house+', '+zip : zip+' '+city+', '+fullStreet+' '+house}</div>
+        <div style="margin-top:10px; line-height: 1.5;">
+            ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
+            ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
+            ${finalAddr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + finalAddr + '</div>' : ''}
         </div>
     `;
 
@@ -60,17 +61,22 @@ async function renderAsync(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    ['edu', 'work'].forEach(type => {
+    // DINAMIKUS MEZŐK FIX CIKLUSA
+    for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        boxes.forEach(async box => {
-            const m = await deepTranslate(box.querySelector('.e-main').value);
+        for (let box of boxes) {
+            const mRaw = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
-            const desc = await deepTranslate(box.querySelector('.e-desc').value);
-            items += `<div style="margin-bottom:12px"><b>${m}</b> (${sub})<br><span>${desc}</span></div>`;
-        });
-        if(boxes.length > 0) html += `<h3>${d[type]}</h3>` + items;
-    });
+            const descRaw = box.querySelector('.e-desc').value;
+            
+            const m = await deepTranslate(mRaw);
+            const desc = await deepTranslate(descRaw);
+            
+            if(m || desc) items += `<div style="margin-bottom:12px"><b>${m}</b> (${sub})<br><span>${desc}</span></div>`;
+        }
+        if(items) html += `<h3>${d[type]}</h3>` + items;
+    }
 
     document.getElementById('main-content').innerHTML = html;
 }
@@ -86,7 +92,11 @@ function updateInterface() {
 function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
-    div.innerHTML = `<input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">`;
+    div.innerHTML = `
+        <input type="text" class="e-main" placeholder="Iskola/Cég" oninput="updatePreview()">
+        <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
+        <input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">
+    `;
     document.getElementById(type + '-container').appendChild(div);
 }
 

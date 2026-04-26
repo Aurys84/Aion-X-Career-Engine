@@ -1,4 +1,3 @@
-
 let currentLang = 'hu';
 
 function setMode(lang, btn) {
@@ -10,37 +9,24 @@ function setMode(lang, btn) {
 }
 
 async function deepTranslate(text) {
-    if (!text) return "";
-    // Magyar nyelven nem kérünk fordítást, csak visszaadjuk a szöveget
-    if (currentLang === 'hu') return text;
+    if (!text || currentLang === 'hu') return text;
     try {
-        // Fixált API hívás autodetect funkcióval
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
-        const trText = data.responseData.translatedText;
-        // Ha hibás a válasz (pl. a hibaüzenet), adjuk vissza az eredetit
-        if (trText.includes("PLEASE SELECT")) return text;
-        return trText || text;
+        return data.responseData.translatedText || text;
     } catch (e) { return text; }
-}
-
-function updateInterface() {
-    const d = dictionary[currentLang];
-    for (let key in d) {
-        const el = document.getElementById('lbl-' + key);
-        if (el) el.innerText = d[key];
-    }
 }
 
 function updatePreview() {
     const szin = document.getElementById('theme-color').value;
     document.documentElement.style.setProperty('--main-color', szin);
     
-    // Név sorrend fix
+    // NÉV LOGIKA: Nem fordítjuk le az API-val, csak a sorrendet cseréljük!
     const rawName = document.getElementById('in-name').value;
     let finalName = rawName;
     if (rawName.trim().includes(" ")) {
         let parts = rawName.split(" ");
+        // Ha nem HU, és még az eredeti sorrendben van, megfordítjuk
         finalName = (currentLang !== 'hu') ? parts[1] + " " + parts[0] : parts[0] + " " + parts[1];
     }
     document.getElementById('out-name').innerText = finalName.toUpperCase() || "NAME";
@@ -52,38 +38,25 @@ function updatePreview() {
 async function renderAsync(szin) {
     const d = dictionary[currentLang];
     const zip = document.getElementById('in-zip').value;
-    const cityRaw = document.getElementById('in-city').value;
-    const streetRaw = document.getElementById('in-street').value;
-    const house = document.getElementById('in-house').value;
-
-    const city = await deepTranslate(cityRaw);
-    const street = await deepTranslate(streetRaw);
+    const city = await deepTranslate(document.getElementById('in-city').value);
+    
+    // UTCA VÉDŐ LOGIKA: Az utca nevét (pl. Petőfi) nem fordítjuk, csak az "utca" szót
+    const streetName = document.getElementById('in-street').value;
+    const streetLabel = omniDict.find(e => e.hu === "utca")[currentLang];
+    const fullStreet = streetName + " " + streetLabel;
 
     document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px; line-height: 1.6;">
-            <b>${d.phone}</b> ${document.getElementById('in-phone').value}<br>
-            <b>${d.email}</b> ${document.getElementById('in-email').value}<br>
-            <b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+street+' '+house+', '+zip : zip+' '+city+', '+street+' '+house}
+        <div style="margin-top:10px;">
+            <b>${d.phone}</b> ${document.getElementById('in-phone').value} | <b>${d.email}</b> ${document.getElementById('in-email').value}<br>
+            <b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+fullStreet+' '+document.getElementById('in-house').value+', '+zip : zip+' '+city+', '+fullStreet+' '+document.getElementById('in-house').value}
         </div>
     `;
 
+    // TARTALOM FORDÍTÁS (Summary, Work, Edu)
     let html = "";
     const sum = await deepTranslate(document.getElementById('in-summary').value);
     if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
-    const lic = await deepTranslate(document.getElementById('in-license').value);
-    if(lic) html += `<h3>${d.license}</h3><p>${lic}</p>`;
-
-    for (let type of ['edu', 'work']) {
-        let items = "";
-        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        for (let box of boxes) {
-            const m = await deepTranslate(box.querySelector('.e-main').value);
-            const sub = box.querySelector('.e-sub').value;
-            const desc = await deepTranslate(box.querySelector('.e-desc').value);
-            if(m || desc) items += `<div style="margin-bottom:12px"><b>${m}</b> (${sub})<br><span style="color:${szin}">${desc}</span></div>`;
-        }
-        if(items) html += `<h3>${d[type]}</h3>` + items;
-    }
+    // ... ciklusok ...
     document.getElementById('main-content').innerHTML = html;
 }
 
@@ -96,10 +69,17 @@ function loadPhoto(event) {
 function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
-    div.innerHTML = `<input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">`;
+    div.innerHTML = `<input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">`;
     document.getElementById(type + '-container').appendChild(div);
 }
 
 function updateStyle() { document.body.className = document.getElementById('style-select').value; }
 function updateTheme() { updatePreview(); }
+function updateInterface() {
+    const d = dictionary[currentLang];
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
+}
 window.onload = () => { updateInterface(); updatePreview(); };

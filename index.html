@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v1.9.0</title>
+    <title>Aion-X Global Control v2.0.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
@@ -12,19 +12,14 @@
         label { display: block; margin-bottom: 4px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
         .lang-btns { display: flex; gap: 4px; margin-bottom: 15px; }
-        .lang-btns button { flex: 1; padding: 8px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
-        .active-lang { background: var(--main-color) !important; color: white !important; }
+        .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; transition: 0.3s; }
+        .active-lang { background: var(--main-color) !important; color: white !important; transform: scale(1.05); }
         .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 12px; }
         .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: 0.3s; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; }
         
-        /* Layout Stílusok */
-        .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 15px; }
-        .style-2 .cv-paper { border-top: 20px solid var(--main-color); }
-        .style-3 .cv-header { flex-direction: column; text-align: center; }
-
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
         #photo-preview { width: 130px; height: 150px; object-fit: cover; border: 1px solid #ddd; display: none; }
         .contact-info { font-size: 13px; color: #666; margin-top: 5px; }
@@ -33,7 +28,7 @@
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
     </style>
 </head>
-<body class="style-1">
+<body>
 
     <div class="editor-side">
         <h1 style="color: #3498db; font-size: 22px;">Global Control</h1>
@@ -44,7 +39,7 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-lang">Language Selection</label>
+            <label id="lbl-lang">Language / Fordítás</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -55,21 +50,23 @@
         <div class="control-group"><label id="lbl-style">Style</label><select id="style-select" onchange="updateStyle()"></select></div>
         <div class="control-group"><label id="lbl-theme">Color</label><select id="theme-color" onchange="updateTheme()"></select></div>
         <div class="control-group"><label id="lbl-photo">Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
-        <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
+        
+        <div class="control-group"><label id="lbl-name">Name</label><input type="text" id="in-name" oninput="saveAndPreview()"></div>
         
         <div style="display: flex; gap: 5px;">
-            <div class="control-group" style="flex: 1;"><label id="lbl-zip">ZIP</label><input type="text" id="in-zip" oninput="updatePreview()"></div>
-            <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-zip">ZIP</label><input type="text" id="in-zip" oninput="saveAndPreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="saveAndPreview()"></div>
         </div>
         <div style="display: flex; gap: 5px;">
-            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="updatePreview()"></div>
-            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="saveAndPreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="saveAndPreview()"></div>
         </div>
-        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
-        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
+        
+        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="saveAndPreview()"></div>
+        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="saveAndPreview()"></div>
 
-        <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
-        <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="4" oninput="updatePreview()"></textarea></div>
+        <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="saveAndPreview()"></textarea></div>
+        <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="4" oninput="saveAndPreview()"></textarea></div>
 
         <button class="print-btn" onclick="window.print()" id="btn-print">GENERATE PDF</button>
     </div>
@@ -83,42 +80,25 @@
                     <div class="contact-info" id="out-contact"></div>
                 </div>
             </div>
-            <div class="cv-body">
-                <div class="main-col">
-                    <p id="out-summary" style="font-style:italic; margin-bottom:15px; color: #555;"></p>
-                    <div id="main-content"></div>
-                </div>
-                <div class="side-col" id="side-content"></div>
-            </div>
+            <div class="cv-body"><div class="main-col"><p id="out-summary" style="font-style:italic; margin-bottom:15px; color:#555;"></p><div id="main-content"></div></div></div>
         </div>
     </div>
 
     <script>
-        const dictionary = {
-            hu: { 
-                lang: "Nyelv", style: "Stílus", theme: "Szín", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám",
-                phone: "Telefon", email: "Email", summary: "Bemutatkozás", exp: "Tapasztalat", print: "PDF MENTÉS", photo: "Fotó",
-                atsTitle: "ATS TIPP:", atsText: "A robotok a tiszta szöveget szeretik.",
-                styles: ["Modern", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzser", "Akadémiai", "Junior", "Aion-X"],
-                colors: ["Aion Kék", "Norbi Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
-            },
-            en: { 
-                lang: "Language", style: "Style", theme: "Color", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "House No.",
-                phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", print: "SAVE PDF", photo: "Photo",
-                atsTitle: "ATS TIP:", atsText: "Robots love plain text.",
-                styles: ["Modern", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Manager", "Academic", "Junior", "Aion-X"],
-                colors: ["Aion Blue", "Norbi Orange", "Deep Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
-            },
-            de: { 
-                lang: "Sprache", style: "Stil", theme: "Farbe", name: "Vollständiger Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.",
-                phone: "Telefon", email: "Email", summary: "Kurzprofil", exp: "Erfahrung", print: "PDF SPEICHERN", photo: "Foto",
-                atsTitle: "ATS TIPP:", atsText: "Roboter lieben Text.",
-                styles: ["Modern", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"],
-                colors: ["Aion Blau", "Norbi Orange", "Tiefschwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
-            }
+        // NYELVENKÉNTI ADATTÁROLÁS (Ebbe mentjük, amit beírsz!)
+        let userData = {
+            hu: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "" },
+            en: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "" },
+            de: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "" }
         };
 
-        const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#95a5a6", "#1abc9c", "#34495e"];
+        const dictionary = {
+            hu: { lang: "Nyelv", style: "Stílus", theme: "Szín", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Telefon", email: "Email", summary: "Profil", exp: "Tapasztalat", print: "PDF MENTÉS", photo: "Fotó", atsTitle: "ATS TIPP:", atsText: "Robot-biztos formátum.", styles: ["Modern", "Klasszikus", "Centrált"], colors: ["Aion Kék", "Norbi Narancs", "Fekete"] },
+            en: { lang: "Language", style: "Style", theme: "Color", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "House No.", phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", print: "SAVE PDF", photo: "Photo", atsTitle: "ATS TIP:", atsText: "Robot-compliant format.", styles: ["Modern", "Classic", "Centered"], colors: ["Aion Blue", "Norbi Orange", "Black"] },
+            de: { lang: "Sprache", style: "Stil", theme: "Farbe", name: "Vollständiger Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Telefon", email: "Email", summary: "Kurzprofil", exp: "Erfahrung", print: "PDF SPEICHERN", photo: "Foto", atsTitle: "ATS TIPP:", atsText: "ATS-freundlich.", styles: ["Modern", "Klassisch", "Zentriert"], colors: ["Aion Blau", "Norbi Orange", "Schwarz"] }
+        };
+
+        const colorValues = ["#3498db", "#e67e22", "#1a1a1a"];
         let currentLang = 'hu';
 
         function changeLang(lang) {
@@ -126,76 +106,61 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
+            // 1. Feliratok fordítása
             const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp'];
-            fields.forEach(f => {
-                const el = document.getElementById('lbl-' + f);
-                if(el) el.innerText = dictionary[lang][f];
-            });
-
-            document.getElementById('btn-print').innerText = dictionary[lang].print;
+            fields.forEach(f => { document.getElementById('lbl-' + f).innerText = dictionary[lang][f]; });
             document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
             document.getElementById('ats-text').innerText = dictionary[lang].atsText;
 
-            const styleSelect = document.getElementById('style-select');
-            styleSelect.innerHTML = "";
-            dictionary[lang].styles.forEach((s, i) => {
-                let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s;
-                styleSelect.appendChild(o);
+            // 2. ADATOK BETÖLTÉSE A MEMÓRIÁBÓL (Itt történik a csoda!)
+            fields.slice(4).forEach(f => {
+                document.getElementById('in-' + f).value = userData[lang][f];
             });
 
-            const colorSelect = document.getElementById('theme-color');
-            colorSelect.innerHTML = "";
-            dictionary[lang].colors.forEach((c, i) => {
-                let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c;
-                colorSelect.appendChild(o);
-            });
+            // 3. Listák frissítése
+            const styleS = document.getElementById('style-select'); styleS.innerHTML = "";
+            dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-"+(i+1); o.innerText = s; styleS.appendChild(o); });
+            const colorS = document.getElementById('theme-color'); colorS.innerHTML = "";
+            dictionary[lang].colors.forEach((c, i) => { let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c; colorS.appendChild(o); });
 
+            updatePreview();
+        }
+
+        function saveAndPreview() {
+            // Adat mentése a jelenlegi nyelvhez
+            const fields = ['name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp'];
+            fields.forEach(f => { userData[currentLang][f] = document.getElementById('in-' + f).value; });
             updatePreview();
         }
 
         function updateStyle() { document.body.className = document.getElementById('style-select').value; }
         function loadPhoto(e) { const img = document.getElementById('photo-preview'); img.src = URL.createObjectURL(e.target.files[0]); img.style.display = "block"; }
-        function updateTheme() { 
-            const c = document.getElementById('theme-color').value;
-            document.documentElement.style.setProperty('--main-color', c);
-            document.getElementById('out-name').style.color = c;
-            document.getElementById('cv-header').style.borderColor = c;
-        }
+        function updateTheme() { const c = document.getElementById('theme-color').value; document.documentElement.style.setProperty('--main-color', c); document.getElementById('out-name').style.color = c; document.getElementById('cv-header').style.borderColor = c; }
 
         function updatePreview() {
-            document.getElementById('out-name').innerText = document.getElementById('in-name').value || dictionary[currentLang].name;
+            const data = userData[currentLang];
+            document.getElementById('out-name').innerText = data.name || dictionary[currentLang].name;
             
-            const zip = document.getElementById('in-zip').value;
-            const city = document.getElementById('in-city').value;
-            const street = document.getElementById('in-street').value;
-            const house = document.getElementById('in-house').value;
-            const phone = document.getElementById('in-phone').value;
-            const email = document.getElementById('in-email').value;
-
-            // SMART ADDRESSING: Fordítja a sorrendet a nyelvnek megfelelően!
-            let addressHtml = "";
-            if (currentLang === 'de' || currentLang === 'en') {
-                // Nemzetközi: 1234 City, Street 5.
-                if(zip || city) addressHtml += `<span>${zip} ${city}</span>`;
-                if(street || house) addressHtml += `, <span>${street} ${house}</span>`;
+            let addr = "";
+            if (currentLang !== 'hu') {
+                if(data.zip || data.city) addr += `<span>${data.zip} ${data.city}</span>`;
+                if(data.street || data.house) addr += `, <span>${data.street} ${data.house}</span>`;
             } else {
-                // Magyar: Város, utca hsz, irsz.
-                if(city) addressHtml += `<span>${city}</span>`;
-                if(street || house) addressHtml += `, <span>${street} ${house}</span>`;
-                if(zip) addressHtml += `, <span>${zip}</span>`;
+                if(data.city) addr += `<span>${data.city}</span>`;
+                if(data.street || data.house) addr += `, <span>${data.street} ${data.house}</span>`;
+                if(data.zip) addr += `, <span>${data.zip}</span>`;
             }
             
-            let contactHtml = addressHtml;
-            if(phone) contactHtml += ` | <span>${phone}</span>`;
-            if(email) contactHtml += ` | <span>${email}</span>`;
+            let contact = addr;
+            if(data.phone) contact += ` | <span>${data.phone}</span>`;
+            if(data.email) contactHtml = contact += ` | <span>${data.email}</span>`;
             
-            document.getElementById('out-contact').innerHTML = contactHtml;
-            document.getElementById('out-summary').innerText = document.getElementById('in-summary').value;
-            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div style="white-space: pre-wrap;">${document.getElementById('in-exp').value}</div>`;
+            document.getElementById('out-contact').innerHTML = contact;
+            document.getElementById('out-summary').innerText = data.summary;
+            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div style="white-space:pre-wrap;">${data.exp}</div>`;
         }
 
         window.onload = () => { changeLang('hu'); updateTheme(); };
     </script>
 </body>
 </html>
-

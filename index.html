@@ -3,59 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v3.0.0</title>
+    <title>Aion-X Global Control v3.2.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
         
-        .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
-        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        /* EDITOR SIDE */
+        .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 20px; overflow-y: auto; border-right: 4px solid var(--main-color); }
+        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .logo-icon { width: 35px; height: 35px; border: 3px solid var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--main-color); font-size: 20px; }
         
-        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 11px; }
-        .ats-box p { margin: 3px 0; color: #bdc3c7; }
+        .ats-box { background: #2c3e50; border-left: 5px solid #f1c40f; padding: 15px; margin-bottom: 20px; font-size: 11px; border-radius: 0 4px 4px 0; }
+        .ats-box p { margin: 4px 0; color: #bdc3c7; }
 
-        .control-group { margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        label { display: block; margin-bottom: 4px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; }
+        .control-group { margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        label { display: block; margin-bottom: 4px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
         
-        .lang-btns { display: flex; gap: 5px; margin-bottom: 20px; }
+        .lang-btns { display: flex; gap: 5px; margin-bottom: 15px; }
         .lang-btns button { flex: 1; padding: 12px; cursor: pointer; border: none; border-radius: 5px; background: #333; color: #ccc; font-weight: bold; transition: 0.3s; }
         .active-lang { background: var(--main-color) !important; color: white !important; transform: scale(1.05); }
+        .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 14px; }
 
+        /* PREVIEW SIDE */
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: 0.3s; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: 0.4s ease; }
         
-        /* 10 DRASZTIKUS STÍLUS */
+        /* 10 DRASTIC STYLES */
         .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 15px; }
         .style-2 .cv-paper { border-top: 25px solid var(--main-color); }
         .style-3 .cv-header { flex-direction: column; text-align: center; }
-        .style-4 .cv-paper { font-family: 'Courier New', monospace; }
-        .style-5 .cv-header { background: #f4f4f4; border: 1px solid #ddd; padding: 20px; }
-        .style-6 .cv-paper { border-left: 45px solid var(--main-color); }
-        .style-7 .header-text h1 { font-size: 45px; border-bottom: 8px solid var(--main-color); }
-        .style-8 .cv-paper { line-height: 2; font-size: 12px; }
-        .style-9 #photo-preview { border-radius: 50%; border: 5px solid var(--main-color); }
-        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fafafa; }
+        .style-4 .cv-paper { font-family: 'Courier New', monospace; font-size: 12px; }
+        .style-5 .cv-header { background: #f4f4f4; border: 1px solid #ddd; padding: 25px; }
+        .style-6 .cv-paper { border-left: 50px solid var(--main-color); padding-left: 35px; }
+        .style-7 .header-text h1 { font-size: 50px; border-bottom: 8px solid var(--main-color); }
+        .style-8 .cv-paper { line-height: 2; font-size: 11px; }
+        .style-9 #photo-preview { border-radius: 50%; border: 5px solid var(--main-color); width: 150px; height: 150px; }
+        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fcfcfc; }
 
-        .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
+        .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; gap: 20px; }
         #photo-preview { width: 130px; height: 160px; object-fit: cover; display: none; }
-        .contact-info { font-size: 13px; color: #666; margin-top: 5px; }
-        .contact-row { margin-bottom: 3px; }
-        .contact-label { font-weight: bold; color: var(--main-color); }
-        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 20px; }
+        .contact-row { margin-bottom: 5px; font-size: 13px; }
+        .contact-label { font-weight: bold; color: var(--main-color); margin-right: 5px; }
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 25px; }
 
-        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
+        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; width: 100%; } }
     </style>
 </head>
 <body class="style-1">
 
     <div class="editor-side">
         <div class="logo-box"><div class="logo-icon">X</div><h1 style="color: #3498db; font-size: 20px; margin: 0;">Global Control</h1></div>
-        <div class="ats-box"><strong id="ats-title" style="color: #f1c40f;">ATS TIPS:</strong><div id="ats-tips"></div></div>
+        
+        <div class="ats-box">
+            <strong id="ats-title" style="color: #f1c40f;">ATS STRATEGY PANEL</strong>
+            <div id="ats-tips"></div>
+        </div>
 
         <div class="control-group">
-            <label id="lbl-lang">Language Selection</label>
+            <label id="lbl-lang">Language / Fordítás</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -65,55 +71,64 @@
 
         <div class="control-group"><label id="lbl-style">Layout Style</label><select id="style-select" onchange="updateStyle()"></select></div>
         <div class="control-group"><label id="lbl-theme">System Color</label><select id="theme-color" onchange="updateTheme()"></select></div>
-        <div class="control-group"><label id="lbl-photo">Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
-        <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="saveAndPreview()"></div>
+        <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
         <div style="display: flex; gap: 5px;">
-            <div class="control-group" style="flex: 1;"><label id="lbl-zip">ZIP</label><input type="text" id="in-zip" oninput="saveAndPreview()"></div>
-            <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="saveAndPreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-zip">ZIP</label><input type="text" id="in-zip" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="updatePreview()"></div>
         </div>
         <div style="display: flex; gap: 5px;">
-            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="saveAndPreview()"></div>
-            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="saveAndPreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
         
-        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="saveAndPreview()"></div>
-        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="saveAndPreview()"></div>
-        <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="saveAndPreview()"></textarea></div>
-        <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="3" oninput="saveAndPreview()"></textarea></div>
-        <div class="control-group"><label id="lbl-skills">Skills</label><input type="text" id="in-skills" oninput="saveAndPreview()"></div>
-        <div class="control-group"><label id="lbl-langs">Languages</label><input type="text" id="in-langs" oninput="saveAndPreview()"></div>
-        <div class="control-group"><label id="lbl-license">License</label><input type="text" id="in-license" oninput="saveAndPreview()"></div>
-        <div class="control-group"><label id="lbl-hobby">Hobby</label><input type="text" id="in-hobby" oninput="saveAndPreview()"></div>
+        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
+        <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="3" oninput="updatePreview()"></textarea></div>
+        <div class="control-group"><label id="lbl-skills">Skills</label><input type="text" id="in-skills" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-langs">Languages</label><input type="text" id="in-langs" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-license">License</label><input type="text" id="in-license" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-hobby">Hobby</label><input type="text" id="in-hobby" oninput="updatePreview()"></div>
 
-        <button class="print-btn" onclick="window.print()" id="btn-print" style="background:#27ae60; color:white; width:100%; padding:15px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">PDF PRINT</button>
+        <button class="print-btn" onclick="window.print()" id="btn-print">PRINT PDF</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header" id="cv-header">
                 <img id="photo-preview" src="">
-                <div class="header-text"><h1 id="out-name" style="margin:0; font-size: 28px;">Your Name</h1><div class="contact-info" id="out-contact"></div></div>
+                <div class="header-text">
+                    <h1 id="out-name" style="margin:0; font-size: 28px;">Your Name</h1>
+                    <div class="contact-info" id="out-contact"></div>
+                </div>
             </div>
             <div id="main-content"></div>
         </div>
     </div>
 
     <script>
-        // DEEP MEMORY - Nyelvenkénti adattárolás
-        let userData = {
-            hu: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "", skills: "", langs: "", license: "", hobby: "" },
-            en: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "", skills: "", langs: "", license: "", hobby: "" },
-            de: { name: "", zip: "", city: "", street: "", house: "", phone: "", email: "", summary: "", exp: "", skills: "", langs: "", license: "", hobby: "" }
+        // HYBRID TRANSLATOR DATABASE
+        const hybridDB = {
+            "Csapatban dolgozom": { en: "Team player", de: "Teamfähig" },
+            "B kategória": { en: "Category B License", de: "Führerschein Klasse B" },
+            "Fejlesztés": { en: "Development", de: "Entwicklung" },
+            "utca": { en: "street", de: "straße" },
+            "út": { en: "road", de: "straße" },
+            "tér": { en: "square", de: "platz" },
+            "Angol": { en: "English", de: "Englisch" },
+            "Német": { en: "German", de: "Deutsch" },
+            "Zene": { en: "Music", de: "Musik" }
         };
 
         const dictionary = {
-            hu: { lang: "Nyelv", style: "Stílus (10 típus)", theme: "Rendszer Szín (10)", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Tel:", email: "Email:", summary: "Bemutatkozás", exp: "Tapasztalat", skills: "Készségek", langs: "Nyelvek", license: "Jogosítvány", hobby: "Hobbi", print: "PDF MENTÉS", photo: "Fotó feltöltése", tips: ["1. Tiszta szöveg.", "2. Kulcsszavak.", "3. PDF-ben ments.", "4. Üres mezők elrejtve."], styles: ["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors: ["Kék", "Narancs", "Fekete", "Zöld", "Piros", "Lila", "Arany", "Ezüst", "Türkiz", "Szürke"] },
-            en: { lang: "Language", style: "Style (10 Types)", theme: "Color (10 Types)", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone:", email: "Email:", summary: "Summary", exp: "Experience", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobby", print: "SAVE PDF", photo: "Upload Photo", tips: ["1. Clean text.", "2. Keywords.", "3. Save as PDF.", "4. Empty fields hidden."], styles: ["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors: ["Blue", "Orange", "Black", "Green", "Red", "Purple", "Gold", "Silver", "Turquoise", "Gray"] },
-            de: { lang: "Sprache", style: "Layout (10 Stile)", theme: "Farbe (10 Stile)", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel:", email: "Email:", summary: "Profil", exp: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobby", print: "PDF SPEICHERN", photo: "Foto", tips: ["1. Klarer Text.", "2. Keywords.", "3. PDF-Format.", "4. Felder ausgeblendet."], styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors: ["Blau", "Orange", "Schwarz", "Grün", "Rot", "Lila", "Gold", "Silber", "Türkis", "Grau"] }
+            hu: { lang: "Nyelvválasztás", style: "Stílus (10 típus)", theme: "Rendszer Szín (10)", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Tel:", email: "Email:", summary: "Bemutatkozás", exp: "Tapasztalat", skills: "Készségek", langs: "Nyelvek", license: "Jogosítvány", hobby: "Hobbi", print: "PDF MENTÉS", photo: "Fotó feltöltése", tips: ["1. Tiszta szöveg.", "2. Kulcsszavak.", "3. PDF-ben ments.", "4. Üres mezők elrejtve."], labels: { p: "Tel:", e: "Email:", a: "Cím:" }, styles: ["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors: ["Kék", "Narancs", "Fekete", "Zöld", "Piros", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"] },
+            en: { lang: "Language Selection", style: "Style (10 Types)", theme: "System Color (10)", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone:", email: "Email:", summary: "Summary", exp: "Experience", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobby", print: "SAVE PDF", photo: "Upload Photo", tips: ["1. Clean text.", "2. Keywords.", "3. Save as PDF.", "4. Empty fields hidden."], labels: { p: "Phone:", e: "Email:", a: "Address:" }, styles: ["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors: ["Blue", "Orange", "Black", "Green", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"] },
+            de: { lang: "Sprachauswahl", style: "Layout (10)", theme: "Farbe (10)", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel:", email: "Email:", summary: "Profil", exp: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobby", print: "PDF SPEICHERN", photo: "Foto", tips: ["1. Klarer Text.", "2. Keywords.", "3. PDF-Format.", "4. Felder ausgeblendet."], labels: { p: "Tel:", e: "Email:", a: "Adresse:" }, styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors: ["Blau", "Orange", "Schwarz", "Grün", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"] }
         };
 
-        const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#7f8c8d"];
+        const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#34495e"];
         let currentLang = 'hu';
 
         function changeLang(lang) {
@@ -121,18 +136,11 @@
             document.querySelectorAll('.lang-btns button').forEach(b => b.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            // Fordítások
             const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp', 'skills', 'langs', 'license', 'hobby'];
             fields.forEach(f => { document.getElementById('lbl-' + f).innerText = dictionary[lang][f]; });
             document.getElementById('ats-tips').innerHTML = dictionary[lang].tips.map(t => `<p>${t}</p>`).join("");
             document.getElementById('btn-print').innerText = dictionary[lang].print;
 
-            // ADATOK BETÖLTÉSE A MEMÓRIÁBÓL
-            fields.slice(4).forEach(f => {
-                document.getElementById('in-' + f).value = userData[lang][f] || "";
-            });
-
-            // Listák frissítése
             const styleS = document.getElementById('style-select'); styleS.innerHTML = "";
             dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s; styleS.appendChild(o); });
             const colorS = document.getElementById('theme-color'); colorS.innerHTML = "";
@@ -141,25 +149,46 @@
             updatePreview();
         }
 
-        function saveAndPreview() {
-            const fields = ['name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp', 'skills', 'langs', 'license', 'hobby'];
-            fields.forEach(f => { userData[currentLang][f] = document.getElementById('in-' + f).value; });
-            updatePreview();
+        // SMART HYBRID TRANSLATOR ENGINE
+        function hybridTranslate(text) {
+            if (!text || currentLang === 'hu') return text;
+            let result = text;
+            for (let huKey in hybridDB) {
+                let regex = new RegExp(huKey, "gi");
+                if (text.match(regex)) result = result.replace(regex, hybridDB[huKey][currentLang]);
+            }
+            return result;
+        }
+
+        function flipName(name) {
+            if (!name) return "";
+            let p = name.trim().split(" ");
+            return (p.length >= 2 && currentLang !== 'hu') ? p[p.length-1] + " " + p.slice(0, -1).join(" ") : name;
         }
 
         function updatePreview() {
-            const data = userData[currentLang];
-            document.getElementById('out-name').innerText = data.name || dictionary[currentLang].name;
+            const name = document.getElementById('in-name').value;
+            const zip = document.getElementById('in-zip').value;
+            const city = hybridTranslate(document.getElementById('in-city').value);
+            const street = hybridTranslate(document.getElementById('in-street').value);
+            const house = document.getElementById('in-house').value;
+            const phone = document.getElementById('in-phone').value;
+            const email = document.getElementById('in-email').value;
+
+            document.getElementById('out-name').innerText = flipName(name) || dictionary[currentLang].name;
             
-            let addr = (currentLang !== 'hu') ? `${data.zip} ${data.city}, ${data.street} ${data.house}` : `${data.city}, ${data.street} ${data.house}, ${data.zip}`;
+            let addr = (currentLang !== 'hu') ? `${zip} ${city}, ${street} ${house}` : `${city}, ${street} ${house}, ${zip}`;
+            const labels = dictionary[currentLang].labels;
+            
             document.getElementById('out-contact').innerHTML = `
-                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].phone}</span> ${data.phone}</div>
-                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].email}</span> ${data.email}</div>
-                <div class="contact-row"><span class="contact-label">${dictionary[currentLang].city}:</span> ${addr}</div>`;
+                <div class="contact-row"><span class="contact-label">${labels.p}</span> ${phone}</div>
+                <div class="contact-row"><span class="contact-label">${labels.e}</span> ${email}</div>
+                <div class="contact-row"><span class="contact-label">${labels.a}</span> ${addr}</div>`;
 
             let html = "";
             ['summary', 'exp', 'skills', 'langs', 'license', 'hobby'].forEach(s => {
-                if(data[s]) html += s==='summary' ? `<p style="font-style:italic; margin-bottom:20px;">${data[s]}</p>` : `<h3>${dictionary[currentLang][s]}</h3><p>${data[s]}</p>`;
+                const val = hybridTranslate(document.getElementById('in-' + s).value);
+                if(val) html += s==='summary' ? `<p style="font-style:italic; margin-bottom:20px; color:#555;">${val}</p>` : `<h3>${dictionary[currentLang][s]}</h3><div style="white-space:pre-wrap; font-size:13px;">${val}</div>`;
             });
             document.getElementById('main-content').innerHTML = html;
         }

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Master Engine v5.4.0</title>
+    <title>Aion-X Master Engine v5.6.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; overflow: hidden; }
         
-        /* EDITOR PANEL */
+        /* EDITOR PANEL - MASSZÍV PANEL */
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
         .logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
         .logo-icon { width: 40px; height: 40px; border: 3px solid var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--main-color); font-size: 22px; }
@@ -28,7 +28,7 @@
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
         .cv-paper { width: 210mm; min-height: 297mm; height: auto; background: white; padding: 45px; box-shadow: 0 0 30px rgba(0,0,0,0.6); box-sizing: border-box; color: #333; transition: 0.4s ease; margin-bottom: 50px; }
         
-        /* 10 DRASZTIKUS STÍLUS - MOST MÁR TÉNYLEG BENNE VAN! */
+        /* 10 DRASZTIKUS STÍLUS DEFINÍCIÓJA */
         .style-1 .cv-body { display: flex; gap: 30px; }
         .style-2 .cv-paper { border-top: 35px solid var(--main-color); border-bottom: 10px solid #eee; }
         .style-3 .cv-header { flex-direction: column; text-align: center; }
@@ -59,7 +59,7 @@
 <body class="style-1">
 
     <div class="editor-side">
-        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color:#3498db; font-size:24px; margin:0;">Master Engine</h1></div>
+        <div class="logo-box"><div class="logo-icon">X</div><h1 style="color:#3498db; font-size:24px; margin:0;">Career Engine</h1></div>
         
         <div class="lang-grid">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
@@ -67,8 +67,8 @@
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div class="control-group"><label id="lbl-style">Stílus Választó (1-10)</label><select id="style-select" onchange="updateStyle()"></select></div>
-        <div class="control-group"><label id="lbl-theme">Rendszer Szín (1-10)</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-style">Stílus Választó</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">Rendszer Szín</label><select id="theme-color" onchange="updateTheme()"></select></div>
         <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
         <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
@@ -81,8 +81,8 @@
             <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
         
-        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
-        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-phone">Phone Number</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-email">Email Address</label><input type="text" id="in-email" oninput="updatePreview()"></div>
 
         <h4 id="lbl-edu-h" style="color:var(--main-color); margin-top:20px;">EDUCATION</h4>
         <div id="edu-container"></div>
@@ -114,26 +114,34 @@
     </div>
 
     <script>
+        // OMNI-DIRECTIONAL DEEP DICTIONARY
         const omniDict = [
-            { hu: "Vagyonőr", en: "Security Guard", de: "Sicherheitskraft" },
-            { hu: "Takarító", en: "Cleaner", de: "Reinigungskraft" },
-            { hu: "Üzletvezető helyettes", en: "Assistant Store Manager", de: "Filialleiter-Assistent" },
-            { hu: "Általános iskola", en: "Primary School", de: "Grundschule" },
-            { hu: "Érettségi", en: "High School Diploma", de: "Abitur" },
+            { hu: "vagyonőr", en: "Security Guard", de: "Sicherheitskraft" },
+            { hu: "takarító", en: "Cleaner", de: "Reinigungskraft" },
+            { hu: "ügyletvezető", en: "Business Manager", de: "Geschäftsführer" },
+            { hu: "precíz", en: "precise", de: "präzise" },
+            { hu: "pontos", en: "accurate", de: "genau" },
             { hu: "középfok", en: "intermediate", de: "Mittelstufe" },
             { hu: "utca", en: "street", de: "straße" },
+            { hu: "jogosítvány", en: "driving license", de: "Führerschein" },
             { hu: "B kategória", en: "Category B", de: "Klasse B" },
-            { hu: "zenehallgatás", en: "listening to music", de: "Musik hören" }
+            { hu: "személyautó", en: "passenger car", de: "PKW" },
+            { hu: "zenehallgatás", en: "listening to music", de: "Musik hören" },
+            { hu: "sport", en: "sports", de: "Sport" },
+            { hu: "olvasás", en: "reading", de: "lesen" },
+            { hu: "általános iskola", en: "Primary School", de: "Grundschule" },
+            { hu: "érettségi", en: "High School Diploma", de: "Abitur" },
+            { hu: "szakmunkásképző", en: "Vocational School", de: "Berufsschule" }
         ];
 
         const dictionary = {
-            hu: { name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", phone:"Tel:", email:"Email:", summary:"Profil", work:"Munkahelyek", edu:"Iskolák", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", addr:"Cím:", styles:["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors:["Aion Kék", "Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"] },
-            en: { name:"Name", zip:"ZIP", city:"City", street:"Street", house:"No.", phone:"Phone:", email:"Email:", summary:"Summary", work:"Experience", edu:"Education", skills:"Skills", license:"License", hobby:"Hobbies", addr:"Address:", styles:["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors:["Aion Blue", "Orange", "Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"] },
-            de: { name:"Name", zip:"PLZ", city:"Stadt", street:"Straße", house:"Hausnr.", phone:"Tel:", email:"Email:", summary:"Profil", work:"Erfahrung", edu:"Ausbildung", skills:"Kenntnisse", license:"Führerschein", hobby:"Hobby", addr:"Adresse:", styles:["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors:["Aion Blau", "Orange", "Schwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"] }
+            hu: { name:"Név", zip:"Irsz.", city:"Város", street:"Utca", house:"Házszám", phone:"Tel:", email:"Email:", summary:"Profil", work:"Munkahelyek", edu:"Iskolák", skills:"Készségek", license:"Jogosítvány", hobby:"Hobbi", addW:"+ Munkahely", addE:"+ Iskola", print:"PDF MENTÉS", addr:"Cím:", styles:["Modern Oszlopos", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzseri", "Akadémiai", "Junior", "Aion-X Speciál"], colors:["Aion Kék", "Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"] },
+            en: { name:"Name", zip:"ZIP", city:"City", street:"Street", house:"No.", phone:"Phone:", email:"Email:", summary:"Summary", work:"Experience", edu:"Education", skills:"Skills", license:"License", hobby:"Hobbies", addW:"+ Add Job", addE:"+ Add Edu", print:"SAVE PDF", addr:"Address:", styles:["Modern Column", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Managerial", "Academic", "Junior", "Aion-X Special"], colors:["Aion Blue", "Orange", "Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"] },
+            de: { name:"Name", zip:"PLZ", city:"Stadt", street:"Straße", house:"Hausnr.", phone:"Tel:", email:"Email:", summary:"Profil", work:"Erfahrung", edu:"Ausbildung", skills:"Kenntnisse", license:"Führerschein", hobby:"Hobby", addW:"+ Job", addE:"+ Schule", print:"PDF SPEICHERN", addr:"Adresse:", styles:["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"], colors:["Aion Blau", "Orange", "Schwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"] }
         };
 
         const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#34495e"];
-        let currentLang = 'hu', jobCount = 0;
+        let currentLang = 'hu';
 
         function setMode(lang, btn) {
             currentLang = lang;
@@ -157,7 +165,7 @@
         function addEntry(type) {
             const container = document.getElementById(type + '-container');
             const div = document.createElement('div'); div.className = 'entry-box';
-            div.innerHTML = `<input type="text" placeholder="Iskola/Cég" class="e-main" oninput="updatePreview()"><input type="text" placeholder="Év" class="e-sub" style="margin:5px 0" oninput="updatePreview()"><input type="text" placeholder="Szak/Pozíció" class="e-desc" oninput="updatePreview()">`;
+            div.innerHTML = `<input type="text" placeholder="Iskola/Cég" class="e-main" oninput="updatePreview()"><input type="text" placeholder="Év" class="e-sub" style="margin:5px 0" oninput="updatePreview()"><input type="text" placeholder="Szak/Beosztás" class="e-desc" oninput="updatePreview()">`;
             container.appendChild(div);
         }
 
@@ -167,6 +175,7 @@
             document.getElementById('lbl-edu-h').innerText = dictionary[currentLang].edu;
             document.getElementById('btn-add-job').innerText = dictionary[currentLang].addW;
             document.getElementById('btn-add-edu').innerText = dictionary[currentLang].addE;
+            document.getElementById('btn-print').innerText = dictionary[currentLang].print;
 
             const n = document.getElementById('in-name').value;
             document.getElementById('out-name').innerText = (currentLang !== 'hu' && n.includes(" ")) ? n.split(" ").reverse().join(" ") : n || "NAME";

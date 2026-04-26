@@ -4,7 +4,7 @@ function setMode(lang, btn) {
     currentLang = lang;
     document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    updateInterface(); // Ez most már frissíti a select opcióit is!
+    updateInterface();
     updatePreview(); 
 }
 
@@ -14,7 +14,9 @@ async function safeTranslate(text) {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
         const tr = data.responseData.translatedText;
-        return (tr && !tr.includes("PLEASE SELECT")) ? tr : text;
+        // HA HIBAÜZENET JÖN VAGY LIMIT TÚLLÉPÉS, MARAD AZ EREDETI!
+        if (!tr || tr.includes("MYMEMORY WARNING") || tr.includes("PLEASE SELECT")) return text;
+        return tr;
     } catch (e) { return text; }
 }
 
@@ -40,10 +42,8 @@ async function renderAsyncContent(szin) {
     const phone = document.getElementById('in-phone').value || "";
     const email = document.getElementById('in-email').value || "";
 
-    // TÍPUS LEKÉRÉSE A SZÓTÁRBÓL
-    const sTypeHU = document.getElementById('in-street-type').value;
-    const sTypeObj = omniDict.find(e => e.hu === sTypeHU);
-    const sType = sTypeObj ? sTypeObj[currentLang] : sTypeHU;
+    const sTypeSelect = document.getElementById('in-street-type');
+    const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : 1] || "";
     
     const fullStreet = sName ? sName + " " + sType : "";
     const addr = [zip, city, fullStreet, house].filter(x => x && x.trim() !== "").join(", ");
@@ -63,14 +63,13 @@ async function renderAsyncContent(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    // DINAMIKUS MEZŐK FIX
     for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
         for (let box of boxes) {
-            const m = box.querySelector('.e-main').value;
+            const m = await safeTranslate(box.querySelector('.e-main').value);
             const sub = box.querySelector('.e-sub').value;
-            const desc = box.querySelector('.e-desc').value;
+            const desc = await safeTranslate(box.querySelector('.e-desc').value);
             if(m || sub || desc) {
                 items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
             }
@@ -86,18 +85,6 @@ function updateInterface() {
         const el = document.getElementById('lbl-' + key);
         if (el) el.innerText = d[key];
     }
-    
-    // TÍPUSVÁLASZTÓ DINAMIKUS FELTÖLTÉSE
-    const typeSelect = document.getElementById('in-street-type');
-    const currentVal = typeSelect.value || "utca";
-    typeSelect.innerHTML = "";
-    omniDict.forEach(item => {
-        const opt = document.createElement('option');
-        opt.value = item.hu;
-        opt.innerText = item[currentLang];
-        if (item.hu === currentVal) opt.selected = true;
-        typeSelect.appendChild(opt);
-    });
 }
 
 function addEntry(type) {

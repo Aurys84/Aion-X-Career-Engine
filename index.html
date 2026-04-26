@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v18.2</title>
+    <title>Aion-X Dashboard v20.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -37,35 +37,55 @@
                     <option value="style-9">9. Junior Bold</option>
                 </select>
             </div>
-          <div style="display: flex; gap: 5px;">
-    <div style="flex:1">
-        <label class="smart-label" id="lbl-fName">KERESZTNÉV</label>
-        <input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()">
-    </div>
-    <div style="flex:1">
-        <label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label>
-        <input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()">
-    </div>
-</div>
+            <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
+                <select id="theme-color" onchange="updateTheme()">
+                    <option value="#007bb5">Aion Kék</option><option value="#e67e22">Norbi Narancs</option>
+                    <option value="#27ae60">Smaragd</option><option value="#c0392b">Vörös</option>
+                    <option value="#8e44ad">Lila</option><option value="#1a1a1a">Fekete</option>
+                    <option value="#f1c40f">Arany</option><option value="#16a085">Türkiz</option>
+                    <option value="#d35400">Tégla</option><option value="#2c3e50">Pala</option>
+                </select>
+            </div>
+        </div>
 
-<div style="display: flex; gap: 5px; margin-top:5px;">
-    <div style="flex:1">
-        <label class="smart-label" id="lbl-streetName">UTCA NEVE</label>
-        <input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()">
-    </div>
-    <div style="flex:1">
-        <label class="smart-label" id="lbl-type" style="display:inline-block; margin-right:20px;">≡ TÍPUS</label>
-        <select id="in-street-type" onchange="updatePreview()" style="margin-top:5px;">
-            <option value="utca">utca / street / straße</option>
-            <option value="út">út / road / straße</option>
-            <option value="tér">tér / square / platz</option>
-        </select>
-    </div>
-    <div style="width:20%">
-        <label class="smart-label" id="lbl-house">NO.</label>
-        <input type="text" id="in-house" placeholder="68" oninput="updatePreview()">
-    </div>
-</div>
+        <label class="smart-label" id="lbl-photo">FOTÓ</label>
+        <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
+
+        <div style="display: flex; gap: 5px;">
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-fName">KERESZTNÉV</label>
+                <input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()">
+            </div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label>
+                <input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+        </div>
+
+        <div style="display: flex; gap: 5px; margin-top:5px;">
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-streetName">UTCA NEVE</label>
+                <input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()">
+            </div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-type" style="display:inline-block; margin-right:20px;">≡ TÍPUS</label>
+                <select id="in-street-type" onchange="updatePreview()">
+                    <option value="utca">utca / street / straße</option>
+                    <option value="út">út / road / straße</option>
+                    <option value="tér">tér / square / platz</option>
+                </select>
+            </div>
+            <div style="width:20%">
+                <label class="smart-label" id="lbl-house">NO.</label>
+                <input type="text" id="in-house" placeholder="68" oninput="updatePreview()">
+            </div>
+        </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">

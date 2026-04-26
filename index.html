@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v23.0</title>
+    <title>Aion-X Dashboard v24.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -30,13 +30,20 @@
             <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
                 <select id="style-select" onchange="updateStyle()">
                     <option value="style-10">10. Aion-X Speciál</option>
-                    <option value="style-1">1. Modern</option><option value="style-6">6. Kreatív</option>
+                    <option value="style-1">1. Modern</option><option value="style-2">2. Klasszikus</option>
+                    <option value="style-3">3. Centrált</option><option value="style-4">4. Minimalista</option>
+                    <option value="style-5">5. Tech</option><option value="style-6">6. Kreatív</option>
+                    <option value="style-7">7. Vezetői</option><option value="style-8">8. Akadémiai</option>
+                    <option value="style-9">9. Junior Bold</option>
                 </select>
             </div>
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
                 <select id="theme-color" onchange="updateTheme()">
                     <option value="#007bb5">Aion Kék</option><option value="#e67e22">Narancs</option>
-                    <option value="#27ae60">Smaragd</option><option value="#1a1a1a">Fekete</option>
+                    <option value="#27ae60">Smaragd</option><option value="#c0392b">Vörös</option>
+                    <option value="#8e44ad">Lila</option><option value="#1a1a1a">Fekete</option>
+                    <option value="#f1c40f">Arany</option><option value="#16a085">Türkiz</option>
+                    <option value="#d35400">Tégla</option><option value="#2c3e50">Pala</option>
                 </select>
             </div>
         </div>
@@ -45,25 +52,25 @@
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
         <div style="display: flex; gap: 5px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
         </div>
 
         <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
         <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
-            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+            <input type="text" id="in-zip" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" oninput="updatePreview()" style="width:70%">
         </div>
 
         <div style="display: flex; gap: 5px; margin-top:5px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA NEVE</label><input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA NEVE</label><input type="text" id="in-street-name" oninput="updatePreview()"></div>
             <div style="flex:1">
                 <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street</option><option value="út">út / road</option><option value="tér">tér / square</option>
                 </select>
             </div>
-            <div style="width:20%"><label class="smart-label" id="lbl-house">NO.</label><input type="text" id="in-house" placeholder="68" oninput="updatePreview()"></div>
+            <div style="width:20%"><label class="smart-label" id="lbl-house">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
@@ -76,7 +83,7 @@
 
         <label class="smart-label" id="lbl-work">TAPASZTALAT</label>
         <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
+        <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKAHELY</button>
 
         <button onclick="window.print()" style="background:var(--main-color); color:white; padding:15px; width:100%; border:none; margin-top:20px; font-weight:bold; cursor:pointer; border-radius:6px;">PDF GENERÁLÁSA</button>
     </div>
@@ -84,7 +91,7 @@
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header" style="display:flex; gap:20px;">
-                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
             </div>
             <div id="main-content"></div>

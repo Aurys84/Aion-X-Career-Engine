@@ -5,26 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aion-X Career Engine v1.1.0</title>
     <style>
-        /* Itt a dizájn, hogy ne kelljen külső fájl */
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid #3498db; }
         .preview-side { width: 65%; display: flex; justify-content: center; align-items: flex-start; padding: 30px; overflow-y: auto; background: #dfe4ea; }
         .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         .control-group { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 11px; }
-        input, textarea, select { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 5px; }
-        .lang-btns { display: flex; gap: 5px; }
+        input, textarea, select { width: 100%; padding: 12px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 5px; font-family: inherit; }
+        .lang-btns { display: flex; gap: 5px; margin-bottom: 15px; }
         .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #333; color: #ccc; }
         .active-lang { background: #3498db !important; color: white; }
+        h3 { margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: #333; }
+        p { color: #555; line-height: 1.5; margin: 5px 0; }
     </style>
 </head>
 <body>
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 24px;">Aion-X Global Control</h1>
+        <h1 style="color: #3498db; font-size: 24px;">Global Control</h1>
         
         <div class="control-group">
-            <label id="lbl-lang">Language</label>
+            <label id="lbl-lang">Language / Nyelv</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -33,18 +34,16 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-theme">Mátrix Design (Color)</label>
+            <label id="lbl-theme">Matrix Design</label>
             <select id="theme-color" onchange="updateTheme()">
                 <option value="#3498db">Aion Kék</option>
-                <option value="#1a3a5a">Éjfélkék</option>
-                <option value="#2ecc71">Smaragd</option>
                 <option value="#e67e22">Norbi Narancs</option>
+                <option value="#2ecc71">Smaragd</option>
                 <option value="#e74c3c">Vörös</option>
                 <option value="#8e44ad">Lila</option>
-                <option value="#4a4a4a">Antracit</option>
-                <option value="#2c3e50">Pala</option>
-                <option value="#d35400">Téglavörös</option>
                 <option value="#1abc9c">Türkiz</option>
+                <option value="#2c3e50">Antracit</option>
+                <option value="#f1c40f">Arany</option>
             </select>
         </div>
 
@@ -52,21 +51,45 @@
             <label id="lbl-name">Name</label>
             <input type="text" id="in-name" oninput="updatePreview()">
         </div>
+
+        <div class="control-group">
+            <label id="lbl-summary">Summary</label>
+            <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
+        </div>
+
+        <div class="control-group">
+            <label id="lbl-exp">Work Experience</label>
+            <textarea id="in-exp" rows="5" oninput="updatePreview()"></textarea>
+        </div>
+
+        <div class="control-group">
+            <label id="lbl-edu">Education</label>
+            <textarea id="in-edu" rows="4" oninput="updatePreview()"></textarea>
+        </div>
+
+        <div class="control-group">
+            <label id="lbl-skills">Skills</label>
+            <input type="text" id="in-skills" oninput="updatePreview()">
+        </div>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper">
-            <h1 id="out-name">Name</h1>
+            <h1 id="out-name" style="margin: 0; font-size: 32px;">Name</h1>
             <hr id="line" style="border: 2px solid #3498db; margin: 15px 0;">
+            
+            <p id="out-summary" style="font-style: italic; margin-bottom: 20px;"></p>
+            
+            <div id="preview-content">
+                </div>
         </div>
     </div>
 
     <script>
-        // Minden egyben, hogy ne legyen hiba!
         const dictionary = {
-            hu: { name: "Teljes Név", theme: "Mátrix Design (Szín)", lang: "Nyelv" },
-            en: { name: "Full Name", theme: "Matrix Design (Color)", lang: "Language" },
-            de: { name: "Vollständiger Name", theme: "Matrix Design (Farbe)", lang: "Sprache" }
+            hu: { lang: "Nyelv", theme: "Mátrix Design", name: "Teljes Név", summary: "Szakmai Profil", exp: "Munkatapasztalat", edu: "Tanulmányok", skills: "Készségek", ph: "Kezdj el gépelni..." },
+            en: { lang: "Language", theme: "Matrix Design", name: "Full Name", summary: "Professional Summary", exp: "Work Experience", edu: "Education", skills: "Skills", ph: "Start typing..." },
+            de: { lang: "Sprache", theme: "Matrix Design", name: "Vollständiger Name", summary: "Kurzprofil", exp: "Berufserfahrung", edu: "Schulbildung", skills: "Kenntnisse", ph: "Schreiben Sie..." }
         };
 
         let currentLang = 'hu';
@@ -76,9 +99,15 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            document.getElementById('lbl-name').innerText = dictionary[lang].name;
-            document.getElementById('lbl-theme').innerText = dictionary[lang].theme;
+            // Fordítások az előlapon
             document.getElementById('lbl-lang').innerText = dictionary[lang].lang;
+            document.getElementById('lbl-theme').innerText = dictionary[lang].theme;
+            document.getElementById('lbl-name').innerText = dictionary[lang].name;
+            document.getElementById('lbl-summary').innerText = dictionary[lang].summary;
+            document.getElementById('lbl-exp').innerText = dictionary[lang].exp;
+            document.getElementById('lbl-edu').innerText = dictionary[lang].edu;
+            document.getElementById('lbl-skills').innerText = dictionary[lang].skills;
+
             updatePreview();
         }
 
@@ -89,13 +118,25 @@
         }
 
         function updatePreview() {
-            const name = document.getElementById('in-name').value;
-            document.getElementById('out-name').innerText = name || dictionary[currentLang].name;
+            const name = document.getElementById('in-name').value || dictionary[currentLang].name;
+            const summary = document.getElementById('in-summary').value;
+            const exp = document.getElementById('in-exp').value;
+            const edu = document.getElementById('in-edu').value;
+            const skills = document.getElementById('in-skills').value;
+
+            document.getElementById('out-name').innerText = name;
+            document.getElementById('out-summary').innerText = summary;
+
+            let contentHtml = "";
+            if(exp) contentHtml += `<h3>${dictionary[currentLang].exp}</h3><p style="white-space: pre-wrap;">${exp}</p>`;
+            if(edu) contentHtml += `<h3>${dictionary[currentLang].edu}</h3><p style="white-space: pre-wrap;">${edu}</p>`;
+            if(skills) contentHtml += `<h3>${dictionary[currentLang].skills}</h3><p>${skills}</p>`;
+            
+            document.getElementById('preview-content').innerHTML = contentHtml;
         }
 
         window.onload = () => { changeLang('hu'); };
     </script>
 </body>
 </html>
-
     

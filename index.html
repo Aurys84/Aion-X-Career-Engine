@@ -3,63 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v1.7.0</title>
+    <title>Aion-X Global Control v1.8.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
-        
-        /* Editor Panel */
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
         .control-group { margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         label { display: block; margin-bottom: 4px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
-        
         .lang-btns { display: flex; gap: 4px; margin-bottom: 15px; }
         .lang-btns button { flex: 1; padding: 8px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
         .active-lang { background: var(--main-color) !important; color: white !important; }
-        
         .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 12px; border-radius: 0 4px 4px 0; }
         .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        /* Preview Side */
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: all 0.4s ease; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: all 0.4s; }
         
         /* 10 DRASZTIKUS STÍLUS */
-        .style-1 .cv-body { display: flex; gap: 30px; } /* Modern Oszlopos */
-        .style-2 .cv-paper { padding: 60px; border-top: 15px solid var(--main-color); } /* Klasszikus */
-        .style-3 .cv-header { flex-direction: column; text-align: center; border-bottom: 1px solid #eee; } /* Centrált */
-        .style-4 .cv-paper { font-family: 'Courier New', Courier, monospace; } /* Minimalista */
-        .style-5 .cv-header { background: #f4f4f4; padding: 20px; border: 1px solid #ddd; } /* Technikai */
-        .style-6 .cv-paper { border-left: 50px solid var(--main-color); padding-left: 30px; } /* Kreatív */
-        .style-7 .header-text h1 { font-size: 48px; border-bottom: 5px solid var(--main-color); } /* Menedzseri */
-        .style-8 .cv-paper { line-height: 2; font-size: 11px; } /* Akadémiai */
-        .style-9 .cv-header { display: block; border: none; } #photo-preview { border-radius: 50%; } /* Junior */
-        .style-10 .cv-paper { background: #fafafa; border: 10px double var(--main-color); } /* Aion-X Special */
+        .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 15px; }
+        .style-2 .cv-paper { padding: 60px; border-top: 20px solid var(--main-color); }
+        .style-3 .cv-header { flex-direction: column; text-align: center; }
+        .style-4 .cv-paper { font-family: 'Courier New', monospace; font-size: 12px; }
+        .style-5 .cv-header { background: #f4f4f4; border: 1px solid #ddd; padding: 20px; }
+        .style-6 .cv-paper { border-left: 40px solid var(--main-color); }
+        .style-7 .header-text h1 { font-size: 50px; line-height: 1; border-bottom: 8px solid var(--main-color); }
+        .style-8 .cv-paper { line-height: 1.8; color: #444; }
+        .style-9 #photo-preview { border-radius: 50%; border: 5px solid var(--main-color); }
+        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fcfcfc; }
 
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
-        #photo-preview { width: 120px; height: 140px; object-fit: cover; border: 1px solid #ddd; display: none; }
-        .contact-info { font-size: 12px; color: #666; margin-top: 5px; }
-        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 20px; }
-        .content-block { white-space: pre-wrap; font-size: 13px; line-height: 1.6; margin-top: 5px; }
-
-        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; margin: 0; } }
+        #photo-preview { width: 130px; height: 150px; object-fit: cover; border: 1px solid #ddd; display: none; }
+        .contact-info { font-size: 13px; color: #666; margin-top: 5px; }
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 25px; }
+        
+        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
     </style>
 </head>
 <body class="style-1">
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 20px; margin-bottom: 5px;">Global Control</h1>
+        <h1 style="color: #3498db; font-size: 22px; margin-bottom: 5px;">Global Control</h1>
         
         <div class="ats-box">
             <strong id="ats-title" style="color: #f1c40f;">ATS TIPP:</strong>
-            <p id="ats-text" style="margin: 5px 0 0; line-height: 1.3;"></p>
-            <p id="ats-text-2" style="margin: 5px 0 0; line-height: 1.3; color: #bdc3c7;"></p>
-            <p id="ats-text-3" style="margin: 5px 0 0; line-height: 1.3; color: #bdc3c7;"></p>
+            <p id="ats-text"></p>
+            <p id="ats-text-2" style="font-size: 11px; color: #bdc3c7; margin-top:5px;"></p>
         </div>
 
         <div class="control-group">
-            <label id="lbl-lang">Language</label>
+            <label id="lbl-lang">Language Selection</label>
             <div class="lang-btns">
                 <button id="btn-hu" onclick="changeLang('hu')">HU</button>
                 <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -67,35 +60,17 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <label id="lbl-style">Layout Style (10 Types)</label>
-            <select id="style-select" onchange="updateStyle()"></select>
-        </div>
-
-        <div class="control-group">
-            <label id="lbl-theme">System Color</label>
-            <select id="theme-color" onchange="updateTheme()"></select>
-        </div>
-
-        <div class="control-group">
-            <label id="lbl-photo">Photo</label>
-            <input type="file" accept="image/*" onchange="loadPhoto(event)">
-        </div>
-
-        <div class="control-group"><label id="lbl-name">Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-style">CV Style</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">System Color</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
+        
         <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-address">Address</label><input type="text" id="in-address" oninput="updatePreview()"></div>
 
-        <div class="control-group">
-            <label id="lbl-summary">Summary</label>
-            <textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
-        </div>
-
-        <div class="control-group">
-            <label id="lbl-exp">Work Experience</label>
-            <textarea id="in-exp" rows="4" oninput="updatePreview()"></textarea>
-        </div>
+        <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
+        <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="4" oninput="updatePreview()"></textarea></div>
 
         <button class="print-btn" onclick="window.print()" id="btn-print">GENERATE PDF</button>
     </div>
@@ -105,7 +80,7 @@
             <div class="cv-header" id="cv-header">
                 <img id="photo-preview" src="">
                 <div class="header-text">
-                    <h1 id="out-name" style="margin:0; font-size: 28px;">Name</h1>
+                    <h1 id="out-name" style="margin:0;">Name</h1>
                     <div class="contact-info" id="out-contact"></div>
                 </div>
             </div>
@@ -124,33 +99,27 @@
             hu: { 
                 lang: "Nyelvválasztás", style: "CV Stílus (10 típus)", theme: "Rendszer Szín", name: "Teljes Név", phone: "Telefonszám", 
                 email: "E-mail cím", address: "Lakcím", summary: "Bemutatkozás", exp: "Tapasztalat", 
-                print: "MENTÉS PDF-KÉNT", photo: "Fotó",
-                atsTitle: "ATS TIPP:", 
-                atsText: "1. A robotok a tiszta szöveget szeretik. Ne használj grafikát a leírásban!",
-                atsText2: "2. Használj standard betűtípust, a 'dizájnos' betűk megzavarják a szűrőt.",
-                atsText3: "3. Mindig PDF-ben mentsd el, de ne 'képként', hanem szövegesen!",
-                styles: ["Modern Oszlopos", "Klasszikus", "Centrált Fejléc", "Minimalista (Írógép)", "Technikai Keretes", "Kreatív Sávos", "Menedzseri XL", "Akadémiai", "Junior Körfotós", "Aion-X Speciál"],
+                print: "MENTÉS PDF-KÉNT", photo: "Profi Fotó",
+                atsTitle: "ATS TIPP:", atsText: "A robotok a tiszta szöveget szeretik. Kerüld a táblázatokat!",
+                atsText2: "Tipp: Használj konkrét számokat az eredményeidnél (pl. 20%-os növekedés).",
+                styles: ["Modern Oszlopos", "Klasszikus", "Centrált Fejléc", "Minimalista", "Technikai", "Kreatív Sávos", "Menedzseri XL", "Akadémiai", "Junior Körfotós", "Aion-X Speciál"],
                 colors: ["Aion Kék", "Norbi Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
             },
             en: { 
-                lang: "Language Selection", style: "CV Style (10 Types)", theme: "System Color", name: "Full Name", phone: "Phone", 
-                email: "Email", address: "Address", summary: "Summary", exp: "Experience", 
-                print: "GENERATE PDF", photo: "Photo",
-                atsTitle: "ATS TIP:", 
-                atsText: "1. Robots prefer clean text. Avoid graphics in the experience section!",
-                atsText2: "2. Use standard fonts; fancy typography can confuse the scanner.",
-                atsText3: "3. Always save as PDF, but ensure it's text-searchable, not an image!",
-                styles: ["Modern Column", "Classic", "Centered Header", "Minimalist (Typewriter)", "Technical Framed", "Creative Bar", "Managerial XL", "Academic", "Junior Circular", "Aion-X Special"],
+                lang: "Language Selection", style: "CV Style (10 Types)", theme: "System Color", name: "Full Name", phone: "Phone Number", 
+                email: "Email Address", address: "Home Address", summary: "Professional Summary", exp: "Experience", 
+                print: "GENERATE PDF", photo: "Professional Photo",
+                atsTitle: "ATS TIP:", atsText: "Robots love plain text. Avoid using tables or complex graphics!",
+                atsText2: "Tip: Use quantifiable metrics (e.g., 'increased sales by 20%').",
+                styles: ["Modern Column", "Classic", "Centered Header", "Minimalist", "Technical", "Creative Bar", "Managerial XL", "Academic", "Junior Circular", "Aion-X Special"],
                 colors: ["Aion Blue", "Norbi Orange", "Deep Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
             },
             de: { 
-                lang: "Sprachauswahl", style: "CV-Stil (10 Typen)", theme: "System-Farbe", name: "Vollständiger Name", phone: "Telefon", 
-                email: "E-Mail", address: "Adresse", summary: "Kurzprofil", exp: "Erfahrung", 
-                print: "PDF GENERIEREN", photo: "Foto",
-                atsTitle: "ATS TIPP:", 
-                atsText: "1. Roboter lieben Text. Vermeiden Sie Grafiken in der Beschreibung!",
-                atsText2: "2. Nutzen Sie Standard-Schriftarten, um den Scanner nicht zu verwirren.",
-                atsText3: "3. Immer als PDF speichern, aber als Textdatei, nicht als Bild!",
+                lang: "Sprachauswahl", style: "CV-Stil (10 Typen)", theme: "Systemfarbe", name: "Vollständiger Name", phone: "Telefonnummer", 
+                email: "E-Mail-Adresse", address: "Adresse", summary: "Kurzprofil", exp: "Berufserfahrung", 
+                print: "PDF GENERIEREN", photo: "Profi-Foto",
+                atsTitle: "ATS TIPP:", atsText: "Roboter lieben einfachen Text. Vermeiden Sie Tabellen!",
+                atsText2: "Tipp: Verwenden Sie messbare Erfolge (z. B. 'Umsatz um 20 % gesteigert').",
                 styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management XL", "Akademisch", "Junior", "Aion-X Spezial"],
                 colors: ["Aion Blau", "Norbi Orange", "Tiefschwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
             }
@@ -164,41 +133,43 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            const fields = ['lang', 'style', 'theme', 'name', 'phone', 'email', 'address', 'summary', 'exp', 'photo'];
-            fields.forEach(f => document.getElementById('lbl-' + f).innerText = dictionary[lang][f]);
+            // ELŐLAPI CÍMKÉK ÉS ATS TIPP FORDÍTÁSA
+            const fields = ['lang', 'style', 'theme', 'photo', 'name', 'phone', 'email', 'address', 'summary', 'exp'];
+            fields.forEach(f => {
+                const el = document.getElementById('lbl-' + f);
+                if(el) el.innerText = dictionary[lang][f];
+            });
+
             document.getElementById('btn-print').innerText = dictionary[lang].print;
             document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
             document.getElementById('ats-text').innerText = dictionary[lang].atsText;
             document.getElementById('ats-text-2').innerText = dictionary[lang].atsText2;
-            document.getElementById('ats-text-3').innerText = dictionary[lang].atsText3;
 
+            // STÍLUS ÉS SZÍN LISTA FRISSÍTÉSE FORDÍTVA
             const styleSelect = document.getElementById('style-select');
+            const savedStyle = styleSelect.value || "style-1";
             styleSelect.innerHTML = "";
             dictionary[lang].styles.forEach((s, i) => {
                 let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s;
                 styleSelect.appendChild(o);
             });
+            styleSelect.value = savedStyle;
 
             const colorSelect = document.getElementById('theme-color');
+            const savedColor = colorSelect.value || colorValues[0];
             colorSelect.innerHTML = "";
             dictionary[lang].colors.forEach((c, i) => {
                 let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c;
                 colorSelect.appendChild(o);
             });
+            colorSelect.value = savedColor;
+
             updatePreview();
         }
 
-        function updateStyle() {
-            document.body.className = document.getElementById('style-select').value;
-        }
-
-        function loadPhoto(e) {
-            const img = document.getElementById('photo-preview');
-            img.src = URL.createObjectURL(e.target.files[0]);
-            img.style.display = "block";
-        }
-
-        function updateTheme() {
+        function updateStyle() { document.body.className = document.getElementById('style-select').value; }
+        function loadPhoto(e) { const img = document.getElementById('photo-preview'); img.src = URL.createObjectURL(e.target.files[0]); img.style.display = "block"; }
+        function updateTheme() { 
             const c = document.getElementById('theme-color').value;
             document.documentElement.style.setProperty('--main-color', c);
             document.getElementById('out-name').style.color = c;
@@ -216,10 +187,11 @@
             if(address) contactHtml += `<span>${address}</span>`;
             document.getElementById('out-contact').innerHTML = contactHtml;
             document.getElementById('out-summary').innerText = document.getElementById('in-summary').value;
-            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div class="content-block">${document.getElementById('in-exp').value}</div>`;
+            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div style="white-space: pre-wrap; font-size: 13px;">${document.getElementById('in-exp').value}</div>`;
         }
 
         window.onload = () => { changeLang('hu'); updateTheme(); };
     </script>
 </body>
 </html>
+

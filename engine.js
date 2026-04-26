@@ -8,14 +8,14 @@ function setMode(lang, btn) {
     updatePreview(); 
 }
 
+// Golyóálló fordító: Ha hiba van, az eredetit adja vissza, nem a hibaüzenetet!
 async function safeTranslate(text) {
     if (!text || currentLang === 'hu') return text;
     try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
         const tr = data.responseData.translatedText;
-        // HA HIBAÜZENET JÖN VAGY LIMIT TÚLLÉPÉS, MARAD AZ EREDETI!
-        if (!tr || tr.includes("MYMEMORY WARNING") || tr.includes("PLEASE SELECT")) return text;
+        if (!tr || tr.includes("MYMEMORY WARNING") || tr.includes("PLEASE SELECT") || tr.includes("LIMIT")) return text;
         return tr;
     } catch (e) { return text; }
 }
@@ -35,12 +35,13 @@ function updatePreview() {
 
 async function renderAsyncContent(szin) {
     const d = dictionary[currentLang];
-    const city = await safeTranslate(document.getElementById('in-city').value || "");
-    const zip = document.getElementById('in-zip').value || "";
-    const sName = document.getElementById('in-street-name').value || "";
-    const house = document.getElementById('in-house').value || "";
+    
     const phone = document.getElementById('in-phone').value || "";
     const email = document.getElementById('in-email').value || "";
+    const zip = document.getElementById('in-zip').value || "";
+    const city = await safeTranslate(document.getElementById('in-city').value || "");
+    const sName = document.getElementById('in-street-name').value || "";
+    const house = document.getElementById('in-house').value || "";
 
     const sTypeSelect = document.getElementById('in-street-type');
     const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : 1] || "";

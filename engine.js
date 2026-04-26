@@ -8,18 +8,7 @@ function setMode(lang, btn) {
     updatePreview(); 
 }
 
-// Golyóálló fordító: Ha hiba van, az eredetit adja vissza, nem a hibaüzenetet!
-async function safeTranslate(text) {
-    if (!text || currentLang === 'hu') return text;
-    try {
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
-        const data = await res.json();
-        const tr = data.responseData.translatedText;
-        if (!tr || tr.includes("MYMEMORY WARNING") || tr.includes("PLEASE SELECT") || tr.includes("LIMIT")) return text;
-        return tr;
-    } catch (e) { return text; }
-}
-
+// EZ MOSTANTÓL NEM HÍV KÜLSŐ API-T, CSAK A BELSŐ SZÓTÁRT HASZNÁLJA
 function updatePreview() {
     const szin = document.getElementById('theme-color').value;
     document.documentElement.style.setProperty('--main-color', szin);
@@ -30,21 +19,24 @@ function updatePreview() {
     
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     document.getElementById('out-name').style.color = szin;
-    renderAsyncContent(szin);
+    renderStaticContent();
 }
 
-async function renderAsyncContent(szin) {
+function renderStaticContent() {
     const d = dictionary[currentLang];
     
     const phone = document.getElementById('in-phone').value || "";
     const email = document.getElementById('in-email').value || "";
     const zip = document.getElementById('in-zip').value || "";
-    const city = await safeTranslate(document.getElementById('in-city').value || "");
+    const city = document.getElementById('in-city').value || "";
     const sName = document.getElementById('in-street-name').value || "";
     const house = document.getElementById('in-house').value || "";
 
     const sTypeSelect = document.getElementById('in-street-type');
-    const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : 1] || "";
+    // A típusválasztó a szótárból szedi a nevet (utca/street/straße)
+    const sTypeHU = sTypeSelect.value;
+    const sTypeObj = omniDict.find(e => e.hu === sTypeHU);
+    const sType = sTypeObj ? sTypeObj[currentLang] : sTypeHU;
     
     const fullStreet = sName ? sName + " " + sType : "";
     const addr = [zip, city, fullStreet, house].filter(x => x && x.trim() !== "").join(", ");
@@ -58,23 +50,20 @@ async function renderAsyncContent(szin) {
     `;
 
     let html = "";
-    const sumRaw = document.getElementById('in-summary').value;
-    if(sumRaw) {
-        const sum = await safeTranslate(sumRaw);
-        html += `<h3>${d.summary}</h3><p>${sum}</p>`;
-    }
+    const sum = document.getElementById('in-summary').value;
+    if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
 
     for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        for (let box of boxes) {
-            const m = await safeTranslate(box.querySelector('.e-main').value);
+        boxes.forEach(box => {
+            const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
-            const desc = await safeTranslate(box.querySelector('.e-desc').value);
+            const desc = box.querySelector('.e-desc').value;
             if(m || sub || desc) {
                 items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
             }
-        }
+        });
         if(items) html += `<h3>${d[type]}</h3>` + items;
     }
     document.getElementById('main-content').innerHTML = html;
@@ -91,7 +80,7 @@ function updateInterface() {
 function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
-    div.innerHTML = `<input type="text" class="e-main" placeholder="Iskola/Cég" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">`;
+    div.innerHTML = `<input type="text" class="e-main" placeholder="Intézmény/Cég" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">`;
     document.getElementById(type + '-container').appendChild(div);
 }
 

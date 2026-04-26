@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v1.8.0</title>
+    <title>Aion-X Global Control v1.9.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
@@ -14,23 +14,16 @@
         .lang-btns { display: flex; gap: 4px; margin-bottom: 15px; }
         .lang-btns button { flex: 1; padding: 8px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
         .active-lang { background: var(--main-color) !important; color: white !important; }
-        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 12px; border-radius: 0 4px 4px 0; }
+        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 12px; }
         .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-
-        .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: all 0.4s; }
         
-        /* 10 DRASZTIKUS STÍLUS */
+        .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: 0.3s; }
+        
+        /* Layout Stílusok */
         .style-1 .cv-body { display: flex; gap: 30px; } .style-1 .side-col { width: 35%; background: #f9f9f9; padding: 15px; }
-        .style-2 .cv-paper { padding: 60px; border-top: 20px solid var(--main-color); }
+        .style-2 .cv-paper { border-top: 20px solid var(--main-color); }
         .style-3 .cv-header { flex-direction: column; text-align: center; }
-        .style-4 .cv-paper { font-family: 'Courier New', monospace; font-size: 12px; }
-        .style-5 .cv-header { background: #f4f4f4; border: 1px solid #ddd; padding: 20px; }
-        .style-6 .cv-paper { border-left: 40px solid var(--main-color); }
-        .style-7 .header-text h1 { font-size: 50px; line-height: 1; border-bottom: 8px solid var(--main-color); }
-        .style-8 .cv-paper { line-height: 1.8; color: #444; }
-        .style-9 #photo-preview { border-radius: 50%; border: 5px solid var(--main-color); }
-        .style-10 .cv-paper { border: 15px double var(--main-color); background: #fcfcfc; }
 
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
         #photo-preview { width: 130px; height: 150px; object-fit: cover; border: 1px solid #ddd; display: none; }
@@ -43,12 +36,11 @@
 <body class="style-1">
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 22px; margin-bottom: 5px;">Global Control</h1>
+        <h1 style="color: #3498db; font-size: 22px;">Global Control</h1>
         
         <div class="ats-box">
             <strong id="ats-title" style="color: #f1c40f;">ATS TIPP:</strong>
             <p id="ats-text"></p>
-            <p id="ats-text-2" style="font-size: 11px; color: #bdc3c7; margin-top:5px;"></p>
         </div>
 
         <div class="control-group">
@@ -60,14 +52,21 @@
             </div>
         </div>
 
-        <div class="control-group"><label id="lbl-style">CV Style</label><select id="style-select" onchange="updateStyle()"></select></div>
-        <div class="control-group"><label id="lbl-theme">System Color</label><select id="theme-color" onchange="updateTheme()"></select></div>
-        <div class="control-group"><label id="lbl-photo">Professional Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
+        <div class="control-group"><label id="lbl-style">Style</label><select id="style-select" onchange="updateStyle()"></select></div>
+        <div class="control-group"><label id="lbl-theme">Color</label><select id="theme-color" onchange="updateTheme()"></select></div>
+        <div class="control-group"><label id="lbl-photo">Photo</label><input type="file" accept="image/*" onchange="loadPhoto(event)"></div>
         <div class="control-group"><label id="lbl-name">Full Name</label><input type="text" id="in-name" oninput="updatePreview()"></div>
         
+        <div style="display: flex; gap: 5px;">
+            <div class="control-group" style="flex: 1;"><label id="lbl-zip">ZIP</label><input type="text" id="in-zip" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 2;"><label id="lbl-city">City</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+        </div>
+        <div style="display: flex; gap: 5px;">
+            <div class="control-group" style="flex: 2;"><label id="lbl-street">Street</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div class="control-group" style="flex: 1;"><label id="lbl-house">No.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+        </div>
         <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
-        <div class="control-group"><label id="lbl-address">Address</label><input type="text" id="in-address" oninput="updatePreview()"></div>
 
         <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
         <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="4" oninput="updatePreview()"></textarea></div>
@@ -97,30 +96,24 @@
     <script>
         const dictionary = {
             hu: { 
-                lang: "Nyelvválasztás", style: "CV Stílus (10 típus)", theme: "Rendszer Szín", name: "Teljes Név", phone: "Telefonszám", 
-                email: "E-mail cím", address: "Lakcím", summary: "Bemutatkozás", exp: "Tapasztalat", 
-                print: "MENTÉS PDF-KÉNT", photo: "Profi Fotó",
-                atsTitle: "ATS TIPP:", atsText: "A robotok a tiszta szöveget szeretik. Kerüld a táblázatokat!",
-                atsText2: "Tipp: Használj konkrét számokat az eredményeidnél (pl. 20%-os növekedés).",
-                styles: ["Modern Oszlopos", "Klasszikus", "Centrált Fejléc", "Minimalista", "Technikai", "Kreatív Sávos", "Menedzseri XL", "Akadémiai", "Junior Körfotós", "Aion-X Speciál"],
+                lang: "Nyelv", style: "Stílus", theme: "Szín", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám",
+                phone: "Telefon", email: "Email", summary: "Bemutatkozás", exp: "Tapasztalat", print: "PDF MENTÉS", photo: "Fotó",
+                atsTitle: "ATS TIPP:", atsText: "A robotok a tiszta szöveget szeretik.",
+                styles: ["Modern", "Klasszikus", "Centrált", "Minimalista", "Technikai", "Kreatív", "Menedzser", "Akadémiai", "Junior", "Aion-X"],
                 colors: ["Aion Kék", "Norbi Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
             },
             en: { 
-                lang: "Language Selection", style: "CV Style (10 Types)", theme: "System Color", name: "Full Name", phone: "Phone Number", 
-                email: "Email Address", address: "Home Address", summary: "Professional Summary", exp: "Experience", 
-                print: "GENERATE PDF", photo: "Professional Photo",
-                atsTitle: "ATS TIP:", atsText: "Robots love plain text. Avoid using tables or complex graphics!",
-                atsText2: "Tip: Use quantifiable metrics (e.g., 'increased sales by 20%').",
-                styles: ["Modern Column", "Classic", "Centered Header", "Minimalist", "Technical", "Creative Bar", "Managerial XL", "Academic", "Junior Circular", "Aion-X Special"],
+                lang: "Language", style: "Style", theme: "Color", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "House No.",
+                phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", print: "SAVE PDF", photo: "Photo",
+                atsTitle: "ATS TIP:", atsText: "Robots love plain text.",
+                styles: ["Modern", "Classic", "Centered", "Minimalist", "Technical", "Creative", "Manager", "Academic", "Junior", "Aion-X"],
                 colors: ["Aion Blue", "Norbi Orange", "Deep Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
             },
             de: { 
-                lang: "Sprachauswahl", style: "CV-Stil (10 Typen)", theme: "Systemfarbe", name: "Vollständiger Name", phone: "Telefonnummer", 
-                email: "E-Mail-Adresse", address: "Adresse", summary: "Kurzprofil", exp: "Berufserfahrung", 
-                print: "PDF GENERIEREN", photo: "Profi-Foto",
-                atsTitle: "ATS TIPP:", atsText: "Roboter lieben einfachen Text. Vermeiden Sie Tabellen!",
-                atsText2: "Tipp: Verwenden Sie messbare Erfolge (z. B. 'Umsatz um 20 % gesteigert').",
-                styles: ["Modern Spalte", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management XL", "Akademisch", "Junior", "Aion-X Spezial"],
+                lang: "Sprache", style: "Stil", theme: "Farbe", name: "Vollständiger Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.",
+                phone: "Telefon", email: "Email", summary: "Kurzprofil", exp: "Erfahrung", print: "PDF SPEICHERN", photo: "Foto",
+                atsTitle: "ATS TIPP:", atsText: "Roboter lieben Text.",
+                styles: ["Modern", "Klassisch", "Zentriert", "Minimalistisch", "Technisch", "Kreativ", "Management", "Akademisch", "Junior", "Aion-X Spezial"],
                 colors: ["Aion Blau", "Norbi Orange", "Tiefschwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
             }
         };
@@ -133,8 +126,7 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            // ELŐLAPI CÍMKÉK ÉS ATS TIPP FORDÍTÁSA
-            const fields = ['lang', 'style', 'theme', 'photo', 'name', 'phone', 'email', 'address', 'summary', 'exp'];
+            const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp'];
             fields.forEach(f => {
                 const el = document.getElementById('lbl-' + f);
                 if(el) el.innerText = dictionary[lang][f];
@@ -143,26 +135,20 @@
             document.getElementById('btn-print').innerText = dictionary[lang].print;
             document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
             document.getElementById('ats-text').innerText = dictionary[lang].atsText;
-            document.getElementById('ats-text-2').innerText = dictionary[lang].atsText2;
 
-            // STÍLUS ÉS SZÍN LISTA FRISSÍTÉSE FORDÍTVA
             const styleSelect = document.getElementById('style-select');
-            const savedStyle = styleSelect.value || "style-1";
             styleSelect.innerHTML = "";
             dictionary[lang].styles.forEach((s, i) => {
                 let o = document.createElement('option'); o.value = "style-" + (i+1); o.innerText = s;
                 styleSelect.appendChild(o);
             });
-            styleSelect.value = savedStyle;
 
             const colorSelect = document.getElementById('theme-color');
-            const savedColor = colorSelect.value || colorValues[0];
             colorSelect.innerHTML = "";
             dictionary[lang].colors.forEach((c, i) => {
                 let o = document.createElement('option'); o.value = colorValues[i]; o.innerText = c;
                 colorSelect.appendChild(o);
             });
-            colorSelect.value = savedColor;
 
             updatePreview();
         }
@@ -178,16 +164,34 @@
 
         function updatePreview() {
             document.getElementById('out-name').innerText = document.getElementById('in-name').value || dictionary[currentLang].name;
+            
+            const zip = document.getElementById('in-zip').value;
+            const city = document.getElementById('in-city').value;
+            const street = document.getElementById('in-street').value;
+            const house = document.getElementById('in-house').value;
             const phone = document.getElementById('in-phone').value;
             const email = document.getElementById('in-email').value;
-            const address = document.getElementById('in-address').value;
-            let contactHtml = "";
-            if(phone) contactHtml += `<span>${phone}</span> | `;
-            if(email) contactHtml += `<span>${email}</span> | `;
-            if(address) contactHtml += `<span>${address}</span>`;
+
+            // SMART ADDRESSING: Fordítja a sorrendet a nyelvnek megfelelően!
+            let addressHtml = "";
+            if (currentLang === 'de' || currentLang === 'en') {
+                // Nemzetközi: 1234 City, Street 5.
+                if(zip || city) addressHtml += `<span>${zip} ${city}</span>`;
+                if(street || house) addressHtml += `, <span>${street} ${house}</span>`;
+            } else {
+                // Magyar: Város, utca hsz, irsz.
+                if(city) addressHtml += `<span>${city}</span>`;
+                if(street || house) addressHtml += `, <span>${street} ${house}</span>`;
+                if(zip) addressHtml += `, <span>${zip}</span>`;
+            }
+            
+            let contactHtml = addressHtml;
+            if(phone) contactHtml += ` | <span>${phone}</span>`;
+            if(email) contactHtml += ` | <span>${email}</span>`;
+            
             document.getElementById('out-contact').innerHTML = contactHtml;
             document.getElementById('out-summary').innerText = document.getElementById('in-summary').value;
-            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div style="white-space: pre-wrap; font-size: 13px;">${document.getElementById('in-exp').value}</div>`;
+            document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div style="white-space: pre-wrap;">${document.getElementById('in-exp').value}</div>`;
         }
 
         window.onload = () => { changeLang('hu'); updateTheme(); };

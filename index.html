@@ -2,14 +2,14 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v14.0</title>
+    <title>Aion-X Dashboard v15.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
     <div class="editor-side">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
             <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
-            <h2 id="lbl-title" style="color:var(--main-color); margin:0;">AION-X PANEL</h2>
+            <h2 id="lbl-title" style="color:var(--main-color); margin:0; font-size:18px;">AION-X PANEL</h2>
         </div>
 
         <div id="ats-box" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
@@ -19,7 +19,7 @@
             <div id="lbl-ats3">• Profi fotó: Világos háttér!</div>
         </div>
         
-        <div class="lang-grid">
+        <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
             <button class="btn-lang" onclick="setMode('en', this)">EN</button>
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
@@ -29,29 +29,17 @@
             <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
                 <select id="style-select" onchange="updateStyle()">
                     <option value="style-10">10. Aion-X Speciál</option>
-                    <option value="style-1">1. Modern Oszlopos</option>
+                    <option value="style-1">1. Modern</option>
                     <option value="style-2">2. Klasszikus</option>
-                    <option value="style-3">3. Centrált</option>
-                    <option value="style-4">4. Minimalista</option>
-                    <option value="style-5">5. Technikai</option>
-                    <option value="style-6">6. Kreatív Oldalsáv</option>
-                    <option value="style-7">7. Menedzseri</option>
-                    <option value="style-8">8. Akadémiai</option>
-                    <option value="style-9">9. Junior Bold</option>
+                    <option value="style-6">6. Kreatív</option>
                 </select>
             </div>
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
                 <select id="theme-color" onchange="updateTheme()">
                     <option value="#007bb5">Aion Kék</option>
-                    <option value="#e67e22">Norbi Narancs</option>
                     <option value="#27ae60">Smaragd</option>
-                    <option value="#c0392b">Vörös</option>
-                    <option value="#8e44ad">Lila</option>
+                    <option value="#e67e22">Narancs</option>
                     <option value="#1a1a1a">Fekete</option>
-                    <option value="#2c3e50">Pala</option>
-                    <option value="#d35400">Tégla</option>
-                    <option value="#16a085">Türkiz</option>
-                    <option value="#f1c40f">Arany</option>
                 </select>
             </div>
         </div>
@@ -61,6 +49,12 @@
 
         <label class="smart-label" id="lbl-name">NÉV</label>
         <input type="text" id="in-name" placeholder="Név" oninput="updatePreview()">
+
+        <label class="smart-label" id="lbl-phone">TELEFON</label>
+        <input type="text" id="in-phone" placeholder="+36..." oninput="updatePreview()">
+
+        <label class="smart-label" id="lbl-email">EMAIL</label>
+        <input type="email" id="in-email" placeholder="Email" oninput="updatePreview()">
 
         <label class="smart-label" id="lbl-city">IRSZ / VÁROS / UTCA / HÁZ</label>
         <div style="display: flex; gap: 5px;">
@@ -97,7 +91,7 @@
                 </div>
                 <div class="header-text">
                     <h1 id="out-name">NAME</h1>
-                    <div id="out-contact"></div>
+                    <div id="out-contact" style="font-size:12px; margin-top:10px;"></div>
                 </div>
             </div>
             <div id="main-content"></div>

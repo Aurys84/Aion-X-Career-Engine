@@ -5,63 +5,62 @@ function setMode(lang, btn) {
     document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     updateInterface();
-    updatePreview();
+    updatePreview(); 
 }
 
 async function deepTranslate(text) {
     if (!text) return "";
-    // Ha a beírt szöveg fix (pl: Vagyonőr), a szótárból rántjuk elő
+    // Belső szótár csekkolás
     let found = omniDict.find(e => e.hu.toLowerCase() === text.trim().toLowerCase());
     if (found) return found[currentLang];
 
     try {
-        // NÉV ÉS TARTALOM FORDÍTÁS: autodetect -> célnyelv
+        // AUTODETECT: Ez teszi lehetővé a bármelyik nyelvről bármelyikre fordítást!
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
         return data.responseData.translatedText || text;
     } catch (e) { return text; }
 }
 
+function updateInterface() {
+    const d = dictionary[currentLang];
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
+}
+
 function updatePreview() {
     const szin = document.getElementById('theme-color').value;
     document.documentElement.style.setProperty('--main-color', szin);
     
-    // NÉV FRISSÍTÉS (Először kiírjuk, amit beírtál, hogy ne akadjon a gépelés)
+    // NÉV: Azonnali megfordítás nemzetközi formátumhoz
     const rawName = document.getElementById('in-name').value;
-    document.getElementById('out-name').innerText = rawName || "NAME";
+    let displayName = rawName;
+    if (currentLang !== 'hu' && rawName.includes(" ")) {
+        displayName = rawName.split(" ").reverse().join(" ");
+    }
+    document.getElementById('out-name').innerText = displayName || "NAME";
     document.getElementById('out-name').style.color = szin;
-    
-    renderAsync(szin);
+
+    renderAsyncContent(szin);
 }
 
-async function renderAsync(szin) {
+async function renderAsyncContent(szin) {
     const d = dictionary[currentLang];
-    const rawName = document.getElementById('in-name').value;
-
-    // NÉV FORDÍTÁSA/FORMÁZÁSA: Ha nem magyar, megpróbálja a nemzetközi formátumot
-    let finalName = rawName;
-    if (currentLang !== 'hu' && rawName.includes(" ")) {
-        // Megfordítjuk a sorrendet (Csonka Norbert -> Norbert Csonka)
-        const parts = rawName.split(" ");
-        finalName = parts.reverse().join(" ");
-    }
-    // Ha van benne fordítható rész (pl. beosztás a név mellett), az API lekezeli
-    const trName = await deepTranslate(finalName);
-    document.getElementById('out-name').innerText = trName || "NAME";
-
-    // Cím fordítása
-    const c = await deepTranslate(document.getElementById('in-city').value);
-    const s = await deepTranslate(document.getElementById('in-street').value);
-    const h = document.getElementById('in-house').value;
-    const z = document.getElementById('in-zip').value;
+    
+    // Cím fordítás
+    const city = await deepTranslate(document.getElementById('in-city').value);
+    const street = await deepTranslate(document.getElementById('in-street').value);
+    const zip = document.getElementById('in-zip').value;
+    const house = document.getElementById('in-house').value;
 
     document.getElementById('out-contact').innerHTML = `
         <div><b>${d.phone}</b> ${document.getElementById('in-phone').value}</div>
         <div><b>${d.email}</b> ${document.getElementById('in-email').value}</div>
-        <div><b>${d.addr}</b> ${currentLang==='hu' ? c+', '+s+' '+h+' '+z : z+' '+c+', '+s+' '+h}</div>
+        <div><b>${d.addr}</b> ${currentLang==='hu' ? city+', '+street+' '+house+', '+zip : zip+' '+city+', '+street+' '+house}</div>
     `;
 
-    // Szekciók (Summary, Edu, Work, Skills)
     let html = "";
     const sum = await deepTranslate(document.getElementById('in-summary').value);
     if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
@@ -76,7 +75,7 @@ async function renderAsync(szin) {
             const m = await deepTranslate(box.querySelector('.e-main').value);
             const sub = box.querySelector('.e-sub').value;
             const desc = await deepTranslate(box.querySelector('.e-desc').value);
-            if(m || desc) items += `<div><b>${m}</b> (${sub})<br><span style="color:${szin}">${desc}</span></div>`;
+            if(m || desc) items += `<div style="margin-bottom:12px"><b>${m}</b> (${sub})<br><span style="color:${szin}">${desc}</span></div>`;
         }
         if(items) html += `<h3>${d[type]}</h3>` + items;
     }
@@ -87,4 +86,20 @@ async function renderAsync(szin) {
     document.getElementById('main-content').innerHTML = html;
 }
 
-// ... a többi marad (loadPhoto, addEntry, updateInterface, stb.)
+function addEntry(type) {
+    const container = document.getElementById(type + '-container');
+    const div = document.createElement('div');
+    div.className = 'entry-box';
+    div.innerHTML = `<input type="text" placeholder="Cég-Iskola" class="e-main" oninput="updatePreview()"><input type="text" placeholder="Év" class="e-sub" oninput="updatePreview()"><input type="text" placeholder="Pozíció" class="e-desc" oninput="updatePreview()">`;
+    container.appendChild(div);
+}
+
+function loadPhoto(event) {
+    const reader = new FileReader();
+    reader.onload = () => { document.getElementById('out-photo').src = reader.result; document.getElementById('out-photo-box').style.display = 'block'; };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function updateStyle() { document.body.className = document.getElementById('style-select').value; }
+function updateTheme() { updatePreview(); }
+window.onload = () => { updateInterface(); updatePreview(); };

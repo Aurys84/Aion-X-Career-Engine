@@ -27,48 +27,38 @@ function updatePreview() {
     
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     document.getElementById('out-name').style.color = szin;
-    renderAsyncContent(szin);
+    renderAsync(szin);
 }
 
-async function renderAsyncContent(szin) {
+async function renderAsync(szin) {
     const d = dictionary[currentLang];
     const city = await deepTranslate(document.getElementById('in-city').value);
-    const sName = document.getElementById('in-street-name').value;
-    const phone = document.getElementById('in-phone').value;
-    const email = document.getElementById('in-email').value;
-
     const sTypeHU = document.getElementById('in-street-type').value;
     const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
-    const addr = [city, sName + " " + sType, document.getElementById('in-house').value, document.getElementById('in-zip').value].filter(x => x && x.trim() !== "").join(", ");
+    const addr = [city, document.getElementById('in-street-name').value + " " + sType, document.getElementById('in-house').value, document.getElementById('in-zip').value].filter(x => x && x.trim() !== "").join(", ");
 
     document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px; line-height: 1.5;">
-            ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
-            ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
-            ${addr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + addr + '</div>' : ''}
+        <div style="margin-top:10px;">
+            <b>${d.phone}:</b> ${document.getElementById('in-phone').value}<br>
+            <b>${d.email}:</b> ${document.getElementById('in-email').value}<br>
+            <b>${d.addr}</b> ${addr}
         </div>
     `;
 
     let html = "";
-    const sumRaw = document.getElementById('in-summary').value;
-    if(sumRaw) {
-        const sum = await deepTranslate(sumRaw);
-        html += `<h3>${d.summary}</h3><p>${sum}</p>`;
-    }
+    const sum = await deepTranslate(document.getElementById('in-summary').value);
+    if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
 
-    // DINAMIKUS MEZŐK FIX
-    for (const type of ['edu', 'work']) {
+    for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
-        for (const box of boxes) {
+        for (let box of boxes) {
             const m = await deepTranslate(box.querySelector('.e-main').value);
             const sub = box.querySelector('.e-sub').value;
             const desc = await deepTranslate(box.querySelector('.e-desc').value);
-            if (m || sub || desc) {
-                items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
-            }
+            if(m || sub || desc) items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
         }
-        if (items) html += `<h3>${d[type]}</h3>` + items;
+        if(items) html += `<h3>${d[type]}</h3>` + items;
     }
     document.getElementById('main-content').innerHTML = html;
 }
@@ -84,11 +74,7 @@ function updateInterface() {
 function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
-    div.innerHTML = `
-        <input type="text" class="e-main" placeholder="Iskola/Cég" oninput="updatePreview()">
-        <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
-        <input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">
-    `;
+    div.innerHTML = `<input type="text" class="e-main" placeholder="Intézmény/Cég" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">`;
     document.getElementById(type + '-container').appendChild(div);
 }
 

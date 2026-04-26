@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v2.1.0</title>
+    <title>Aion-X Global Control v2.2.0</title>
     <style>
         :root { --main-color: #3498db; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
@@ -15,35 +15,37 @@
         .lang-btns button { flex: 1; padding: 10px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
         .active-lang { background: var(--main-color) !important; color: white !important; }
         
-        /* ATS Box - Felülre és 3 tipp */
+        /* Logo Stílus */
+        .logo-box { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .logo-icon { width: 30px; height: 30px; border: 3px solid #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #3498db; font-size: 18px; }
+
         .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 20px; font-size: 11px; }
         .ats-box ul { margin: 5px 0 0; padding-left: 15px; color: #bdc3c7; }
-        
         .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
         .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; }
-        
-        /* Layout */
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
-        #photo-preview { width: 130px; height: 150px; object-fit: cover; display: none; }
-        
-        /* Kontakt Szekció Külön Sorokban */
+        #photo-preview { width: 130px; height: 150px; object-fit: cover; display: none; border-radius: 4px; }
         .contact-info { font-size: 13px; color: #444; margin-top: 8px; }
         .contact-row { display: block; margin-bottom: 3px; }
         .contact-label { font-weight: bold; color: var(--main-color); margin-right: 5px; }
-
         h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 25px; }
-        
+        .hidden { display: none; } /* Dinamikus elrejtéshez */
+
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; margin: 0; } }
     </style>
 </head>
 <body>
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 20px;">Global Control</h1>
+        <div class="logo-box">
+            <div class="logo-icon">X</div>
+            <h1 style="color: #3498db; font-size: 20px; margin: 0;">Global Control</h1>
+        </div>
         
         <div class="ats-box">
-            <strong id="ats-title" style="color: #f1c40f;">ATS STRATEGY:</strong>
+            <strong id="ats-title">ATS STRATEGY:</strong>
             <ul id="ats-list"></ul>
         </div>
 
@@ -74,6 +76,11 @@
         <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
         <div class="control-group"><label id="lbl-summary">Summary</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea></div>
         <div class="control-group"><label id="lbl-exp">Experience</label><textarea id="in-exp" rows="3" oninput="updatePreview()"></textarea></div>
+        
+        <div class="control-group"><label id="lbl-skills">Skills</label><input type="text" id="in-skills" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-langs">Languages</label><input type="text" id="in-langs" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-license">License</label><input type="text" id="in-license" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-hobby">Hobby</label><input type="text" id="in-hobby" oninput="updatePreview()"></div>
 
         <button class="print-btn" onclick="window.print()" id="btn-print">PRINT PDF</button>
     </div>
@@ -94,25 +101,25 @@
     <script>
         const dictionary = {
             hu: { 
-                lang: "Nyelv", style: "Stílus", theme: "Szín", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Telefon", email: "E-mail", summary: "Bemutatkozás", exp: "Tapasztalat", print: "PDF MENTÉS", photo: "Fotó",
+                lang: "Nyelv", style: "Stílus", theme: "Szín", name: "Teljes Név", zip: "Irsz.", city: "Város", street: "Utca", house: "Házszám", phone: "Telefon", email: "E-mail", summary: "Bemutatkozás", exp: "Tapasztalat", skills: "Készségek", langs: "Nyelvismeret", license: "Jogosítvány", hobby: "Hobbi", print: "PDF MENTÉS", photo: "Fotó",
                 atsTitle: "ATS STRATÉGIA:", 
-                atsTips: ["Használj tiszta, dísztelen betűtípusokat.", "A tapasztalatoknál használj kulcsszavakat.", "Mindig szöveges PDF-ként ments, ne képként."],
+                atsTips: ["Használj tiszta, dísztelen betűtípusokat.", "A tapasztalatoknál használj kulcsszavakat.", "A mezőket csak akkor látod, ha kitöltöd."],
                 labels: { p: "Tel:", e: "Email:", a: "Cím:" },
                 styles: ["Modern", "Klasszikus", "Centrált", "Minimalista", "Aion-X"],
                 colors: ["Aion Kék", "Norbi Narancs", "Fekete"]
             },
             en: { 
-                lang: "Language", style: "Style", theme: "Color", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", print: "SAVE PDF", photo: "Photo",
+                lang: "Language", style: "Style", theme: "Color", name: "Full Name", zip: "ZIP", city: "City", street: "Street", house: "No.", phone: "Phone", email: "Email", summary: "Summary", exp: "Experience", skills: "Skills", langs: "Languages", license: "License", hobby: "Hobbies", print: "SAVE PDF", photo: "Photo",
                 atsTitle: "ATS STRATEGY:", 
-                atsTips: ["Use clean, sans-serif fonts.", "Include industry keywords in experience.", "Save as text-searchable PDF only."],
+                atsTips: ["Use clean, sans-serif fonts.", "Include industry keywords in experience.", "Empty fields are automatically hidden."],
                 labels: { p: "Phone:", e: "Email:", a: "Address:" },
                 styles: ["Modern", "Classic", "Centered", "Minimal", "Aion-X"],
                 colors: ["Aion Blue", "Norbi Orange", "Black"]
             },
             de: { 
-                lang: "Sprache", style: "Stil", theme: "Farbe", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel.", email: "E-Mail", summary: "Profil", exp: "Erfahrung", print: "PDF SPEICHERN", photo: "Foto",
+                lang: "Sprache", style: "Stil", theme: "Farbe", name: "Name", zip: "PLZ", city: "Stadt", street: "Straße", house: "Hausnr.", phone: "Tel.", email: "E-Mail", summary: "Profil", exp: "Erfahrung", skills: "Kenntnisse", langs: "Sprachen", license: "Führerschein", hobby: "Hobbys", print: "PDF SPEICHERN", photo: "Foto",
                 atsTitle: "ATS STRATEGIE:", 
-                atsTips: ["Nutzen Sie klare Schriftarten.", "Verwenden Sie Fachbegriffe (Keywords).", "Nur als textbasiertes PDF speichern."],
+                atsTips: ["Nutzen Sie klare Schriftarten.", "Verwenden Sie Fachbegriffe (Keywords).", "Leere Felder werden ausgeblendet."],
                 labels: { p: "Tel:", e: "E-Mail:", a: "Adresse:" },
                 styles: ["Modern", "Klassisch", "Zentriert", "Minimal", "Aion-X Spezial"],
                 colors: ["Aion Blau", "Norbi Orange", "Schwarz"]
@@ -127,18 +134,14 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            // Címkék és ATS frissítés
-            const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp'];
+            const fields = ['lang', 'style', 'theme', 'photo', 'name', 'zip', 'city', 'street', 'house', 'phone', 'email', 'summary', 'exp', 'skills', 'langs', 'license', 'hobby'];
             fields.forEach(f => { document.getElementById('lbl-' + f).innerText = dictionary[lang][f]; });
             
             document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
-            const list = document.getElementById('ats-list');
-            list.innerHTML = "";
+            const list = document.getElementById('ats-list'); list.innerHTML = "";
             dictionary[lang].atsTips.forEach(tip => { let li = document.createElement('li'); li.innerText = tip; list.appendChild(li); });
-            
             document.getElementById('btn-print').innerText = dictionary[lang].print;
 
-            // Listák fordítása
             const styleS = document.getElementById('style-select'); styleS.innerHTML = "";
             dictionary[lang].styles.forEach((s, i) => { let o = document.createElement('option'); o.value = "style-"+(i+1); o.innerText = s; styleS.appendChild(o); });
             const colorS = document.getElementById('theme-color'); colorS.innerHTML = "";
@@ -161,30 +164,30 @@
             const email = document.getElementById('in-email').value;
             const summary = document.getElementById('in-summary').value;
             const exp = document.getElementById('in-exp').value;
+            const skills = document.getElementById('in-skills').value;
+            const langs = document.getElementById('in-langs').value;
+            const license = document.getElementById('in-license').value;
+            const hobby = document.getElementById('in-hobby').value;
 
             document.getElementById('out-name').innerText = name;
             
-            // Kontakt Szekció - Külön Sorok és Lokalizált Elrendezés
             const labels = dictionary[currentLang].labels;
-            let addr = "";
-            if (currentLang === 'de' || currentLang === 'en') {
-                addr = `${zip} ${city}, ${street} ${house}`;
-            } else {
-                addr = `${city}, ${street} ${house}, ${zip}`;
-            }
+            let addr = (currentLang === 'de' || currentLang === 'en') ? `${zip} ${city}, ${street} ${house}` : `${city}, ${street} ${house}, ${zip}`;
 
             let contactHtml = "";
             if(phone) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.p}</span>${phone}</div>`;
             if(email) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.e}</span>${email}</div>`;
             if(city || street) contactHtml += `<div class="contact-row"><span class="contact-label">${labels.a}</span>${addr}</div>`;
-            
             document.getElementById('out-contact').innerHTML = contactHtml;
             
-            document.getElementById('main-content').innerHTML = `
-                <p style="font-style:italic; margin-bottom:15px;">${summary}</p>
-                <h3>${dictionary[currentLang].exp}</h3>
-                <div style="white-space:pre-wrap;">${exp}</div>
-            `;
+            let mainHtml = summary ? `<p style="font-style:italic; margin-bottom:15px;">${summary}</p>` : "";
+            if(exp) mainHtml += `<h3>${dictionary[currentLang].exp}</h3><div style="white-space:pre-wrap;">${exp}</div>`;
+            if(skills) mainHtml += `<h3>${dictionary[currentLang].skills}</h3><p>${skills}</p>`;
+            if(langs) mainHtml += `<h3>${dictionary[currentLang].langs}</h3><p>${langs}</p>`;
+            if(license) mainHtml += `<h3>${dictionary[currentLang].license}</h3><p>${license}</p>`;
+            if(hobby) mainHtml += `<h3>${dictionary[currentLang].hobby}</h3><p>${hobby}</p>`;
+            
+            document.getElementById('main-content').innerHTML = mainHtml;
         }
 
         window.onload = () => { changeLang('hu'); updateTheme(); };

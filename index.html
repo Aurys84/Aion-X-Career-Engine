@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v17.0</title>
+    <title>Aion-X Dashboard v18.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -17,6 +17,7 @@
             <div id="lbl-ats1">• Használj szoftverneveket (pl. SAP, Minitab)!</div>
             <div id="lbl-ats2">• Az eredményeket számokkal írd le (+20%)!</div>
             <div id="lbl-ats3">• Fotó: Világos háttér, profi öltözet!</div>
+            <div id="lbl-ats4">• Kulcsszavak: Figyelj az álláshirdetés szavaira!</div>
         </div>
         
         <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
@@ -51,26 +52,39 @@
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
         <div style="display: flex; gap: 5px;">
-            <div style="flex:1"><label class="smart-label">VEZETÉKNÉV</label><input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label">KERESZTNÉV</label><input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()"></div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label>
+                <input type="text" id="in-lastName" placeholder="Csonka" oninput="updatePreview()">
+            </div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-fName">KERESZTNÉV</label>
+                <input type="text" id="in-firstName" placeholder="Norbert" oninput="updatePreview()">
+            </div>
         </div>
 
-        <label class="smart-label" id="lbl-city">IRSZ / VÁROS</label>
+        <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
+
         <div style="display: flex; gap: 5px; margin-top:5px;">
-            <div style="flex:1"><label class="smart-label">UTCA NEVE</label><input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()"></div>
             <div style="flex:1">
-                <label class="smart-label">TÍPUS</label>
+                <label class="smart-label" id="lbl-streetName">UTCA NEVE</label>
+                <input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()">
+            </div>
+            <div style="flex:1">
+                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street / straße</option>
                     <option value="út">út / road / straße</option>
                     <option value="tér">tér / square / platz</option>
                 </select>
             </div>
-            <div style="width:20%"><label class="smart-label">HÁZ</label><input type="text" id="in-house" placeholder="68" oninput="updatePreview()"></div>
+            <div style="width:20%">
+                <label class="smart-label" id="lbl-house">HÁZ</label>
+                <input type="text" id="in-house" placeholder="68" oninput="updatePreview()">
+            </div>
         </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
@@ -82,6 +96,7 @@
         <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
         <label class="smart-label" id="lbl-work">TAPASZTALAT</label><div id="work-container"></div>
         <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
+        <label class="smart-label" id="lbl-skills">KÉSZSÉGEK</label><textarea id="in-skills" oninput="updatePreview()"></textarea>
 
         <button onclick="window.print()" style="background:var(--main-color); color:white; padding:15px; width:100%; border:none; margin-top:20px; font-weight:bold; cursor:pointer; border-radius:6px;">PDF GENERÁLÁSA</button>
     </div>

@@ -2,120 +2,95 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Dashboard v7.2</title>
+    <title>Aion-X Dashboard v7.6</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Gyors fix az osztott képernyőhöz, ha a CSS nem töltődne be */
         :root { --main-color: #007bb5; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #1a1a1a; overflow: hidden; }
-        
-        /* BAL OLDAL - EDITOR */
-        .editor-side { width: 40%; background: #2c2c2c; color: #ecf0f1; padding: 20px; overflow-y: auto; border-right: 4px solid var(--main-color); }
-        .editor-side h2 { color: var(--main-color); font-size: 18px; text-transform: uppercase; margin-top: 0; }
-        
-        /* JOBB OLDAL - ÉLŐ PREVIEW */
+        .editor-side { width: 40%; background: #2c2c2c; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
         .preview-side { width: 60%; background: #525659; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 30px rgba(0,0,0,0.5); color: #333; height: auto; }
-
-        /* OKOS VEZÉRLŐK */
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 45px; box-shadow: 0 0 30px rgba(0,0,0,0.5); color: #333; height: auto; }
         .smart-label { font-weight: bold; font-size: 11px; color: var(--main-color); display: block; margin-top: 15px; text-transform: uppercase; }
-        input, textarea, select { width: 100%; padding: 10px; margin: 5px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
-        
-        .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 10px 0; }
-        .btn-lang { padding: 10px; border: none; border-radius: 4px; cursor: pointer; background: #444; color: #ccc; font-weight: bold; font-size: 11px; }
-        .btn-lang.active { background: var(--main-color); color: white; }
-
-        .ats-box { background: #1e3799; padding: 12px; border-radius: 4px; font-size: 11px; line-height: 1.4; border-left: 5px solid #f1c40f; margin-bottom: 20px; }
-        .btn-add { background: #27ae60; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; margin: 10px 0; font-weight: bold; }
-
-        /* NYOMTATÁSI DESIGN ELEMEK */
-        .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 20px; }
-        .contact-info { font-size: 12px; line-height: 1.4; }
-        h3 { border-bottom: 1px solid #eee; color: var(--main-color); text-transform: uppercase; font-size: 14px; margin-top: 20px; }
-        
-        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 5px; }
+        .btn-lang { padding: 10px; cursor: pointer; background: #444; color: white; border: none; border-radius: 4px; font-weight: bold; margin-right: 5px; }
+        .btn-lang.active { background: var(--main-color); }
     </style>
 </head>
-<body class="style-1">
+<body>
 
     <div class="editor-side">
-        <h2>Aion-X Editor Dashboard</h2>
+        <h2 style="color:var(--main-color)">AION-X CONTROL PANEL</h2>
         
-        <div class="ats-box">
-            <strong>🚀 GIGA ATS TIPPEK:</strong><br>
-            • Nevezd meg a szoftvereket (SAP, Minitab)!<br>
-            • Használj számokat: "Napi 200 vendég".<br>
-            • Pozíció: Mindig iparági standardot írj!<br>
-            • Fotó: Világos háttér, profi öltözet.
-        </div>
-
         <div class="lang-grid">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
             <button class="btn-lang" onclick="setMode('en', this)">EN</button>
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div style="display: flex; gap: 5px;">
-            <div style="flex:1"><label class="smart-label">Stílus</label>
+        <div style="display: flex; gap: 10px;">
+            <div style="flex:1">
+                <label class="smart-label">Stílus</label>
                 <select id="style-select" onchange="updateStyle()">
-                    <option value="style-1">Modern Oszlopos</option>
+                    <option value="style-1">Modern</option>
                     <option value="style-2">Klasszikus</option>
-                    <option value="style-3">Centrált</option>
-                    <option value="style-4">Minimalista</option>
-                    <option value="style-5">Technikai</option>
-                    <option value="style-6">Kreatív</option>
-                    <option value="style-7">Menedzseri</option>
-                    <option value="style-8">Akadémiai</option>
-                    <option value="style-9">Junior</option>
-                    <option value="style-10">Aion-X Speciál</option>
+                    <option value="style-10">Aion-X</option>
                 </select>
             </div>
-            <div style="flex:1"><label class="smart-label">Szín</label>
+            <div style="flex:1">
+                <label class="smart-label">Szín</label>
                 <select id="theme-color" onchange="updateTheme()">
                     <option value="#007bb5">Aion Kék</option>
-                    <option value="#e67e22">Norbi Narancs</option>
-                    <option value="#1a1a1a">Éjfél</option>
+                    <option value="#e67e22">Narancs</option>
                     <option value="#27ae60">Smaragd</option>
-                    <option value="#c0392b">Vörös</option>
                 </select>
             </div>
         </div>
 
-        <label class="smart-label">Név & Elérhetőség</label>
+        <label id="lbl-name" class="smart-label">Név / Name / Name</label>
         <input type="text" id="in-name" placeholder="Teljes Név" oninput="updatePreview()">
+        
+        <label id="lbl-phone" class="smart-label">Tel / Phone / Telefon</label>
         <input type="text" id="in-phone" placeholder="Telefonszám" oninput="updatePreview()">
-        <input type="email" id="in-email" placeholder="E-mail cím" oninput="updatePreview()">
+        
+        <label id="lbl-email" class="smart-label">Email</label>
+        <input type="email" id="in-email" placeholder="E-mail" oninput="updatePreview()">
 
-        <label class="smart-label">Cím (Bontva)</label>
+        <label id="lbl-city" class="smart-label">Város / City / Stadt</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-zip" placeholder="Irsz." oninput="updatePreview()" style="width:30%">
             <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
+        
+        <label id="lbl-street" class="smart-label">Utca / Street / Straße</label>
         <div style="display: flex; gap: 5px;">
             <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()" style="width:70%">
             <input type="text" id="in-house" placeholder="Házszám" oninput="updatePreview()" style="width:30%">
         </div>
 
-        <label class="smart-label">Iskolák</label>
+        <label id="lbl-edu-h" class="smart-label">Tanulmányok / Education</label>
         <div id="edu-container"></div>
-        <button class="btn-add" onclick="addEntry('edu')">+ ÚJ ISKOLA</button>
+        <button onclick="addEntry('edu')" style="background:#2ecc71; color:white; border:none; padding:10px; width:100%; border-radius:5px; cursor:pointer;">+ ÚJ ISKOLA</button>
 
-        <label class="smart-label">Múlt</label>
+        <label id="lbl-work-h" class="smart-label">Tapasztalat / Experience</label>
         <div id="work-container"></div>
-        <button class="btn-add" onclick="addEntry('work')">+ ÚJ MUNKAHELY</button>
+        <button onclick="addEntry('work')" style="background:#2ecc71; color:white; border:none; padding:10px; width:100%; border-radius:5px; cursor:pointer;">+ ÚJ MUNKAHELY</button>
 
-        <label class="smart-label">Tartalom</label>
-        <textarea id="in-summary" placeholder="Bemutatkozás..." rows="2" oninput="updatePreview()"></textarea>
-        <textarea id="in-skills" placeholder="Készségek..." rows="2" oninput="updatePreview()"></textarea>
-        
-        <button onclick="window.print()" style="background:#27ae60; color:white; padding:15px; width:100%; border:none; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:20px;">PDF GENERÁLÁSA</button>
+        <label id="lbl-summary" class="smart-label">Bemutatkozás</label>
+        <textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
+
+        <label id="lbl-skills" class="smart-label">Készségek</label>
+        <textarea id="in-skills" rows="2" oninput="updatePreview()"></textarea>
+
+        <button onclick="window.print()" style="background:#007bb5; color:white; padding:20px; width:100%; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:20px;">PDF GENERÁLÁSA</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header">
                 <div class="header-text">
-                    <h1 id="out-name" style="margin:0; font-size: 28px; color: var(--main-color);">NAME</h1>
-                    <div id="out-contact" class="contact-info"></div>
+                    <h1 id="out-name">NAME</h1>
+                    <div id="out-contact" style="font-size:12px; margin-top:10px;"></div>
                 </div>
             </div>
             <div id="main-content"></div>

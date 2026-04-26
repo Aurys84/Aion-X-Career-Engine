@@ -4,62 +4,104 @@ function setMode(lang, btn) {
     currentLang = lang;
     document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    updatePreview(); // Nyelvváltáskor azonnal újrarajzol mindent a célnyelven
+    updateInterface();
+    updatePreview();
 }
 
 async function deepTranslate(text) {
     if (!text) return "";
+    // Ha HU-n vagyunk, nem hívunk API-t a gyorsaságért
+    if (currentLang === 'hu') return text;
     try {
-        // AUTODETECT: Bármilyen nyelven írsz, a kiválasztott (currentLang) nyelvre fordít!
+        // AUTODETECT: Bármit írsz be, a választott currentLang-re fordítja!
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
         return data.responseData.translatedText || text;
     } catch (e) { return text; }
 }
 
-function updatePreview() {
-    // Alapadatok azonnali átvitele (nincs várakozás, hogy látszódjon az írás!)
-    const szin = document.getElementById('theme-color').value;
-    document.documentElement.style.setProperty('--main-color', szin);
-    
-    document.getElementById('out-name').innerText = document.getElementById('in-name').value || "NÉV / NAME";
-    document.getElementById('out-name').style.color = szin;
-    
-    // A többi adatot a háttérben fordítjuk
-    renderContent(szin);
+function loadPhoto(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        document.getElementById('out-photo').src = reader.result;
+        document.getElementById('out-photo-box').style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
 }
 
-async function renderContent(szin) {
+function addEntry(type) {
+    const container = document.getElementById(type + '-container');
+    const div = document.createElement('div');
+    div.className = 'entry-box';
+    div.innerHTML = `
+        <input type="text" placeholder="Cég-Iskola" class="e-main" oninput="updatePreview()">
+        <input type="text" placeholder="Év" class="e-sub" oninput="updatePreview()">
+        <input type="text" placeholder="Pozíció" class="e-desc" oninput="updatePreview()">
+    `;
+    container.appendChild(div);
+}
+
+function updateInterface() {
+    const d = dictionary[currentLang];
+    // A bal oldali vezérlő panel feliratai 3 nyelven (A dictionary-ből)
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
+}
+
+function updatePreview() {
+    const szin = document.getElementById('theme-color').value;
+    document.documentElement.style.setProperty('--main-color', szin);
+
+    // AZONNALI ADATÁTVITEL (Hogy ne akadjon a gépelés!)
+    const n = document.getElementById('in-name').value;
+    document.getElementById('out-name').innerText = n || "NAME";
+    document.getElementById('out-name').style.color = szin;
+    
+    renderAsync(szin);
+}
+
+async function renderAsync(szin) {
     const d = dictionary[currentLang];
     
-    // Cím és Contact adatok
-    const city = await deepTranslate(document.getElementById('in-city').value);
-    const street = await deepTranslate(document.getElementById('in-street').value);
-    const house = document.getElementById('in-house').value;
-    const zip = document.getElementById('in-zip').value;
+    // Cím fordítása
+    const c = await deepTranslate(document.getElementById('in-city').value);
+    const s = await deepTranslate(document.getElementById('in-street').value);
+    const h = document.getElementById('in-house').value;
+    const z = document.getElementById('in-zip').value;
 
     document.getElementById('out-contact').innerHTML = `
         <div><b>${d.phone}</b> ${document.getElementById('in-phone').value}</div>
         <div><b>${d.email}</b> ${document.getElementById('in-email').value}</div>
-        <div><b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+street+' '+house+', '+zip : zip+' '+city+', '+street+' '+house}</div>
+        <div><b>${d.addr}</b> ${currentLang==='hu' ? c+', '+s+' '+h+', '+z : z+' '+c+', '+s+' '+h}</div>
     `;
 
-    let mainHtml = "";
-    
-    // Profil / Summary
-    const sum = document.getElementById('in-summary').value;
-    if(sum) mainHtml += `<h3>${d.summary}</h3><p>${await deepTranslate(sum)}</p>`;
+    let html = "";
+    const sum = await deepTranslate(document.getElementById('in-summary').value);
+    if(sum) html += `<h3>${d.summary}</h3><p><i>${sum}</i></p>`;
 
-    // Jogosítvány
-    const lic = document.getElementById('in-license').value;
-    if(lic) mainHtml += `<h3>${d.license}</h3><p>${await deepTranslate(lic)}</p>`;
+    const lic = await deepTranslate(document.getElementById('in-license').value);
+    if(lic) html += `<h3>${d.license}</h3><p>${lic}</p>`;
 
-    // Készségek
-    const sk = document.getElementById('in-skills').value;
-    if(sk) mainHtml += `<h3>${d.skills}</h3><p>${await deepTranslate(sk)}</p>`;
+    for (let type of ['edu', 'work']) {
+        let items = "";
+        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
+        for (let box of boxes) {
+            const m = await deepTranslate(box.querySelector('.e-main').value);
+            const sub = box.querySelector('.e-sub').value;
+            const desc = await deepTranslate(box.querySelector('.e-desc').value);
+            if(m || desc) items += `<div style="margin-bottom:10px"><b>${m}</b> (${sub})<br><span style="color:${szin}">${desc}</span></div>`;
+        }
+        if(items) html += `<h3>${d[type]}</h3>` + items;
+    }
 
-    document.getElementById('main-content').innerHTML = mainHtml;
+    const sk = await deepTranslate(document.getElementById('in-skills').value);
+    if(sk) html += `<h3>${d.skills}</h3><p>${sk}</p>`;
+
+    document.getElementById('main-content').innerHTML = html;
 }
 
-window.onload = updatePreview;
-
+function updateStyle() { document.body.className = document.getElementById('style-select').value; }
+function updateTheme() { updatePreview(); }
+window.onload = () => { updateInterface(); updatePreview(); };

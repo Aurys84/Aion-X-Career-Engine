@@ -32,24 +32,20 @@ function updatePreview() {
 
 async function renderAsyncContent(szin) {
     const d = dictionary[currentLang];
-    const zip = document.getElementById('in-zip').value || "";
-    const city = await deepTranslate(document.getElementById('in-city').value || "");
-    const sName = document.getElementById('in-street-name').value || "";
-    const house = document.getElementById('in-house').value || "";
-    const phone = document.getElementById('in-phone').value || "";
-    const email = document.getElementById('in-email').value || "";
+    const city = await deepTranslate(document.getElementById('in-city').value);
+    const sName = document.getElementById('in-street-name').value;
+    const phone = document.getElementById('in-phone').value;
+    const email = document.getElementById('in-email').value;
 
     const sTypeHU = document.getElementById('in-street-type').value;
     const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
-    const fullStreet = sName ? sName + " " + sType : "";
-    const finalAddr = [city, fullStreet, house, zip].filter(x => x).join(", ");
+    const addr = [city, sName + " " + sType, document.getElementById('in-house').value, document.getElementById('in-zip').value].filter(x => x && x.trim() !== "").join(", ");
 
-    // EMAIL-PHONE FIX: Blokkosítva, hogy ne folyjon össze
     document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px; line-height: 1.4;">
+        <div style="margin-top:10px; line-height: 1.5;">
             ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
             ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
-            ${finalAddr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + finalAddr + '</div>' : ''}
+            ${addr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + addr + '</div>' : ''}
         </div>
     `;
 
@@ -60,29 +56,20 @@ async function renderAsyncContent(szin) {
         html += `<h3>${d.summary}</h3><p>${sum}</p>`;
     }
 
-    // DINAMIKUS CIKLUS FIX: Kényszerített renderelés
-    const types = ['edu', 'work'];
-    for (const type of types) {
+    // DINAMIKUS MEZŐK FIX
+    for (const type of ['edu', 'work']) {
         let items = "";
-        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
+        const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
         for (const box of boxes) {
-            const mRaw = box.querySelector('.e-main').value;
-            const subV = box.querySelector('.e-sub').value;
-            const descRaw = box.querySelector('.e-desc').value;
-            
-            const m = await deepTranslate(mRaw);
-            const desc = await deepTranslate(descRaw);
-            
-            if(m || subV || desc) {
-                items += `<div style="margin-bottom:12px">
-                    <b>${m}</b> ${subV ? '('+subV+')' : ''}<br>
-                    <span style="font-size:13px; color:#666;">${desc}</span>
-                </div>`;
+            const m = await deepTranslate(box.querySelector('.e-main').value);
+            const sub = box.querySelector('.e-sub').value;
+            const desc = await deepTranslate(box.querySelector('.e-desc').value);
+            if (m || sub || desc) {
+                items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
             }
         }
-        if(items) html += `<h3>${d[type]}</h3>` + items;
+        if (items) html += `<h3>${d[type]}</h3>` + items;
     }
-
     document.getElementById('main-content').innerHTML = html;
 }
 
@@ -98,12 +85,11 @@ function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
     div.innerHTML = `
-        <input type="text" class="e-main" placeholder="Intézmény/Cég" oninput="updatePreview()">
-        <input type="text" class="e-sub" placeholder="Időtartam" oninput="updatePreview()">
-        <input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">
+        <input type="text" class="e-main" placeholder="Iskola/Cég" oninput="updatePreview()">
+        <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
+        <input type="text" class="e-desc" placeholder="Részletek" oninput="updatePreview()">
     `;
     document.getElementById(type + '-container').appendChild(div);
-    updatePreview();
 }
 
 function loadPhoto(event) {

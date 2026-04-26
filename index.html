@@ -3,31 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion-X Global Control v1.4.0</title>
+    <title>Aion-X Global Control v1.5.0</title>
     <style>
         :root { --main-color: #3498db; }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; }
         
         /* Editor Panel */
         .editor-side { width: 35%; background: #1a1a1a; color: #ecf0f1; padding: 25px; overflow-y: auto; border-right: 4px solid var(--main-color); }
-        .control-group { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+        .control-group { margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        label { display: block; margin-bottom: 4px; font-weight: bold; color: #3498db; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
         input, textarea, select { width: 100%; padding: 10px; background: #2d2d2d; border: 1px solid #444; color: white; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
         .lang-btns { display: flex; gap: 4px; margin-bottom: 10px; }
         .lang-btns button { flex: 1; padding: 8px; cursor: pointer; border: none; border-radius: 4px; background: #333; color: #ccc; font-weight: bold; }
         .active-lang { background: var(--main-color) !important; color: white !important; }
+        .ats-box { background: #2c3e50; border-left: 4px solid #f1c40f; padding: 10px; margin-top: 15px; font-size: 12px; }
         .print-btn { background: #27ae60; color: white; padding: 15px; width: 100%; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
         /* Preview Side */
         .preview-side { width: 65%; display: flex; justify-content: center; padding: 30px; overflow-y: auto; background: #525659; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; transition: all 0.3s; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; color: #333; }
         
-        /* Dinamikus Stílusok */
-        .layout-modern .cv-body { display: flex; gap: 30px; }
-        .layout-modern .side-col { width: 35%; background: #f9f9f9; padding: 15px; border-radius: 4px; }
-        .layout-classic .cv-body { display: block; }
-        .layout-classic .side-col { width: 100%; margin-top: 20px; border-top: 1px solid #eee; }
-
         .cv-header { border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
         #photo-preview { width: 120px; height: 150px; object-fit: cover; border: 1px solid #ddd; display: none; }
         .contact-info { font-size: 12px; color: #666; margin-top: 5px; }
@@ -41,10 +36,11 @@
         }
     </style>
 </head>
-<body class="layout-modern">
+<body>
 
     <div class="editor-side">
-        <h1 style="color: #3498db; font-size: 20px;">Global Control</h1>
+        <h1 style="color: #3498db; font-size: 20px; margin-bottom: 0;">Global Control</h1>
+        <p style="font-size: 9px; color: #555; margin-bottom: 15px;">v1.5.0 - ATS COMPLIANT ENGINE</p>
         
         <div class="control-group">
             <label id="lbl-lang">Language</label>
@@ -56,20 +52,12 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-style">Layout Style</label>
-            <select id="layout-select" onchange="updateLayout()">
-                <option value="layout-modern">Modern (2 Column)</option>
-                <option value="layout-classic">Classic (Standard)</option>
-            </select>
-        </div>
-
-        <div class="control-group">
-            <label id="lbl-theme">Theme Color</label>
+            <label id="lbl-theme">System Color (10 Styles)</label>
             <select id="theme-color" onchange="updateTheme()"></select>
         </div>
 
         <div class="control-group">
-            <label id="lbl-photo">Professional Photo</label>
+            <label id="lbl-photo">Photo</label>
             <input type="file" accept="image/*" onchange="loadPhoto(event)">
         </div>
 
@@ -78,18 +66,9 @@
             <input type="text" id="in-name" oninput="updatePreview()">
         </div>
 
-        <div class="control-group">
-            <label id="lbl-phone">Phone</label>
-            <input type="text" id="in-phone" oninput="updatePreview()">
-        </div>
-        <div class="control-group">
-            <label id="lbl-email">Email</label>
-            <input type="text" id="in-email" oninput="updatePreview()">
-        </div>
-        <div class="control-group">
-            <label id="lbl-address">Address</label>
-            <input type="text" id="in-address" oninput="updatePreview()">
-        </div>
+        <div class="control-group"><label id="lbl-phone">Phone</label><input type="text" id="in-phone" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-email">Email</label><input type="text" id="in-email" oninput="updatePreview()"></div>
+        <div class="control-group"><label id="lbl-address">Address</label><input type="text" id="in-address" oninput="updatePreview()"></div>
 
         <div class="control-group">
             <label id="lbl-summary">Summary</label>
@@ -97,28 +76,30 @@
         </div>
 
         <div class="control-group">
-            <label id="lbl-exp">Experience</label>
+            <label id="lbl-exp">Work Experience</label>
             <textarea id="in-exp" rows="4" oninput="updatePreview()"></textarea>
+        </div>
+
+        <div class="ats-box">
+            <strong id="ats-title" style="color: #f1c40f;">ATS TIP:</strong>
+            <p id="ats-text" style="margin: 5px 0 0; line-height: 1.3;"></p>
         </div>
 
         <button class="print-btn" onclick="window.print()" id="btn-print">PRINT PDF</button>
     </div>
 
     <div class="preview-side">
-        <div class="cv-paper" id="cv-target">
+        <div class="cv-paper">
             <div class="cv-header" id="cv-header">
                 <img id="photo-preview" src="">
                 <div>
-                    <h1 id="out-name" style="margin:0;">Name</h1>
+                    <h1 id="out-name" style="margin:0; font-size: 28px;">Name</h1>
                     <div class="contact-info" id="out-contact"></div>
                 </div>
             </div>
-            <div class="cv-body">
-                <div class="main-col">
-                    <p id="out-summary" style="font-style:italic; margin-bottom:15px;"></p>
-                    <div id="main-content"></div>
-                </div>
-                <div class="side-col" id="side-content"></div>
+            <div class="main-col">
+                <p id="out-summary" style="font-style:italic; margin-bottom:15px; color: #555;"></p>
+                <div id="main-content"></div>
             </div>
         </div>
     </div>
@@ -126,26 +107,29 @@
     <script>
         const dictionary = {
             hu: { 
-                lang: "Nyelv", style: "Elrendezés", theme: "Rendszer Szín", name: "Teljes Név", phone: "Telefonszám", 
-                email: "E-mail cím", address: "Lakcím", summary: "Bemutatkozás", exp: "Tapasztalat", print: "MENTÉS PDF-KÉNT",
-                layouts: ["Modern (2 oszlopos)", "Klasszikus (Sima)"],
+                lang: "Nyelv", theme: "Rendszer Szín", name: "Teljes Név", phone: "Telefonszám", 
+                email: "E-mail cím", address: "Lakcím", summary: "Bemutatkozás", exp: "Tapasztalat", 
+                print: "MENTÉS PDF-KÉNT", photo: "Fotó feltöltése",
+                atsTitle: "ATS TIPP:", atsText: "A robotok imádják a kulcsszavakat! Használj konkrét technológiákat és számokat a tapasztalatnál.",
                 colors: ["Aion Kék", "Norbi Narancs", "Mélyfekete", "Smaragd", "Vörös", "Lila", "Arany", "Ezüst", "Türkiz", "Pala"]
             },
             en: { 
-                lang: "Language", style: "Layout", theme: "System Color", name: "Full Name", phone: "Phone Number", 
-                email: "Email Address", address: "Home Address", summary: "Summary", exp: "Experience", print: "SAVE TO PDF",
-                layouts: ["Modern (2 columns)", "Classic (Standard)"],
+                lang: "Language", theme: "System Color", name: "Full Name", phone: "Phone Number", 
+                email: "Email Address", address: "Home Address", summary: "Summary", exp: "Experience", 
+                print: "SAVE TO PDF", photo: "Upload Photo",
+                atsTitle: "ATS TIP:", atsText: "Robots love keywords! Use specific technologies and numbers in your experience section.",
                 colors: ["Aion Blue", "Norbi Orange", "Deep Black", "Emerald", "Red", "Purple", "Gold", "Silver", "Turquoise", "Slate"]
             },
             de: { 
-                lang: "Sprache", style: "Layout", theme: "Systemfarbe", name: "Vollständiger Name", phone: "Telefonnummer", 
-                email: "E-Mail-Adresse", address: "Adresse", summary: "Kurzprofil", exp: "Berufserfahrung", print: "ALS PDF SPEICHERN",
-                layouts: ["Modern (2 Spalten)", "Klassisch (Standard)"],
+                lang: "Sprache", theme: "Systemfarbe", name: "Vollständiger Name", phone: "Telefonnummer", 
+                email: "E-Mail-Adresse", address: "Adresse", summary: "Kurzprofil", exp: "Berufserfahrung", 
+                print: "ALS PDF SPEICHERN", photo: "Foto hochladen",
+                atsTitle: "ATS TIPP:", atsText: "Roboter lieben Keywords! Verwenden Sie spezifische Technologien und Zahlen in Ihrem Lebenslauf.",
                 colors: ["Aion Blau", "Norbi Orange", "Tiefschwarz", "Smaragd", "Rot", "Lila", "Gold", "Silber", "Türkis", "Schiefer"]
             }
         };
 
-        const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#bdc3c7", "#1abc9c", "#34495e"];
+        const colorValues = ["#3498db", "#e67e22", "#1a1a1a", "#27ae60", "#c0392b", "#8e44ad", "#f1c40f", "#95a5a6", "#1abc9c", "#34495e"];
         let currentLang = 'hu';
 
         function changeLang(lang) {
@@ -153,12 +137,11 @@
             document.querySelectorAll('.lang-btns button').forEach(btn => btn.classList.remove('active-lang'));
             document.getElementById('btn-' + lang).classList.add('active-lang');
             
-            const fields = ['lang', 'style', 'theme', 'name', 'phone', 'email', 'address', 'summary', 'exp'];
+            const fields = ['lang', 'theme', 'name', 'phone', 'email', 'address', 'summary', 'exp', 'photo'];
             fields.forEach(f => document.getElementById('lbl-' + f).innerText = dictionary[lang][f]);
             document.getElementById('btn-print').innerText = dictionary[lang].print;
-
-            const styleSelect = document.getElementById('layout-select');
-            Array.from(styleSelect.options).forEach((opt, i) => opt.innerText = dictionary[lang].layouts[i]);
+            document.getElementById('ats-title').innerText = dictionary[lang].atsTitle;
+            document.getElementById('ats-text').innerText = dictionary[lang].atsText;
 
             const colorSelect = document.getElementById('theme-color');
             colorSelect.innerHTML = "";
@@ -167,11 +150,6 @@
                 colorSelect.appendChild(o);
             });
             updatePreview();
-        }
-
-        function updateLayout() {
-            const layout = document.getElementById('layout-select').value;
-            document.body.className = layout;
         }
 
         function loadPhoto(e) {
@@ -189,18 +167,14 @@
 
         function updatePreview() {
             document.getElementById('out-name').innerText = document.getElementById('in-name').value || dictionary[currentLang].name;
-            
             const phone = document.getElementById('in-phone').value;
             const email = document.getElementById('in-email').value;
             const address = document.getElementById('in-address').value;
-            
-            // Sorrend és ikonok nélkül, tisztán, fordítva
             let contactHtml = "";
             if(phone) contactHtml += `<span>${phone}</span> | `;
             if(email) contactHtml += `<span>${email}</span> | `;
             if(address) contactHtml += `<span>${address}</span>`;
             document.getElementById('out-contact').innerHTML = contactHtml;
-
             document.getElementById('out-summary').innerText = document.getElementById('in-summary').value;
             document.getElementById('main-content').innerHTML = `<h3>${dictionary[currentLang].exp}</h3><div class="content-block">${document.getElementById('in-exp').value}</div>`;
         }

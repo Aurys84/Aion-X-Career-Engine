@@ -2,17 +2,23 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v10.0</title>
+    <title>Aion-X Dashboard v11.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
     <div class="editor-side">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
             <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
             <h2 id="lbl-title" style="color:var(--main-color); margin:0; font-size:18px;">AION-X PANEL</h2>
         </div>
+
+        <div class="ats-tips" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:20px; border-left:4px solid #f1c40f; font-size:11px;">
+            <b style="color:#f1c40f;">🚀 GIGA ATS TIPPEK:</b><br>
+            • Használj kulcsszavakat (SAP, Minitab)!<br>
+            • Fotó: Világos háttér, profi öltözet.
+        </div>
         
-        <div class="lang-grid">
+        <div class="lang-grid" style="display: flex; gap: 5px; margin-bottom: 20px;">
             <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
             <button class="btn-lang" onclick="setMode('en', this)">EN</button>
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
@@ -29,7 +35,18 @@
                 </select>
             </div>
             <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
-                <input type="color" id="theme-color" value="#007bb5" oninput="updateTheme()" style="height:40px;">
+                <select id="theme-color" onchange="updateTheme()">
+                    <option value="#007bb5">Aion Kék</option>
+                    <option value="#e67e22">Norbi Narancs</option>
+                    <option value="#27ae60">Smaragd</option>
+                    <option value="#c0392b">Vörös</option>
+                    <option value="#8e44ad">Lila</option>
+                    <option value="#1a1a1a">Fekete</option>
+                    <option value="#2c3e50">Pala</option>
+                    <option value="#d35400">Tégla</option>
+                    <option value="#16a085">Türkiz</option>
+                    <option value="#f39c12">Arany</option>
+                </select>
             </div>
         </div>
 
@@ -39,44 +56,26 @@
         <label class="smart-label" id="lbl-name">NÉV</label>
         <input type="text" id="in-name" oninput="updatePreview()">
 
-        <label class="smart-label" id="lbl-phone">TEL</label>
-        <input type="text" id="in-phone" oninput="updatePreview()">
-
-        <label class="smart-label" id="lbl-email">EMAIL</label>
-        <input type="email" id="in-email" oninput="updatePreview()">
-
         <label class="smart-label" id="lbl-city">IRSZ / VÁROS / UTCA / HÁZ</label>
         <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" style="width:30%" oninput="updatePreview()">
-            <input type="text" id="in-city" style="width:70%" oninput="updatePreview()">
+            <input type="text" id="in-zip" placeholder="9757" oninput="updatePreview()" style="width:30%">
+            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
         </div>
         <div style="display: flex; gap: 5px; margin-top:5px;">
-            <input type="text" id="in-street" style="width:70%" oninput="updatePreview()">
-            <input type="text" id="in-house" style="width:30%" oninput="updatePreview()">
+            <input type="text" id="in-street" placeholder="Utca" oninput="updatePreview()" style="width:70%">
+            <input type="text" id="in-house" placeholder="68" oninput="updatePreview()" style="width:30%">
         </div>
 
-        <label class="smart-label" id="lbl-summary">PROFIL</label>
-        <textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
+        <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
+        <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label><input type="text" id="in-license" oninput="updatePreview()">
+        
+        <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label><div id="edu-container"></div>
+        <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
 
-        <label class="smart-label" id="lbl-license">JOGOSÍTVÁNY</label>
-        <input type="text" id="in-license" oninput="updatePreview()">
-
-        <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label>
-        <div id="edu-container"></div>
-        <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
-
-        <label class="smart-label" id="lbl-work">TAPASZTALAT</label>
-        <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
-
-        <label class="smart-label" id="lbl-skills">KÉSZSÉGEK</label>
-        <textarea id="in-skills" oninput="updatePreview()"></textarea>
-
-        <div class="ats-tips" style="background:#1a1a1a; padding:12px; border-radius:8px; margin-top:15px; border-left:4px solid #f1c40f; font-size:11px;">
-            <b style="color:#f1c40f;">🚀 GIGA ATS TIPPEK:</b><br>
-            • Nevezd meg a szoftvereket (SAP, Minitab)!<br>
-            • Pozíció: Mindig iparági standardot írj!
-        </div>
+        <label class="smart-label" id="lbl-work">TAPASZTALAT</label><div id="work-container"></div>
+        <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKA</button>
 
         <button onclick="window.print()" style="background:var(--main-color); color:white; padding:15px; width:100%; border:none; margin-top:20px; font-weight:bold; cursor:pointer; border-radius:6px;">PDF GENERÁLÁSA</button>
     </div>
@@ -93,11 +92,8 @@
                 </div>
             </div>
             <div id="main-content"></div>
-            <div style="position:absolute; bottom:15px; right:15px; opacity:0.1; font-weight:bold;">AION-X MATRIXLB</div>
         </div>
     </div>
-
-    <script src="dictionary.js"></script>
-    <script src="engine.js"></script>
+    <script src="dictionary.js"></script><script src="engine.js"></script>
 </body>
 </html>

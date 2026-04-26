@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v18.0</title>
+    <title>Aion-X Dashboard v18.1</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -74,7 +74,7 @@
                 <input type="text" id="in-street-name" placeholder="Petőfi" oninput="updatePreview()">
             </div>
             <div style="flex:1">
-                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
+                <label class="smart-label" id="lbl-type" style="padding-right: 15px;">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street / straße</option>
                     <option value="út">út / road / straße</option>
@@ -104,7 +104,7 @@
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header" style="display:flex; gap:25px;">
-                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" src="" style="width:100%; height:100%; object-fit:cover;"></div>
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
             </div>
             <div id="main-content"></div>

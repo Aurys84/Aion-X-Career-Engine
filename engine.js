@@ -4,14 +4,13 @@ function setMode(lang, btn) {
     currentLang = lang;
     document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    updateInterface(); // Frissíti az ATS tippeket és a label-eket
+    updateInterface();
     updatePreview(); 
 }
 
 async function deepTranslate(text) {
     if (!text) return "";
     try {
-        // AUTODETECT: Bármit írsz be, a célnyelvre (currentLang) teszi!
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=autodetect|${currentLang}`);
         const data = await res.json();
         return data.responseData.translatedText || text;
@@ -20,37 +19,63 @@ async function deepTranslate(text) {
 
 function updateInterface() {
     const d = dictionary[currentLang];
-    // Ez frissíti a bal oldali sötét panelen az ATS tippeket és a label-eket
     for (let key in d) {
         const el = document.getElementById('lbl-' + key);
         if (el) el.innerText = d[key];
     }
 }
 
-async function updatePreview() {
+function updatePreview() {
     const szin = document.getElementById('theme-color').value;
-    const d = dictionary[currentLang];
     document.documentElement.style.setProperty('--main-color', szin);
     
-    // NÉV: Fordítás autodetect-tel (Hogy ha angolul írod, németre fordítsa, stb.)
+    // NÉV: Ha angol/német, megcseréli, ha magyar, visszaállítja
     const rawName = document.getElementById('in-name').value;
-    const trName = await deepTranslate(rawName);
-    document.getElementById('out-name').innerText = trName.toUpperCase() || "NAME";
+    let finalName = rawName;
+    if (rawName.trim().includes(" ")) {
+        let parts = rawName.split(" ");
+        finalName = (currentLang !== 'hu') ? parts[1] + " " + parts[0] : parts[0] + " " + parts[1];
+    }
+    document.getElementById('out-name').innerText = finalName.toUpperCase() || "NAME";
     document.getElementById('out-name').style.color = szin;
 
-    // CÍM ÉS KAPCSOLAT
+    renderAsyncContent(szin);
+}
+
+async function renderAsyncContent(szin) {
+    const d = dictionary[currentLang];
+    const zip = document.getElementById('in-zip').value;
     const city = await deepTranslate(document.getElementById('in-city').value);
     const street = await deepTranslate(document.getElementById('in-street').value);
-    const zip = document.getElementById('in-zip').value;
+    const house = document.getElementById('in-house').value;
 
     document.getElementById('out-contact').innerHTML = `
         <div style="margin-top:10px;">
-            <b>${d.addr}</b> ${currentLang === 'hu' ? city + ', ' + street + ' ' + zip : zip + ' ' + city + ', ' + street}
+            <b>${d.addr}</b> ${currentLang === 'hu' ? city+', '+street+' '+house+', '+zip : zip+' '+city+', '+street+' '+house}
         </div>
     `;
 
-    // TÖBBI TARTALOM (Summary, Work, Edu) fordítása...
-    renderContent(szin);
+    let html = "";
+    const sum = await deepTranslate(document.getElementById('in-summary').value);
+    if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
+
+    // ... (Edu és Work ciklusok)
+    document.getElementById('main-content').innerHTML = html;
 }
 
-// ... a loadPhoto, addEntry és a többi marad
+function loadPhoto(event) {
+    const reader = new FileReader();
+    reader.onload = () => { document.getElementById('out-photo').src = reader.result; document.getElementById('out-photo-box').style.display = 'block'; };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function addEntry(type) {
+    const div = document.createElement('div');
+    div.className = 'entry-box';
+    div.innerHTML = `<input type="text" class="e-main" placeholder="Cég/Iskola" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">`;
+    document.getElementById(type + '-container').appendChild(div);
+}
+
+function updateStyle() { document.body.className = document.getElementById('style-select').value; }
+function updateTheme() { updatePreview(); }
+window.onload = () => { updateInterface(); updatePreview(); };

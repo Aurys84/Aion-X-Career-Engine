@@ -2,10 +2,10 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v68.0 - A&N Visual</title>
+    <title>Career-Engine v69.0 - A&N Visual</title>
     <style>
         :root { --main-color: #007bb5; --bg: #0d0d0d; }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; }
         .editor-side { width: 42%; padding: 25px; overflow-y: auto; background: #111; border-right: 3px solid var(--main-color); }
         .preview-side { width: 58%; background: #333; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
         .logo-area { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
@@ -24,16 +24,30 @@
         .entry-box { background: #151515; padding: 15px; margin-top: 10px; border-left: 4px solid var(--main-color); border-radius: 4px; }
         .add-btn { background: #27ae60; color: white; width: 100%; padding: 12px; border: none; margin-top: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .print-btn { background: var(--main-color); color: white; width: 100%; padding: 18px; border: none; margin-top: 25px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 6px; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; transition: 0.3s; }
+        
+        /* ALAP PAPÍR DESIGN */
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; position: relative; }
         .cv-header { display: flex; gap: 20px; border-bottom: 2px solid var(--main-color); padding-bottom: 20px; margin-bottom: 20px; }
         #out-photo { width: 130px; height: 160px; object-fit: cover; border: 1px solid #ccc; }
         h1#out-name { margin: 0; color: var(--main-color); font-size: 32px; }
         h3 { border-bottom: 1px solid #eee; color: var(--main-color); padding-bottom: 5px; margin-top: 25px; text-transform: uppercase; }
 
+        /* A 10 STÍLUS KŐKEMÉNY FIXÁLÁSA */
+        body.style-1 .cv-paper { border-top: 20px solid var(--main-color); }
+        body.style-2 .cv-header { flex-direction: column; text-align: center; align-items: center; }
+        body.style-3 .cv-header { flex-direction: row-reverse; }
+        body.style-4 h3 { background: #f4f4f4; padding: 10px; border-left: 10px solid var(--main-color); border-bottom: none; }
+        body.style-5 .cv-paper { font-family: 'Georgia', serif; }
+        body.style-6 .cv-header { border-bottom: 10px double var(--main-color); }
+        body.style-7 .cv-paper { background: #fafafa; border: 1px solid #ddd; }
+        body.style-8 #out-name { letter-spacing: 8px; text-align: center; width: 100%; }
+        body.style-9 .cv-header { align-items: flex-end; border-bottom-width: 5px; }
+        body.style-10 .cv-paper::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 100%; background: var(--main-color); }
+
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
     </style>
 </head>
-<body class="style-10">
+<body class="style-1">
 
 <div class="editor-side">
     <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
@@ -220,7 +234,7 @@
                 <label class="smart-label dyn-deg">${d.v_deg}</label>
                 <select class="e-db" onchange="updatePreview()"></select>
                 <label class="smart-label dyn-other">${d.v_other}</label>
-                <input type="text" class="e-other" placeholder="Egyéb végzettség / Other degree / Sonstiger Abschluss" oninput="updatePreview()">
+                <input type="text" class="e-other" placeholder="Egyéb végzettség / Other degree / Sonstiger Abschluss">
             `;
             updateSelect(div.querySelector('.e-db'), careerDB.eduLevels);
         } else {
@@ -229,10 +243,10 @@
                 <input type="text" class="e-sub" placeholder="Időtartam / Duration / Dauer">
                 <label class="smart-label dyn-job">${d.v_job}</label>
                 <select class="e-job" onchange="updatePreview()"></select>
-                <input type="text" class="e-job-other" placeholder="Egyéb foglalkozás / Other job / Sonstiger Beruf" oninput="updatePreview()">
+                <input type="text" class="e-job-other" placeholder="Egyéb foglalkozás / Other job / Sonstiger Beruf">
                 <label class="smart-label dyn-pos">${d.v_pos}</label>
                 <select class="e-pos" onchange="updatePreview()"></select>
-                <input type="text" class="e-pos-other" placeholder="Egyéb beosztás / Other position / Sonstige Position" oninput="updatePreview()">
+                <input type="text" class="e-pos-other" placeholder="Egyéb beosztás / Other position / Sonstige Position">
             `;
             updateSelect(div.querySelector('.e-job'), careerDB.jobs);
             updateSelect(div.querySelector('.e-pos'), careerDB.positions);
@@ -251,7 +265,7 @@
         });
         for(let i=1; i<=10; i++) {
             let b = document.createElement('button'); b.className = 'style-btn'; b.innerText = i;
-            b.onclick = () => { document.body.className = 'style-' + i; updatePreview(); };
+            b.onclick = () => { document.body.className = 'style-' + i; };
             document.getElementById('style-picker').appendChild(b);
         }
         updateInterface();

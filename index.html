@@ -2,253 +2,45 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career-Engine v45.0 - A&N Visual</title>
+    <title>Career-Engine v46.0 - A&N Visual</title>
     <style>
-        :root { --main-color: #007bb5; --bg-dark: #0f0f0f; --panel-bg: #1c1c1c; }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Inter', 'Segoe UI', sans-serif; background: #000; color: #eee; }
-        .editor-side { width: 40%; padding: 20px; overflow-y: auto; background: var(--bg-dark); border-right: 2px solid var(--main-color); }
-        .preview-side { width: 60%; background: #333; display: flex; justify-content: center; padding: 20px; overflow-y: auto; }
-        .logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        :root { --main-color: #007bb5; --bg: #111; --panel: #1a1a1a; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
+        
+        /* EDITOR SIDE */
+        .editor-side { width: 40%; padding: 25px; overflow-y: auto; background: var(--bg); border-right: 3px solid var(--main-color); }
+        .logo-area { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .brand-circle { width: 45px; height: 45px; background: var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; border: 2px solid #fff; }
-        .info-panel { background: #1a2a3a; padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #f1c40f; font-size: 12px; }
-        .lang-grid { display: flex; gap: 5px; margin-bottom: 15px; }
-        .btn-lang { flex: 1; padding: 10px; border: none; background: #222; color: white; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        
+        .info-panel { background: #1a3a5a; padding: 15px; border-radius: 8px; margin-bottom: 12px; border-left: 5px solid #f1c40f; font-size: 13px; }
+        .guide { background: #2c3e50; border-left-color: var(--main-color); }
+
+        .lang-grid { display: flex; gap: 8px; margin-bottom: 20px; }
+        .btn-lang { flex: 1; padding: 12px; border: none; background: #333; color: white; cursor: pointer; border-radius: 4px; font-weight: bold; }
         .btn-lang.active { background: var(--main-color); box-shadow: 0 0 10px var(--main-color); }
-        .picker-row { margin-bottom: 15px; }
-        .color-grid, .style-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 5px; }
-        .color-btn { width: 100%; height: 25px; cursor: pointer; border-radius: 3px; border: 1px solid #444; }
-        .style-btn { padding: 6px; background: #222; color: white; border: 1px solid #444; cursor: pointer; border-radius: 3px; font-size: 12px; }
-        .smart-label { display: block; margin-top: 12px; font-size: 10px; font-weight: bold; color: var(--main-color); text-transform: uppercase; }
-        input, textarea, select { width: 100%; padding: 10px; margin-top: 4px; background: var(--panel-bg); border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
-        .input-group { display: flex; gap: 8px; }
-        .entry-box { background: #151515; padding: 12px; margin-top: 10px; border-radius: 5px; border: 1px solid #333; border-left: 3px solid var(--main-color); }
-        .add-btn { background: #27ae60; color: white; width: 100%; padding: 10px; border: none; margin-top: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .print-btn { background: var(--main-color); color: white; width: 100%; padding: 15px; border: none; margin-top: 20px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 5px; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #222; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; }
+
+        .picker-row { margin-bottom: 15px; padding: 10px; background: #151515; border-radius: 8px; }
+        .color-grid, .style-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 5px; }
+        .color-btn { width: 100%; height: 30px; cursor: pointer; border-radius: 4px; border: 1px solid #444; }
+        .style-btn { padding: 8px; background: #222; color: white; border: 1px solid #444; cursor: pointer; border-radius: 4px; font-weight: bold; }
+
+        .smart-label { display: block; margin-top: 15px; font-size: 11px; font-weight: bold; color: var(--main-color); text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; background: var(--panel); border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
+        .input-group { display: flex; gap: 10px; }
+
+        .entry-box { background: #151515; padding: 15px; margin-top: 10px; border-left: 4px solid var(--main-color); border-radius: 4px; }
+        .add-btn { background: #27ae60; color: white; width: 100%; padding: 12px; border: none; margin-top: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .print-btn { background: var(--main-color); color: white; width: 100%; padding: 18px; border: none; margin-top: 25px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 6px; }
+
+        /* PREVIEW SIDE */
+        .preview-side { width: 60%; background: #444; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
+        
         .cv-header { display: flex; gap: 20px; border-bottom: 2px solid var(--main-color); padding-bottom: 20px; margin-bottom: 20px; }
-        #out-photo { width: 120px; height: 150px; object-fit: cover; }
-        h1#out-name { margin: 0; color: var(--main-color); font-size: 30px; text-transform: uppercase; }
-        h3 { border-bottom: 1px solid #ddd; color: var(--main-color); padding-bottom: 5px; margin-top: 20px; font-size: 18px; text-transform: uppercase; }
-        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
-        /* Style variation examples */
-        .style-2 .cv-header { flex-direction: column; align-items: center; text-align: center; }
-        .style-3 #main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    </style>
-</head>
-<body class="style-10">
+        #out-photo { width: 130px; height: 160px; object-fit: cover; border: 1px solid #ccc; }
+        h1#out-name { margin: 0; color: var(--main-color); font-size: 32px; }
+        h3 { border-bottom: 1px solid #eee; color: var(--main-color); padding-bottom: 5px; margin-top: 25px; text-transform: uppercase; }
 
-<div class="editor-side">
-    <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
-    
-    <div class="info-panel"><b id="lbl-atsTitle">ATS EXPERT ADVICE:</b><div id="lbl-atsTips"></div></div>
-    <div class="info-panel" style="background:#2c3e50; border-left-color: var(--main-color);"><b id="lbl-guideTitle">USER GUIDE:</b><p id="lbl-guide"></p></div>
-
-    <div class="lang-grid">
-        <button class="btn-lang active" onclick="setMode('hu', this)">MAGYAR (HU)</button>
-        <button class="btn-lang" onclick="setMode('en', this)">ENGLISH (EN)</button>
-        <button class="btn-lang" onclick="setMode('de', this)">DEUTSCH (DE)</button>
-    </div>
-
-    <div class="picker-row"><label class="smart-label">COLORS</label><div class="color-grid" id="color-picker"></div></div>
-    <div class="picker-row"><label class="smart-label">STYLES</label><div class="style-grid" id="style-picker"></div></div>
-
-    <label class="smart-label">FOTÓ</label><input type="file" onchange="loadPhoto(event)">
-
-    <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-fName">FIRST NAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
-        <div style="flex:1"><label class="smart-label" id="lbl-lName">LAST NAME</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
-    </div>
-
-    <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-city">CITY</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-        <div style="flex:1"><label class="smart-label" id="lbl-street">STREET</label><input type="text" id="in-street" oninput="updatePreview()"></div>
-    </div>
-    
-    <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-type">TYPE</label>
-            <select id="in-street-type" onchange="updatePreview()">
-                <option value="utca">utca / street / straße</option>
-                <option value="út">út / road / straße</option>
-                <option value="tér">tér / square / platz</option>
-            </select>
-        </div>
-        <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
-    </div>
-
-    <label class="smart-label" id="lbl-phone">PHONE</label><input type="text" id="in-phone" oninput="updatePreview()">
-    <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-    <label class="smart-label" id="lbl-summary">PROFILE SUMMARY</label><textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
-
-    <div id="edu-area"><h3 id="lbl-eduHeader">EDUCATION</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ADD EDUCATION</button></div>
-    <div id="work-area"><h3 id="lbl-workHeader">EXPERIENCE</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ADD EXPERIENCE</button></div>
-
-    <button onclick="window.print()" class="print-btn" id="lbl-printBtn">GENERATE PDF</button>
-</div>
-
-<div class="preview-side">
-    <div class="cv-paper" id="cv-paper">
-        <div class="cv-header">
-            <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #eee; overflow:hidden;"><img id="out-photo" style="width:100%;"></div>
-            <div><h1 id="out-name">NAME</h1><div id="out-contact" style="margin-top:10px; font-size:14px; color:#666;"></div></div>
-        </div>
-        <div id="main-content"></div>
-    </div>
-</div>
-
-<script>
-    const db = {
-        edu: [
-            {hu:"Általános iskola",en:"Primary School",de:"Grundschule"},{hu:"Gimnáziumi érettségi",en:"High School Diploma",de:"Abitur"},{hu:"Szakmunkás bizonyítvány",en:"Vocational Certificate",de:"Berufsabschluss"},{hu:"Technikusi vizsga",en:"Technical Certificate",de:"Technikerabschluss"},{hu:"OKJ szakképesítés",en:"Vocational Qualification",de:"Berufliche Qualifikation"},{hu:"Főiskolai diploma (BSc)",en:"Bachelor's Degree",de:"Bachelor-Abschluss"},{hu:"Egyetemi diploma (MSc)",en:"Master's Degree",de:"Master-Abschluss"},{hu:"Doktori fokozat (PhD)",en:"Doctorate Degree",de:"Doktortitel"},{hu:"Targoncavezető engedély",en:"Forklift License",de:"Staplerschein"},{hu:"Jogosítvány (B)",en:"Driver's License (B)",de:"Führerschein (B)"}
-        ],
-        work: [
-            {hu:"Raktáros",en:"Warehouse Worker",de:"Lagerarbeiter"},{hu:"Teherautó sofőr",en:"Truck Driver",de:"LKW-Fahrer"},{hu:"Eladó / Pénztáros",en:"Sales Clerk",de:"Verkäufer"},{hu:"Szakács",en:"Chef",de:"Koch"},{hu:"Pincér",en:"Waiter",de:"Kellner"},{hu:"Lakatos",en:"Locksmith",de:"Schlosser"},{hu:"Villanyszerelő",en:"Electrician",de:"Elektriker"},{hu:"Kőműves",en:"Bricklayer",de:"Maurer"},{hu:"Adminisztrátor",en:"Administrator",de:"Administrator"},{hu:"Takarító",en:"Cleaner",de:"Reinigungskraft"},{hu:"Futár",en:"Courier",de:"Kurier"},{hu:"Gépkezelő",en:"Machine Operator",de:"Maschinenbediener"},{hu:"Festő",en:"Painter",de:"Maler"},{hu:"Asztalos",en:"Carpenter",de:"Tischler"},{hu:"Hegesztő",en:"Welder",de:"Schweißer"},{hu:"Biztonsági őr",en:"Security Guard",de:"Sicherheitskraft"}
-        ],
-        pos: [
-            {hu:"Alkalmazott",en:"Employee",de:"Angestellter"},{hu:"Műszakvezető",en:"Shift Leader",de:"Schichtleiter"},{hu:"Csoportvezető",en:"Team Leader",de:"Teamleiter"},{hu:"Vezető",en:"Manager",de:"Manager"},{hu:"Gyakornok",en:"Intern",de:"Praktikant"}
-        ]
-    };
-
-    const dict = {
-        hu: { engineName: "Career-Engine", atsTitle: "🚀 GIGA ATS TIPPEK:", atsTips: "• Kulcsszavak a szakmából!\n• Pontos évszámok!\n• Tiszta, olvasható formátum!", guideTitle: "ÚTMUTATÓ:", guide: "Használd a legördülő menüket a gyors fordításhoz!", fName: "KERESZTNÉV", lName: "VEZETÉKNÉV", city: "VÁROS", street: "UTCA", type: "TÍPUS", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ VÉGZETTSÉG", addWork: "+ ÚJ FOGLALKOZÁS", printBtn: "PDF GENERÁLÁSA", addr: "Cím:", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás" },
-        en: { engineName: "Career-Engine", atsTitle: "🚀 ATS TIPS:", atsTips: "• Use keywords!\n• Accurate dates!\n• Clean layout!", guideTitle: "GUIDE:", guide: "Use dropdowns for automatic translation!", fName: "FIRST NAME", lName: "LAST NAME", city: "CITY", street: "STREET", type: "TYPE", phone: "PHONE", email: "EMAIL", summary: "PROFILE", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD EDUCATION", addWork: "+ ADD EXPERIENCE", printBtn: "GENERATE PDF", addr: "Address:", v_deg: "Degree", v_job: "Occupation", v_pos: "Position" },
-        de: { engineName: "Career-Engine", atsTitle: "🚀 ATS TIPPS:", atsTips: "• Keywords nutzen!\n• Genaue Daten!\n• Sauberes Layout!", guideTitle: "ANLEITUNG:", guide: "Nutzen Sie die Menüs!", fName: "VORNAME", lName: "NACHNAME", city: "STADT", street: "STRASSE", type: "TYP", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ BILDUNG HINZUFÜGEN", addWork: "+ JOB HINZUFÜGEN", printBtn: "PDF GENERIEREN", addr: "Adresse:", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position" }
-    };
-
-    let lang = 'hu';
-
-    async function translate(text) {
-        if (!text || lang === 'hu') return text;
-        try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${lang}`);
-            const data = await res.json();
-            return data.responseData.translatedText || text;
-        } catch { return text; }
-    }
-
-    function setMode(l, btn) {
-        lang = l;
-        document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateInterface();
-        updatePreview();
-    }
-
-    function updateInterface() {
-        const d = dict[lang];
-        for (let key in d) {
-            const el = document.getElementById('lbl-' + key);
-            if (el) el.innerText = d[key];
-        }
-        document.querySelectorAll('.dyn-label-deg').forEach(el => el.innerText = d.v_deg);
-        document.querySelectorAll('.dyn-label-job').forEach(el => el.innerText = d.v_job);
-        document.querySelectorAll('.dyn-label-pos').forEach(el => el.innerText = d.v_pos);
-    }
-
-    function updatePreview() {
-        const l = document.getElementById('in-lastName').value || "";
-        const f = document.getElementById('in-firstName').value || "";
-        // NEMZETKÖZI SORREND: HU: Vez+Ker, Más: Ker+Vez
-        document.getElementById('out-name').innerText = (lang === 'hu' ? l + " " + f : f + " " + l).trim().toUpperCase() || "NAME";
-        render();
-    }
-
-    async function render() {
-        const d = dict[lang];
-        const city = await translate(document.getElementById('in-city').value);
-        const stType = document.getElementById('in-street-type').options[document.getElementById('in-street-type').selectedIndex].text.split(' / ')[lang==='hu'?0:lang==='en'?1:2];
-        
-        document.getElementById('out-contact').innerHTML = `
-            <b>${d.phone}:</b> ${document.getElementById('in-phone').value} | <b>${d.email}:</b> ${document.getElementById('in-email').value}<br>
-            <b>${d.addr}</b> ${city}, ${document.getElementById('in-street').value} ${stType} ${document.getElementById('in-house').value}
-        `;
-
-        let html = "";
-        const sum = document.getElementById('in-summary').value;
-        if(sum) html += `<h3>${d.summary}</h3><p>${await translate(sum)}</p>`;
-
-        // EDU
-        let edus = "";
-        document.querySelectorAll('#edu-container .entry-box').forEach(async (box) => {
-            const school = box.querySelector('.e-main').value;
-            const years = box.querySelector('.e-sub').value;
-            const degVal = box.querySelector('.e-sel').value;
-            const degOther = box.querySelector('.e-other').value;
-            let deg = degVal !== "other" ? db.edu.find(x => x.hu === degVal)[lang] : await translate(degOther);
-            if(school) document.getElementById('main-content').innerHTML += `<div style="margin-bottom:10px"><b>${school}</b><br>${deg} (${years})</div>`;
-        });
-
-        // WORK
-        let works = "";
-        const wBoxes = document.querySelectorAll('#work-container .entry-box');
-        for (let box of wBoxes) {
-            const comp = box.querySelector('.e-main').value;
-            const years = box.querySelector('.e-sub').value;
-            const jobVal = box.querySelector('.e-sel-job').value;
-            const jobOther = box.querySelector('.e-other-job').value;
-            const posVal = box.querySelector('.e-sel-pos').value;
-            const posOther = box.querySelector('.e-other-pos').value;
-
-            let job = jobVal !== "other" ? db.work.find(x => x.hu === jobVal)[lang] : await translate(jobOther);
-            let pos = posVal !== "other" ? db.pos.find(x => x.hu === posVal)[lang] : await translate(posOther);
-            if(comp) html += `<div style="margin-bottom:10px"><b>${comp}</b> - ${job} (${pos})<br>${years}</div>`;
-        }
-
-        document.getElementById('main-content').innerHTML = html;
-    }
-
-    function addEntry(type) {
-        const container = document.getElementById(type + '-container');
-        const div = document.createElement('div');
-        div.className = 'entry-box';
-        
-        if(type === 'edu') {
-            let opts = db.edu.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-            div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Iskola neve" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Évek" oninput="updatePreview()">
-                <label class="smart-label dyn-label-deg">Végzettség</label>
-                <select class="e-sel" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${opts}</select>
-                <input type="text" class="e-other" placeholder="Saját (API)" oninput="updatePreview()">
-            `;
-        } else {
-            let jobOpts = db.work.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-            let posOpts = db.pos.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-            div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Cég neve" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Évek" oninput="updatePreview()">
-                <label class="smart-label dyn-label-job">Foglalkozás</label>
-                <select class="e-sel-job" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${jobOpts}</select>
-                <input type="text" class="e-other-job" placeholder="Saját foglalkozás (API)" oninput="updatePreview()">
-                <label class="smart-label dyn-label-pos">Beosztás</label>
-                <select class="e-sel-pos" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${posOpts}</select>
-                <input type="text" class="e-other-pos" placeholder="Saját beosztás (API)" oninput="updatePreview()">
-            `;
-        }
-        container.appendChild(div);
-        updateInterface();
-    }
-
-    window.onload = () => {
-        const colors = ["#007bb5", "#e67e22", "#27ae60", "#c0392b", "#8e44ad", "#1a1a1a", "#f1c40f", "#16a085", "#d35400", "#2c3e50"];
-        colors.forEach(c => {
-            let b = document.createElement('div'); b.className = 'color-btn'; b.style.background = c;
-            b.onclick = () => { document.documentElement.style.setProperty('--main-color', c); updatePreview(); };
-            document.getElementById('color-picker').appendChild(b);
-        });
-        for(let i=1; i<=10; i++) {
-            let b = document.createElement('button'); b.className = 'style-btn'; b.innerText = i;
-            b.onclick = () => { document.body.className = 'style-' + i; updatePreview(); };
-            document.getElementById('style-picker').appendChild(b);
-        }
-        updateInterface();
-    };
-
-    function loadPhoto(e) {
-        const r = new FileReader();
-        r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; };
-        r.readAsDataURL(e.target.files[0]);
-    }
-</script>
-</body>
-</html>
+        /* STYLE VARIATIONS */
+        body.style-2 .cv-paper { font-family: 'Georgia', serif; }
+        body.style-2 h

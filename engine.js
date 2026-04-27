@@ -1,6 +1,6 @@
 let currentLang = 'hu';
 
-async function apiTranslate(text) {
+async function safeTranslate(text) {
     if (!text || currentLang === 'hu') return text;
     try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
@@ -21,7 +21,7 @@ function updateInterface() {
 function updatePreview() {
     const vez = document.getElementById('in-lastName').value || "";
     const ker = document.getElementById('in-firstName').value || "";
-    // NÉVSORREND PAPÍRON: HU: Vez+Ker | EN/DE: Ker+Vez
+    // NÉVSORREND: HU: Vez+Ker | EN/DE: Ker+Vez
     let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     renderPaper();
@@ -29,24 +29,21 @@ function updatePreview() {
 
 async function renderPaper() {
     const d = dictionary[currentLang];
-    const city = await apiTranslate(document.getElementById('in-city').value);
-    const street = document.getElementById('in-street').value;
-    const house = document.getElementById('in-house').value;
+    const city = await safeTranslate(document.getElementById('in-city').value);
     const sTypeSelect = document.getElementById('in-street-type');
     const sTypeRaw = sTypeSelect.options[sTypeSelect.selectedIndex].text;
     const sType = sTypeRaw.split(' / ')[currentLang === 'hu' ? 0 : (currentLang === 'en' ? 1 : 2)];
 
     document.getElementById('out-contact').innerHTML = `
-        <div><b>${d.phone}:</b> ${document.getElementById('in-phone').value}</div>
-        <div><b>${d.email}:</b> ${document.getElementById('in-email').value}</div>
-        <div><b>${d.addr}</b> ${city}, ${street} ${sType} ${house}</div>
+        <div><b>${d.phoneLabel}:</b> ${document.getElementById('in-phone').value}</div>
+        <div><b>${d.emailLabel}:</b> ${document.getElementById('in-email').value}</div>
+        <div><b>${d.addr}</b> ${city}, ${document.getElementById('in-street').value} ${sType} ${document.getElementById('in-house').value}</div>
     `;
 
     let html = "";
     const summary = document.getElementById('in-summary').value;
-    if(summary) html += `<h3>${d.summary}</h3><p>${await apiTranslate(summary)}</p>`;
+    if(summary) html += `<h3>${d.summary}</h3><p>${await safeTranslate(summary)}</p>`;
 
-    // ISKOLA ÉS MUNKAHELY RENDERELÉS
     for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
@@ -62,7 +59,7 @@ async function renderPaper() {
                 const found = list.find(x => x.hu === dbVal);
                 title = found ? found[currentLang] : dbVal;
             } else {
-                title = await apiTranslate(other);
+                title = await safeTranslate(other);
             }
             if(m || title) items += `<div style="margin-bottom:10px"><b>${m}</b> - ${title} (${sub})</div>`;
         }
@@ -72,6 +69,7 @@ async function renderPaper() {
 }
 
 function addEntry(type) {
+    const container = document.getElementById(type + '-container');
     const div = document.createElement('div');
     div.className = 'entry-box';
     const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
@@ -81,15 +79,20 @@ function addEntry(type) {
         <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola neve':'Cég neve'}">
         <input type="text" class="e-sub" placeholder="Év (tól-ig)">
         <select class="e-db" onchange="updatePreview()"><option value="other">-- EGYÉB / OTHER --</option>${opts}</select>
-        <input type="text" class="e-other" placeholder="Ha nincs a listában, ide írd (API)..." oninput="updatePreview()">
+        <input type="text" class="e-other" placeholder="Egyéb (API)..." oninput="updatePreview()">
     `;
-    document.getElementById(type + '-container').appendChild(div);
-    div.querySelector('.e-main').oninput = updatePreview;
-    div.querySelector('.e-sub').oninput = updatePreview;
+    container.appendChild(div);
+    div.querySelectorAll('input').forEach(el => el.oninput = updatePreview);
+}
+
+function setMode(l, b) {
+    currentLang = l;
+    document.querySelectorAll('.btn-lang').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    updateInterface(); updatePreview();
 }
 
 window.onload = () => {
-    // 10 SZÍN ÉS 10 STÍLUS GOMBOK
     const colors = ["#007bb5", "#e67e22", "#27ae60", "#c0392b", "#8e44ad", "#1a1a1a", "#f1c40f", "#16a085", "#d35400", "#2c3e50"];
     colors.forEach(c => {
         let b = document.createElement('div'); b.className = 'color-btn'; b.style.background = c;

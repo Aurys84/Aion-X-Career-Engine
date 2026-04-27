@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v36.0</title>
+    <title>Career-Engine v36.1</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -12,29 +12,34 @@
             <h1 id="lbl-engineName">Career-Engine</h1>
         </div>
 
-        <div id="ats-tips-box" class="info-panel">
-            <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b>
+        <div class="info-panel" id="ats-tips-box">
+            <b id="lbl-atsTitle">GIGA ATS TIPPEK:</b>
             <div id="lbl-atsContent"></div>
         </div>
 
         <div class="info-panel guide">
-            <b id="lbl-guideTitle">📝 KITÖLTÉSI ÚTMUTATÓ:</b>
+            <b id="lbl-guideTitle">KITÖLTÉSI ÚTMUTATÓ:</b>
             <p id="lbl-guideText"></p>
         </div>
 
         <div class="lang-grid">
-            <button class="btn-lang active" onclick="setMode('hu', this)">MAGYAR</button>
-            <button class="btn-lang" onclick="setMode('en', this)">ENGLISH</button>
-            <button class="btn-lang" onclick="setMode('de', this)">DEUTSCH</button>
+            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
+            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
+            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <label class="smart-label" id="lbl-color">SZÍNVÁLASZTÓ</label>
-        <div class="color-grid" id="color-picker"></div>
+        <div class="control-row">
+            <div class="picker-box">
+                <label class="smart-label" id="lbl-color">SZÍNEK (10)</label>
+                <div class="color-grid" id="color-picker"></div>
+            </div>
+            <div class="picker-box">
+                <label class="smart-label" id="lbl-style">STÍLUSOK (10)</label>
+                <div class="style-grid" id="style-picker"></div>
+            </div>
+        </div>
 
-        <label class="smart-label" id="lbl-style">STÍLUSVÁLASZTÓ</label>
-        <div class="style-grid" id="style-picker"></div>
-
-        <label class="smart-label" id="lbl-photo">FOTÓ</label>
+        <label class="smart-label" id="lbl-photo">FOTÓ FELTÖLTÉSE</label>
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
         <div class="input-group">
@@ -44,40 +49,40 @@
 
         <div class="input-group">
             <div style="flex:1"><label class="smart-label" id="lbl-city">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA NEVE</label><input type="text" id="in-street" oninput="updatePreview()"></div>
         </div>
 
         <div class="input-group">
             <div style="flex:1">
-                <label class="smart-label" id="lbl-type">TÍPUS</label>
+                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street</option>
                     <option value="út">út / road</option>
                     <option value="tér">tér / square</option>
                 </select>
             </div>
-            <div style="width:30%"><label class="smart-label">HÁZSZÁM</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+            <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
         
-        <label class="smart-label" id="lbl-summary">PROFIL / BEMUTATKOZÁS</label>
+        <label class="smart-label" id="lbl-summary">PROFIL / BEMUTATKOZÁS (API FORDÍTÓVAL)</label>
         <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
         <div id="edu-area">
-            <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label>
+            <h3 id="lbl-eduTitle">TANULMÁNYOK</h3>
             <div id="edu-container"></div>
-            <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
+            <button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button>
         </div>
 
         <div id="work-area">
-            <label class="smart-label" id="lbl-work">MUNKATAPASZTALAT</label>
+            <h3 id="lbl-workTitle">MUNKATAPASZTALAT</h3>
             <div id="work-container"></div>
-            <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
+            <button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button>
         </div>
 
-        <button onclick="window.print()" class="print-btn">PDF GENERÁLÁSA</button>
+        <button onclick="window.print()" class="print-btn" id="lbl-print">PDF GENERÁLÁSA</button>
     </div>
 
     <div class="preview-side">

@@ -25,3 +25,5 @@ Cs-Aion Matrix Lab – Experimental Research Division
 3. Talon Protocol: This research is shared under the "Talon" principle: we provide the visionary foundation for external developers and organizations to adopt, implement, and further evolve.
 ---
 4. Liability: The authors assume no liability for any hardware implementation or real-world application derived from these theoretical models.
+
+https://aurys84.github.io/Aion-X-Career-Engine/

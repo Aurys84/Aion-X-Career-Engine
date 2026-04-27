@@ -1,52 +1,115 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <title>Career-Engine v38.0</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="style-10">
-    <div class="editor-side">
-        <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
-        <div class="info-panel"><b id="lbl-atsTitle"></b><div id="lbl-atsTips"></div></div>
-        <div class="info-panel guide"><b id="lbl-guideTitle"></b><p id="lbl-guide"></p></div>
+let currentLang = 'hu';
 
-        <div class="lang-grid">
-            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
-            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
-            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
-        </div>
+async function apiTranslate(text) {
+    if (!text || currentLang === 'hu') return text;
+    try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
+        const data = await res.json();
+        const tr = data.responseData.translatedText;
+        return (tr && !tr.includes("LIMIT")) ? tr : text;
+    } catch (e) { return text; }
+}
 
-        <div class="picker-row"><div id="lbl-colors">SZÍNEK</div><div class="color-grid" id="color-picker"></div></div>
-        <div class="picker-row"><div id="lbl-styles">STÍLUSOK</div><div class="style-grid" id="style-picker"></div></div>
+function updateInterface() {
+    const d = dictionary[currentLang];
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
+}
 
-        <label class="smart-label" id="lbl-photo">FOTÓ</label><input type="file" onchange="loadPhoto(event)">
+function updatePreview() {
+    const vez = document.getElementById('in-lastName').value || "";
+    const ker = document.getElementById('in-firstName').value || "";
+    // NÉVSORREND PAPÍRON: HU: Vez+Ker | EN/DE: Ker+Vez
+    let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
+    document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
+    renderPaper();
+}
 
-        <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">FIRST NAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-lName">LAST NAME</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
-        </div>
+async function renderPaper() {
+    const d = dictionary[currentLang];
+    const city = await apiTranslate(document.getElementById('in-city').value);
+    const sTypeSelect = document.getElementById('in-street-type');
+    const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : (currentLang === 'en' ? 1 : 2)];
 
-        <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-city">CITY</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-street">STREET</label><input type="text" id="in-street" oninput="updatePreview()"></div>
-        </div>
-        <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TYPE</label><select id="in-street-type" onchange="updatePreview()"><option value="utca">utca/street</option><option value="út">út/road</option><option value="tér">tér/square</option></select></div>
-            <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
-        </div>
+    document.getElementById('out-contact').innerHTML = `
+        <div><b>${d.phone}:</b> ${document.getElementById('in-phone').value}</div>
+        <div><b>${d.email}:</b> ${document.getElementById('in-email').value}</div>
+        <div><b>${d.addr}</b> ${city}, ${document.getElementById('in-street').value} ${sType} ${document.getElementById('in-house').value}</div>
+    `;
 
-        <label class="smart-label" id="lbl-phone">PHONE</label><input type="text" id="in-phone" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-summary">SUMMARY</label><textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
+    let html = "";
+    const sum = document.getElementById('in-summary').value;
+    if(sum) html += `<h3>${d.summary}</h3><p>${await apiTranslate(sum)}</p>`;
 
-        <div id="edu-area"><h3 id="lbl-eduTitle">TANULMÁNYOK</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button></div>
-        <div id="work-area"><h3 id="lbl-workTitle">MUNKATAPASZTALAT</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button></div>
+    // Dinamikus blokkok
+    for (let type of ['edu', 'work']) {
+        let items = "";
+        const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
+        for (let box of boxes) {
+            const m = box.querySelector('.e-main').value;
+            const sub = box.querySelector('.e-sub').value;
+            const dbVal = box.querySelector('.e-db').value;
+            const other = box.querySelector('.e-other').value;
 
-        <button onclick="window.print()" class="print-btn" id="lbl-print">PDF GENERÁLÁSA</button>
-    </div>
+            let title = "";
+            if(dbVal !== "other") {
+                const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
+                const found = list.find(x => x.hu === dbVal);
+                title = found ? found[currentLang] : dbVal;
+            } else {
+                title = await apiTranslate(other);
+            }
+            if(m || title) items += `<div style="margin-bottom:10px"><b>${m}</b> - ${title} (${sub})</div>`;
+        }
+        if(items) html += `<h3>${d[type]}</h3>` + items;
+    }
+    document.getElementById('main-content').innerHTML = html;
+}
 
-    <div class="preview-side"><div class="cv-paper" id="cv-paper"><div class="cv-header"><div id="out-photo-box" style="display:none;"><img id="out-photo"></div><div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div></div><div id="main-content"></div></div></div>
-    <script src="database.js"></script><script src="dictionary.js"></script><script src="engine.js"></script>
-</body>
-</html>
+function addEntry(type) {
+    const div = document.createElement('div');
+    div.className = 'entry-box';
+    const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
+    let opts = list.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
+    
+    div.innerHTML = `
+        <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola/Schule':'Cég/Firma'}">
+        <input type="text" class="e-sub" placeholder="Év">
+        <select class="e-db"><option value="other">-- EGYÉB / OTHER --</option>${opts}</select>
+        <input type="text" class="e-other" placeholder="Ha nincs a listában, ide írd (API)...">
+    `;
+    document.getElementById(type + '-container').appendChild(div);
+    div.querySelectorAll('input, select').forEach(el => el.oninput = updatePreview);
+}
+
+function setMode(l, b) {
+    currentLang = l;
+    document.querySelectorAll('.btn-lang').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    updateInterface(); updatePreview();
+}
+
+window.onload = () => {
+    // 10 SZÍN GENERÁLÁSA
+    const colors = ["#007bb5", "#e67e22", "#27ae60", "#c0392b", "#8e44ad", "#1a1a1a", "#f1c40f", "#16a085", "#d35400", "#2c3e50"];
+    colors.forEach(c => {
+        let b = document.createElement('div'); b.className = 'color-btn'; b.style.background = c;
+        b.onclick = () => { document.documentElement.style.setProperty('--main-color', c); updatePreview(); };
+        document.getElementById('color-picker').appendChild(b);
+    });
+    // 10 STÍLUS GENERÁLÁSA
+    for(let i=1; i<=10; i++) {
+        let b = document.createElement('button'); b.className = 'style-btn'; b.innerText = i;
+        b.onclick = () => { document.body.className = 'style-' + i; updatePreview(); };
+        document.getElementById('style-picker').appendChild(b);
+    }
+    updateInterface();
+};
+
+function loadPhoto(e) {
+    const r = new FileReader();
+    r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; };
+    r.readAsDataURL(e.target.files[0]);
+}

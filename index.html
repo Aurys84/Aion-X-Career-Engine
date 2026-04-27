@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v57.0 - A&N Visual</title>
+    <title>Career-Engine v59.0 - A&N Visual</title>
     <style>
         :root { --main-color: #007bb5; --bg: #0d0d0d; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
@@ -21,10 +21,10 @@
         .smart-label { display: block; margin-top: 15px; font-size: 11px; font-weight: bold; color: var(--main-color); text-transform: uppercase; }
         input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
         .input-group { display: flex; gap: 10px; }
-        .entry-box { background: #151515; padding: 15px; margin-top: 10px; border-left: 4px solid var(--main-color); border-radius: 4px; border-bottom: 1px solid #333; }
+        .entry-box { background: #151515; padding: 15px; margin-top: 10px; border-left: 4px solid var(--main-color); border-radius: 4px; }
         .add-btn { background: #27ae60; color: white; width: 100%; padding: 12px; border: none; margin-top: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .print-btn { background: var(--main-color); color: white; width: 100%; padding: 18px; border: none; margin-top: 25px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 6px; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; transition: 0.3s; }
         .cv-header { display: flex; gap: 20px; border-bottom: 2px solid var(--main-color); padding-bottom: 20px; margin-bottom: 20px; }
         #out-photo { width: 130px; height: 160px; object-fit: cover; border: 1px solid #ccc; }
         h1#out-name { margin: 0; color: var(--main-color); font-size: 32px; }
@@ -40,7 +40,7 @@
         body.style-7 .cv-paper { background: #fdfdfd; border: 1px solid #ddd; }
         body.style-8 #out-name { letter-spacing: 5px; text-align: center; }
         body.style-9 .cv-header { align-items: flex-end; }
-        body.style-10 .cv-paper { border: none; }
+        body.style-10 .cv-paper { border: 5px solid var(--main-color); }
 
         @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
     </style>
@@ -49,8 +49,8 @@
 
 <div class="editor-side">
     <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
-    <div class="info-panel"><b id="lbl-atsTitle"></b><div id="lbl-atsTips" style="white-space: pre-wrap; margin-top: 5px;"></div></div>
-    <div class="info-panel" style="background:#2c3e50; border-left-color:var(--main-color);"><b id="lbl-guideTitle"></b><p id="lbl-guide"></p></div>
+    <div class="info-panel"><b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b><div id="lbl-atsTips" style="white-space: pre-wrap; margin-top: 5px;"></div></div>
+    <div class="info-panel" style="background:#2c3e50; border-left-color:var(--main-color);"><b id="lbl-guideTitle">📝 ÚTMUTATÓ:</b><p id="lbl-guide"></p></div>
     
     <div class="lang-grid">
         <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
@@ -95,44 +95,13 @@
 
 <div class="preview-side"><div class="cv-paper" id="cv-paper"><div class="cv-header"><div id="out-photo-box" style="display:none; width:130px; height:160px; overflow:hidden;"><img id="out-photo" style="width:100%;"></div><div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact" style="margin-top:10px; font-size:14px; color:#555;"></div></div></div><div id="main-content"></div></div></div>
 
-<script>
-    // A GIGA-ADATBÁZIS HIVATKOZÁSI ALAPJA
-    const careerDB = {
-        eduLevels: [
-            { hu: "Általános iskola", en: "Primary School", de: "Grundschule" },
-            { hu: "Gimnáziumi érettségi", en: "High School Diploma", de: "Abitur" },
-            { hu: "Szakközépiskolai érettségi", en: "Vocational High School", de: "Berufliche Oberschule" },
-            { hu: "Szakmunkás bizonyítvány", en: "Vocational Certificate", de: "Berufsabschluss" },
-            { hu: "Technikusi vizsga", en: "Technical Diploma", de: "Technikerabschluss" },
-            { hu: "Főiskolai diploma (BSc)", en: "Bachelor's Degree", de: "Bachelor-Abschluss" },
-            { hu: "Egyetemi diploma (MSc)", en: "Master's Degree", de: "Master-Abschluss" },
-            { hu: "Szakács szakképesítés", en: "Chef Qualification", de: "Koch Qualifikation" },
-            { hu: "Targonca jogosítvány", en: "Forklift License", de: "Staplerschein" }
-            // Norbi, ide másold be a többi 40+ elemet a database-ből!
-        ],
-        jobs: [
-            { hu: "Raktáros", en: "Warehouse Worker", de: "Lagerarbeiter" },
-            { hu: "Teherautó sofőr", en: "Truck Driver", de: "LKW-Fahrer" },
-            { hu: "Eladó / Pénztáros", en: "Sales Assistant", de: "Verkäufer" },
-            { hu: "Szakács", en: "Chef", de: "Koch" },
-            { hu: "Lakatos", en: "Locksmith", de: "Schlosser" },
-            { hu: "Villanyszerelő", en: "Electrician", de: "Elektriker" },
-            { hu: "Kőműves", en: "Bricklayer", de: "Maurer" },
-            { hu: "Futár", en: "Courier", de: "Kurier" }
-            // Norbi, ide jön a többi 40+ szakma!
-        ],
-        positions: [
-            { hu: "Alkalmazott", en: "Employee", de: "Angestellter" },
-            { hu: "Műszakvezető", en: "Shift Supervisor", de: "Schichtleiter" },
-            { hu: "Csoportvezető", en: "Team Leader", de: "Teamleiter" },
-            { hu: "Gyakornok", en: "Intern", de: "Praktikant" }
-        ]
-    };
+<script src="database.js"></script>
 
+<script>
     const dictionary = {
-        hu: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPEK:", atsTips: "• Kulcsszavak!\n• Számok!\n• Jó fotó!", guideTitle: "📝 ÚTMUTATÓ:", guide: "Profilba írj 3-4 mondatban. Használd a menüket!", fName: "KERESZTNÉV", lName: "VEZETÉKNÉV", city: "VÁROS", street: "UTCA", type: "≡ TÍPUS", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ ISKOLA", addWork: "+ ÚJ MUNKAHELY", printBtn: "PDF GENERÁLÁSA", addr: "Cím:", colors: "SZÍNEK", styles: "STÍLUSOK", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás", v_other: "EGYÉB" },
-        en: { engineName: "Career-Engine", atsTitle: "🚀 API TIPS:", atsTips: "• Keywords!\n• Numbers!\n• Pro Photo!", guideTitle: "📝 GUIDE:", guide: "Describe yourself in 3-4 sentences.", fName: "FIRST NAME", lName: "LAST NAME", city: "CITY", street: "STREET", type: "≡ TYPE", phone: "PHONE", email: "EMAIL", summary: "SUMMARY", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD SCHOOL", addWork: "+ ADD JOB", printBtn: "GENERATE PDF", addr: "Address:", colors: "COLORS", styles: "STYLES", v_deg: "Degree", v_job: "Occupation", v_pos: "Position", v_other: "OTHER" },
-        de: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPS:", atsTips: "• Keywords!\n• Zahlen!\n• Foto!", guideTitle: "📝 ANLEITUNG:", guide: "Schreiben Sie 3-4 Sätze.", fName: "VORNAME", lName: "NACHNAME", city: "STADT", street: "STRASSE", type: "≡ TYP", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ SCHULE", addWork: "+ JOB", printBtn: "PDF GENERIEREN", addr: "Adresse:", colors: "FARBEN", styles: "STILE", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position", v_other: "SONSTIGES" }
+        hu: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPEK:", atsTips: "• Kulcsszavak!\n• Számok!\n• Jó fotó!", guideTitle: "📝 ÚTMUTATÓ:", guide: "Profilba írj 3-4 mondatban. Használd a menüket!", fName: "KERESZTNÉV", lName: "VEZETÉKNÉV", city: "VÁROS", street: "UTCA", type: "≡ TÍPUS", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ ISKOLA", addWork: "+ ÚJ MUNKAHELY", printBtn: "PDF GENERÁLÁSA", addr: "Cím:", colors: "SZÍNEK", styles: "STÍLUSOK", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás", v_other: "EGYÉB (API)" },
+        en: { engineName: "Career-Engine", atsTitle: "🚀 API TIPS:", atsTips: "• Keywords!\n• Numbers!\n• Pro Photo!", guideTitle: "📝 GUIDE:", guide: "Describe yourself in 3-4 sentences.", fName: "FIRST NAME", lName: "LAST NAME", city: "CITY", street: "STREET", type: "≡ TYPE", phone: "PHONE", email: "EMAIL", summary: "SUMMARY", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD SCHOOL", addWork: "+ ADD JOB", printBtn: "GENERATE PDF", addr: "Address:", colors: "COLORS", styles: "STYLES", v_deg: "Degree", v_job: "Occupation", v_pos: "Position", v_other: "OTHER (API)" },
+        de: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPS:", atsTips: "• Keywords!\n• Zahlen!\n• Foto!", guideTitle: "📝 ANLEITUNG:", guide: "Schreiben Sie 3-4 Sätze.", fName: "VORNAME", lName: "NACHNAME", city: "STADT", street: "STRASSE", type: "≡ TYP", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ SCHULE", addWork: "+ JOB", printBtn: "PDF GENERIEREN", addr: "Adresse:", colors: "FARBEN", styles: "STILE", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position", v_other: "SONSTIGES (API)" }
     };
 
     let currentLang = 'hu';
@@ -152,26 +121,30 @@
         btn.classList.add('active');
         updateInterface();
         updatePreview();
-        // KRITIKUS: Frissítsük a már létező legördülő menüket az új nyelvre!
         refreshAllSelects();
     }
 
     function refreshAllSelects() {
-        // Frissíti a Végzettség, Foglalkozás és Beosztás legördülőket minden hozzáadott boxban
         document.querySelectorAll('.entry-box').forEach(box => {
             const isEdu = box.closest('#edu-container');
-            const select = box.querySelector('.e-db') || box.querySelector('.e-job') || box.querySelector('.e-pos');
-            if (!select) return;
+            const selectDeg = box.querySelector('.e-db');
+            const selectJob = box.querySelector('.e-job');
+            const selectPos = box.querySelector('.e-pos');
 
-            const currentVal = select.value;
-            let list = isEdu ? careerDB.eduLevels : (select.classList.contains('e-job') ? careerDB.jobs : careerDB.positions);
-            
-            let html = `<option value="other">-- ${dictionary[currentLang].v_other} --</option>`;
-            list.forEach(item => {
-                html += `<option value="${item.hu}" ${item.hu === currentVal ? 'selected' : ''}>${item[currentLang]}</option>`;
-            });
-            select.innerHTML = html;
+            if (selectDeg) updateSelect(selectDeg, careerDB.eduLevels);
+            if (selectJob) updateSelect(selectJob, careerDB.jobs);
+            if (selectPos) updateSelect(selectPos, careerDB.positions);
         });
+    }
+
+    function updateSelect(select, list) {
+        const currentVal = select.value;
+        let html = `<option value="other">-- ${dictionary[currentLang].v_other} --</option>`;
+        // HIVATKOZÁS A DATABASE.JS-RE
+        list.forEach(item => {
+            html += `<option value="${item.hu}" ${item.hu === currentVal ? 'selected' : ''}>${item[currentLang]}</option>`;
+        });
+        select.innerHTML = html;
     }
 
     function updateInterface() {
@@ -189,7 +162,6 @@
     function updatePreview() {
         const l = document.getElementById('in-lastName').value || "";
         const f = document.getElementById('in-firstName').value || "";
-        // PAPÍR SORREND: HU: Vez+Ker | EN/DE: Ker+Vez
         document.getElementById('out-name').innerText = (currentLang === 'hu' ? l + " " + f : f + " " + l).trim().toUpperCase() || "NAME";
         renderPaper();
     }
@@ -202,39 +174,39 @@
         const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : (currentLang === 'en' ? 1 : 2)];
         
         document.getElementById('out-contact').innerHTML = `
-            <div><b>${d.phone}:</b> ${document.getElementById('in-phone').value} | <b>${d.email}:</b> ${document.getElementById('in-email').value}</div>
-            <div><b>${d.addr}</b> ${city}, ${street} ${sType} ${document.getElementById('in-house').value}</div>
+            <b>${d.phone}:</b> ${document.getElementById('in-phone').value} | <b>${d.email}:</b> ${document.getElementById('in-email').value}<br>
+            <b>${d.addr}</b> ${city}, ${street} ${sType} ${document.getElementById('in-house').value}
         `;
 
         let html = "";
         const sum = document.getElementById('in-summary').value;
         if(sum) html += `<h3>${d.summary}</h3><p>${await apiTranslate(sum)}</p>`;
 
-        // ISKOLA RENDER
+        // ISKOLA RENDER A DATABASE.JS-BŐL
         let eduHtml = "";
-        for (let box of document.querySelectorAll('#edu-container .entry-box')) {
+        document.querySelectorAll('#edu-container .entry-box').forEach(box => {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
             const dbVal = box.querySelector('.e-db').value;
             const other = box.querySelector('.e-other').value;
-            let title = (dbVal !== "other") ? careerDB.eduLevels.find(x => x.hu === dbVal)[currentLang] : await apiTranslate(other);
+            let title = (dbVal !== "other") ? careerDB.eduLevels.find(x => x.hu === dbVal)[currentLang] : other;
             if(m || title) eduHtml += `<div style="margin-bottom:10px"><b>${m}</b> - ${title} (${sub})</div>`;
-        }
+        });
         if(eduHtml) html += `<h3>${d.eduHeader}</h3>` + eduHtml;
 
-        // MUNKA RENDER
+        // MUNKA RENDER A DATABASE.JS-BŐL
         let workHtml = "";
-        for (let box of document.querySelectorAll('#work-container .entry-box')) {
+        document.querySelectorAll('#work-container .entry-box').forEach(box => {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
-            const jobDb = box.querySelector('.e-job').value;
+            const jobVal = box.querySelector('.e-job').value;
             const jobOther = box.querySelector('.e-job-other').value;
-            const posDb = box.querySelector('.e-pos').value;
+            const posVal = box.querySelector('.e-pos').value;
             const posOther = box.querySelector('.e-pos-other').value;
-            let job = (jobDb !== "other") ? careerDB.jobs.find(x => x.hu === jobDb)[currentLang] : await apiTranslate(jobOther);
-            let pos = (posDb !== "other") ? careerDB.positions.find(x => x.hu === posDb)[currentLang] : await apiTranslate(posOther);
+            let job = (jobVal !== "other") ? careerDB.jobs.find(x => x.hu === jobVal)[currentLang] : jobOther;
+            let pos = (posVal !== "other") ? careerDB.positions.find(x => x.hu === posVal)[currentLang] : posOther;
             if(m || job) workHtml += `<div style="margin-bottom:10px"><b>${m}</b> - ${job} (${pos})<br>${sub}</div>`;
-        }
+        });
         if(workHtml) html += `<h3>${d.workHeader}</h3>` + workHtml;
 
         document.getElementById('main-content').innerHTML = html;
@@ -244,32 +216,29 @@
         const div = document.createElement('div');
         div.className = 'entry-box';
         const d = dictionary[currentLang];
-        
         if(type === 'edu') {
-            let opts = careerDB.eduLevels.map(x => `<option value="${x.hu}">${x[currentLang]}</option>`).join('');
             div.innerHTML = `
                 <input type="text" class="e-main" placeholder="Iskola" oninput="updatePreview()">
                 <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
                 <label class="smart-label dyn-deg">${d.v_deg}</label>
-                <select class="e-db" onchange="updatePreview()"><option value="other">-- ${d.v_other} --</option>${opts}</select>
+                <select class="e-db" onchange="updatePreview()"></select>
                 <label class="smart-label dyn-other">${d.v_other}</label>
                 <input type="text" class="e-other" oninput="updatePreview()">
             `;
+            updateSelect(div.querySelector('.e-db'), careerDB.eduLevels);
         } else {
-            let jobOpts = careerDB.jobs.map(x => `<option value="${x.hu}">${x[currentLang]}</option>`).join('');
-            let posOpts = careerDB.positions.map(x => `<option value="${x.hu}">${x[currentLang]}</option>`).join('');
             div.innerHTML = `
                 <input type="text" class="e-main" placeholder="Munkahely" oninput="updatePreview()">
                 <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
                 <label class="smart-label dyn-job">${d.v_job}</label>
-                <select class="e-job" onchange="updatePreview()"><option value="other">-- ${d.v_other} --</option>${jobOpts}</select>
-                <label class="smart-label dyn-other">${d.v_other}</label>
+                <select class="e-job" onchange="updatePreview()"></select>
                 <input type="text" class="e-job-other" oninput="updatePreview()">
                 <label class="smart-label dyn-pos">${d.v_pos}</label>
-                <select class="e-pos" onchange="updatePreview()"><option value="other">-- ${d.v_other} --</option>${posOpts}</select>
-                <label class="smart-label dyn-other">${d.v_other}</label>
+                <select class="e-pos" onchange="updatePreview()"></select>
                 <input type="text" class="e-pos-other" oninput="updatePreview()">
             `;
+            updateSelect(div.querySelector('.e-job'), careerDB.jobs);
+            updateSelect(div.querySelector('.e-pos'), careerDB.positions);
         }
         document.getElementById(type + '-container').appendChild(div);
         updateInterface();

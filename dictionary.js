@@ -1,35 +1,38 @@
 const dictionary = {
-    hu: { 
-        title: "AION-X PANEL", lName: "Vezetéknév", fName: "Keresztnév", phone: "Telefon", email: "Email", 
-        cityHeader: "Irsz / Város", streetName: "Utca neve", type: "≡ Típus", house: "Házszám", 
-        summary: "Profil", work: "Tapasztalat", edu: "Tanulmányok", skills: "Készségek", license: "Jogosítvány", 
-        style: "Stílus", color: "Szín", photo: "Fotó", addW: "+ Új Munka", addE: "+ Új Iskola", 
-        addr: "Cím:", atsTitle: "🚀 GIGA ATS TIPPEK:",
-        ats1: "• Használj szoftverneveket (SAP, Minitab)!", ats2: "• Eredmények számokkal (+20%)!", 
-        ats3: "• Fotó: Világos háttér!", ats4: "• Kulcsszavak az álláshirdetésből!"
+    hu: {
+        engineName: "Career-Engine",
+        atsTitle: "🚀 GIGA ATS TIPPEK:",
+        atsContent: "• Használj kulcsszavakat!\n• Számokkal mutasd az eredményeket!\n• Világos háttér fotónál!\n• ATS barát formátum!",
+        guideTitle: "📝 KITÖLTÉSI ÚTMUTATÓ:",
+        guideText: "A Profil mezőben röviden (3-4 mondat) mutasd be a legnagyobb erősségeidet. A tanulmányoknál és munkáknál válaszd a listából a megfelelőt a gyors fordítás érdekében!",
+        lName: "Vezetéknév", fName: "Keresztnév", cityLabel: "Város", streetLabel: "Utca neve",
+        phoneLabel: "Telefon", emailLabel: "Email", summaryLabel: "Profil / Bemutatkozás",
+        eduTitle: "Tanulmányok", workTitle: "Munkatapasztalat", addEdu: "+ Új Iskola",
+        addWork: "+ Új Munkahely", print: "PDF GENERÁLÁSA", addr: "Cím:", summary: "Szakmai Profil",
+        edu: "Tanulmányok", work: "Tapasztalat"
     },
-    en: { 
-        title: "AION-X PANEL", lName: "Last Name", fName: "First Name", phone: "Phone", email: "Email", 
-        cityHeader: "ZIP / City", streetName: "Street Name", type: "≡ Type", house: "No.", 
-        summary: "Profile", work: "Experience", edu: "Education", skills: "Skills", license: "License", 
-        style: "Style", color: "Color", photo: "Photo", addW: "+ Add Job", addE: "+ Add Edu", 
-        addr: "Address:", atsTitle: "🚀 GIGA ATS TIPS:",
-        ats1: "• Use software names (SAP, Minitab)!", ats2: "• Results with numbers (+20%)!", 
-        ats3: "• Photo: Plain background!", ats4: "• Keywords match!"
+    en: {
+        engineName: "Career-Engine",
+        atsTitle: "🚀 GIGA ATS TIPS:",
+        atsContent: "• Use relevant keywords!\n• Quantify your results!\n• Clear photo background!\n• ATS-friendly structure!",
+        guideTitle: "📝 USER GUIDE:",
+        guideText: "In the Profile section, briefly summarize your top strengths. For education and work, select from the list for instant, accurate translation!",
+        lName: "Last Name", fName: "First Name", cityLabel: "City", streetLabel: "Street Name",
+        phoneLabel: "Phone", emailLabel: "Email", summaryLabel: "Profile / Summary",
+        eduTitle: "Education", workTitle: "Work Experience", addEdu: "+ Add School",
+        addWork: "+ Add Job", print: "GENERATE PDF", addr: "Address:", summary: "Professional Profile",
+        edu: "Education", work: "Experience"
     },
-    de: { 
-        title: "AION-X PANEL", lName: "Nachname", fName: "Vorname", phone: "Tel", email: "Email", 
-        cityHeader: "PLZ / Stadt", streetName: "Straßenname", type: "≡ Typ", house: "Hausnr.", 
-        summary: "Profil", work: "Erfahrung", edu: "Ausbildung", skills: "Kenntnisse", license: "Führerschein", 
-        style: "Stil", color: "Farbe", photo: "Foto", addW: "+ Job", addE: "+ Schule", 
-        addr: "Adresse:", atsTitle: "🚀 GIGA ATS TIPPS:",
-        ats1: "• Softwarenamen nutzen!", ats2: "• Ergebnisse mit Zahlen!", 
-        ats3: "• Foto: Heller Hintergrund!", ats4: "• Anzeige-Keywords!"
+    de: {
+        engineName: "Career-Engine",
+        atsTitle: "🚀 GIGA ATS TIPPS:",
+        atsContent: "• Schlüsselwörter nutzen!\n• Ergebnisse in Zahlen!\n• Heller Fotohintergrund!\n• ATS-freundliches Design!",
+        guideTitle: "📝 ANLEITUNG:",
+        guideText: "Im Bereich Profil fassen Sie Ihre Stärken kurz zusammen. Wählen Sie für Bildung und Beruf aus der Liste für eine sofortige Übersetzung!",
+        lName: "Nachname", fName: "Vorname", cityLabel: "Stadt", streetLabel: "Straßenname",
+        phoneLabel: "Telefon", emailLabel: "E-Mail", summaryLabel: "Profil / Zusammenfassung",
+        eduTitle: "Ausbildung", workTitle: "Berufserfahrung", addEdu: "+ Schule hinzufügen",
+        addWork: "+ Job hinzufügen", print: "PDF GENERIEREN", addr: "Adresse:", summary: "Berufsprofil",
+        edu: "Bildung", work: "Erfahrung"
     }
 };
-
-const omniDict = [
-    { hu: "utca", en: "street", de: "straße" },
-    { hu: "út", en: "road", de: "straße" },
-    { hu: "tér", en: "square", de: "platz" }
-];

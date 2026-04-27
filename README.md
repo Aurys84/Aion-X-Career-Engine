@@ -1,4 +1,4 @@
-src="https://github.com/user-attachments/assets/07284aea-205a-413d-8d09-dbba373dce1a" /
+<img width="1392" height="736" alt="1000007753" src="https://github.com/user-attachments/assets/07284aea-205a-413d-8d09-dbba373dce1a" /
 
 # Aion-X-Career-Engine
 "A high-performance, multilingual (HU/EN/DE) Career Engine. Featuring real-time ATS-optimized CV generation, AI-assisted professional translation, and modular design templates for the global job market. Built in the Cs-Aion Matrix Lab."
@@ -23,4 +23,4 @@ Cs-Aion Matrix Lab – Experimental Research Division
 ---
 3. Talon Protocol: This research is shared under the "Talon" principle: we provide the visionary foundation for external developers and organizations to adopt, implement, and further evolve.
 ---
-4. Liability: The authors assume no liability for any hardware implementation or real-world application derived from these theoretical models.<img width="1392" height="736" alt="1000007753" 
+4. Liability: The authors assume no liability for any hardware implementation or real-world application derived from these theoretical models.

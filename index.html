@@ -3,55 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career-Engine v44.0 - A&N Visual</title>
+    <title>Career-Engine v45.0 - A&N Visual</title>
     <style>
-        :root { --main-color: #007bb5; --bg-dark: #111; --panel-bg: #222; }
-        body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #eee; }
-        
-        /* EDITOR SIDE */
-        .editor-side { width: 42%; padding: 25px; overflow-y: auto; background: var(--bg-dark); border-right: 3px solid var(--main-color); box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
-        .logo-area { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .brand-circle { width: 50px; height: 50px; background: var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; border: 2px solid #fff; font-size: 20px; box-shadow: 0 0 10px var(--main-color); }
-        
-        .info-panel { background: #1a3a5a; padding: 15px; border-radius: 8px; margin-bottom: 12px; border-left: 5px solid #f1c40f; font-size: 13px; line-height: 1.4; }
-        .guide { background: #2c3e50; border-left-color: var(--main-color); }
-
-        .lang-grid { display: flex; gap: 8px; margin-bottom: 20px; }
-        .btn-lang { flex: 1; padding: 12px; border: none; background: #333; color: white; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; }
-        .btn-lang.active { background: var(--main-color); box-shadow: 0 0 15px var(--main-color); }
-
-        .picker-row { margin-bottom: 20px; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 1px solid #333; }
-        .grid-label { font-size: 11px; font-weight: bold; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .color-grid, .style-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-        .color-btn { width: 100%; height: 32px; cursor: pointer; border-radius: 4px; border: 1px solid #444; }
-        .style-btn { padding: 10px; background: #2a2a2a; color: white; border: 1px solid #444; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.2s; }
-        .style-btn:hover { background: var(--main-color); border-color: #fff; }
-
-        .smart-label { display: block; margin-top: 15px; font-size: 11px; font-weight: bold; color: var(--main-color); text-transform: uppercase; letter-spacing: 0.5px; }
-        input, textarea, select { width: 100%; padding: 12px; margin-top: 6px; background: var(--panel-bg); border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        input:focus { border-color: var(--main-color); outline: none; box-shadow: 0 0 5px var(--main-color); }
-        .input-group { display: flex; gap: 12px; margin-top: 5px; }
-
-        .entry-box { background: #1a1a1a; padding: 18px; margin-top: 12px; border-left: 4px solid var(--main-color); border-radius: 6px; border-bottom: 1px solid #333; position: relative; }
-        .add-btn { background: #27ae60; color: white; width: 100%; padding: 14px; border: none; margin-top: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
-        .print-btn { background: var(--main-color); color: white; width: 100%; padding: 20px; border: none; margin-top: 30px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 8px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--main-color); }
-
-        /* PREVIEW SIDE */
-        .preview-side { width: 58%; background: #444; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
-        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 50px; color: #333; box-shadow: 0 20px 50px rgba(0,0,0,0.6); box-sizing: border-box; transition: 0.3s; }
-        
-        .cv-header { display: flex; gap: 25px; border-bottom: 3px solid var(--main-color); padding-bottom: 25px; margin-bottom: 25px; align-items: center; }
-        #out-photo { width: 140px; height: 175px; object-fit: cover; border: 1px solid #ddd; background: #f9f9f9; }
-        h1#out-name { margin: 0; color: var(--main-color); font-size: 36px; letter-spacing: -1px; }
-        .contact-info { margin-top: 10px; font-size: 14px; color: #555; line-height: 1.6; }
-        h3 { border-bottom: 2px solid #eee; color: var(--main-color); padding-bottom: 8px; margin-top: 35px; font-size: 20px; text-transform: uppercase; }
-        .cv-item { margin-bottom: 18px; }
-        .cv-item b { font-size: 16px; color: #000; }
-        .cv-item span { color: #666; font-style: italic; }
-
-        /* PRINT */
-        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; margin: 0; } }
+        :root { --main-color: #007bb5; --bg-dark: #0f0f0f; --panel-bg: #1c1c1c; }
+        body { margin: 0; display: flex; height: 100vh; font-family: 'Inter', 'Segoe UI', sans-serif; background: #000; color: #eee; }
+        .editor-side { width: 40%; padding: 20px; overflow-y: auto; background: var(--bg-dark); border-right: 2px solid var(--main-color); }
+        .preview-side { width: 60%; background: #333; display: flex; justify-content: center; padding: 20px; overflow-y: auto; }
+        .logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .brand-circle { width: 45px; height: 45px; background: var(--main-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; border: 2px solid #fff; }
+        .info-panel { background: #1a2a3a; padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid #f1c40f; font-size: 12px; }
+        .lang-grid { display: flex; gap: 5px; margin-bottom: 15px; }
+        .btn-lang { flex: 1; padding: 10px; border: none; background: #222; color: white; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .btn-lang.active { background: var(--main-color); box-shadow: 0 0 10px var(--main-color); }
+        .picker-row { margin-bottom: 15px; }
+        .color-grid, .style-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 5px; }
+        .color-btn { width: 100%; height: 25px; cursor: pointer; border-radius: 3px; border: 1px solid #444; }
+        .style-btn { padding: 6px; background: #222; color: white; border: 1px solid #444; cursor: pointer; border-radius: 3px; font-size: 12px; }
+        .smart-label { display: block; margin-top: 12px; font-size: 10px; font-weight: bold; color: var(--main-color); text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 4px; background: var(--panel-bg); border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
+        .input-group { display: flex; gap: 8px; }
+        .entry-box { background: #151515; padding: 12px; margin-top: 10px; border-radius: 5px; border: 1px solid #333; border-left: 3px solid var(--main-color); }
+        .add-btn { background: #27ae60; color: white; width: 100%; padding: 10px; border: none; margin-top: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .print-btn { background: var(--main-color); color: white; width: 100%; padding: 15px; border: none; margin-top: 20px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        .cv-paper { width: 210mm; min-height: 297mm; background: white; padding: 40px; color: #222; box-shadow: 0 0 20px rgba(0,0,0,0.5); box-sizing: border-box; }
+        .cv-header { display: flex; gap: 20px; border-bottom: 2px solid var(--main-color); padding-bottom: 20px; margin-bottom: 20px; }
+        #out-photo { width: 120px; height: 150px; object-fit: cover; }
+        h1#out-name { margin: 0; color: var(--main-color); font-size: 30px; text-transform: uppercase; }
+        h3 { border-bottom: 1px solid #ddd; color: var(--main-color); padding-bottom: 5px; margin-top: 20px; font-size: 18px; text-transform: uppercase; }
+        @media print { .editor-side { display: none; } .preview-side { width: 100%; padding: 0; background: white; } .cv-paper { box-shadow: none; width: 100%; } }
+        /* Style variation examples */
+        .style-2 .cv-header { flex-direction: column; align-items: center; text-align: center; }
+        .style-3 #main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     </style>
 </head>
 <body class="style-10">
@@ -59,8 +41,8 @@
 <div class="editor-side">
     <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
     
-    <div class="info-panel"><b id="lbl-atsTitle"></b><div id="lbl-atsTips" style="white-space: pre-wrap; margin-top: 8px;"></div></div>
-    <div class="info-panel guide"><b id="lbl-guideTitle"></b><p id="lbl-guide"></p></div>
+    <div class="info-panel"><b id="lbl-atsTitle">ATS EXPERT ADVICE:</b><div id="lbl-atsTips"></div></div>
+    <div class="info-panel" style="background:#2c3e50; border-left-color: var(--main-color);"><b id="lbl-guideTitle">USER GUIDE:</b><p id="lbl-guide"></p></div>
 
     <div class="lang-grid">
         <button class="btn-lang active" onclick="setMode('hu', this)">MAGYAR (HU)</button>
@@ -68,11 +50,10 @@
         <button class="btn-lang" onclick="setMode('de', this)">DEUTSCH (DE)</button>
     </div>
 
-    <div class="picker-row"><div class="grid-label" id="lbl-colorGrid">SZÍNEK</div><div class="color-grid" id="color-picker"></div></div>
-    <div class="picker-row"><div class="grid-label" id="lbl-styleGrid">STÍLUSOK</div><div class="style-grid" id="style-picker"></div></div>
+    <div class="picker-row"><label class="smart-label">COLORS</label><div class="color-grid" id="color-picker"></div></div>
+    <div class="picker-row"><label class="smart-label">STYLES</label><div class="style-grid" id="style-picker"></div></div>
 
-    <label class="smart-label" id="lbl-photoLabel">FOTÓ FELTÖLTÉSE</label>
-    <input type="file" id="in-file" onchange="loadPhoto(event)">
+    <label class="smart-label">FOTÓ</label><input type="file" onchange="loadPhoto(event)">
 
     <div class="input-group">
         <div style="flex:1"><label class="smart-label" id="lbl-fName">FIRST NAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
@@ -80,108 +61,73 @@
     </div>
 
     <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-cityLabel">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-        <div style="flex:1"><label class="smart-label" id="lbl-streetLabel">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-city">CITY</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-street">STREET</label><input type="text" id="in-street" oninput="updatePreview()"></div>
     </div>
+    
     <div class="input-group">
-        <div style="flex:1">
-            <label class="smart-label" id="lbl-typeLabel">TÍPUS</label>
+        <div style="flex:1"><label class="smart-label" id="lbl-type">TYPE</label>
             <select id="in-street-type" onchange="updatePreview()">
                 <option value="utca">utca / street / straße</option>
                 <option value="út">út / road / straße</option>
                 <option value="tér">tér / square / platz</option>
             </select>
         </div>
-        <div style="width:30%"><label class="smart-label">HÁZSZÁM</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+        <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
     </div>
 
-    <label class="smart-label" id="lbl-phoneLabel">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
-    <label class="smart-label" id="lbl-emailLabel">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-    
-    <label class="smart-label" id="lbl-summaryLabel">PROFIL / BEMUTATKOZÁS</label>
-    <textarea id="in-summary" rows="4" oninput="updatePreview()"></textarea>
+    <label class="smart-label" id="lbl-phone">PHONE</label><input type="text" id="in-phone" oninput="updatePreview()">
+    <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
+    <label class="smart-label" id="lbl-summary">PROFILE SUMMARY</label><textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
-    <div id="edu-area">
-        <h3 id="lbl-eduHeader">TANULMÁNYOK</h3>
-        <div id="edu-container"></div>
-        <button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA / VÉGZETTSÉG</button>
-    </div>
+    <div id="edu-area"><h3 id="lbl-eduHeader">EDUCATION</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ADD EDUCATION</button></div>
+    <div id="work-area"><h3 id="lbl-workHeader">EXPERIENCE</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ADD EXPERIENCE</button></div>
 
-    <div id="work-area">
-        <h3 id="lbl-workHeader">MUNKATAPASZTALAT</h3>
-        <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY / FOGLALKOZÁS</button>
-    </div>
-
-    <button onclick="window.print()" class="print-btn" id="lbl-printBtn">PDF GENERÁLÁSA</button>
+    <button onclick="window.print()" class="print-btn" id="lbl-printBtn">GENERATE PDF</button>
 </div>
 
 <div class="preview-side">
     <div class="cv-paper" id="cv-paper">
         <div class="cv-header">
-            <div id="out-photo-box" style="display:none;"><img id="out-photo"></div>
-            <div class="header-text">
-                <h1 id="out-name">NAME</h1>
-                <div id="out-contact" class="contact-info"></div>
-            </div>
+            <div id="out-photo-box" style="display:none; width:120px; height:150px; border:1px solid #eee; overflow:hidden;"><img id="out-photo" style="width:100%;"></div>
+            <div><h1 id="out-name">NAME</h1><div id="out-contact" style="margin-top:10px; font-size:14px; color:#666;"></div></div>
         </div>
         <div id="main-content"></div>
     </div>
 </div>
 
 <script>
-    // GIGA ADATBÁZIS (50 ELEM)
-    const careerDB = {
-        eduLevels: [
-            {hu:"Általános iskola",en:"Primary School",de:"Grundschule"},{hu:"Gimnáziumi érettségi",en:"High School Diploma",de:"Abitur"},{hu:"Szakmunkás bizonyítvány",en:"Vocational Certificate",de:"Berufsabschluss"},{hu:"Technikusi vizsga",en:"Technical Certificate",de:"Technikerabschluss"},{hu:"OKJ szakképesítés",en:"Vocational Qualification",de:"Berufliche Qualifikation"},{hu:"Főiskolai diploma (BSc)",en:"Bachelor's Degree",de:"Bachelor-Abschluss"},{hu:"Egyetemi diploma (MSc)",en:"Master's Degree",de:"Master-Abschluss"},{hu:"Doktori fokozat (PhD)",en:"Doctorate Degree",de:"Doktortitel"},{hu:"Targoncavezető engedély",en:"Forklift Operator License",de:"Gabelstaplerschein"},{hu:"Vendéglátóipari végzettség",en:"Hospitality Certification",de:"Gastronomie-Zertifikat"},{hu:"Logisztikai ügyintéző",en:"Logistics Clerk",de:"Logistik-Sachbearbeiter"},{hu:"Informatikai rendszergazda",en:"IT Systems Administrator",de:"IT-Systemadministrator"},{hu:"Pénzügyi-számviteli ügyintéző",en:"Accounting Clerk",de:"Finanzbuchhalter"},{hu:"Nyelvvizsga (C1)",en:"Language Certificate (C1)",de:"Sprachzertifikat (C1)"},{hu:"Egészségügyi ápoló",en:"Registered Nurse",de:"Gesundheitspfleger"},{hu:"Építőipari szakmunkás",en:"Construction Specialist",de:"Baufacharbeiter"}
-            // ... (Karakterkorlát miatt itt a legfontosabbak, de a logika bírja az 50-et)
+    const db = {
+        edu: [
+            {hu:"Általános iskola",en:"Primary School",de:"Grundschule"},{hu:"Gimnáziumi érettségi",en:"High School Diploma",de:"Abitur"},{hu:"Szakmunkás bizonyítvány",en:"Vocational Certificate",de:"Berufsabschluss"},{hu:"Technikusi vizsga",en:"Technical Certificate",de:"Technikerabschluss"},{hu:"OKJ szakképesítés",en:"Vocational Qualification",de:"Berufliche Qualifikation"},{hu:"Főiskolai diploma (BSc)",en:"Bachelor's Degree",de:"Bachelor-Abschluss"},{hu:"Egyetemi diploma (MSc)",en:"Master's Degree",de:"Master-Abschluss"},{hu:"Doktori fokozat (PhD)",en:"Doctorate Degree",de:"Doktortitel"},{hu:"Targoncavezető engedély",en:"Forklift License",de:"Staplerschein"},{hu:"Jogosítvány (B)",en:"Driver's License (B)",de:"Führerschein (B)"}
         ],
-        jobs: [
-            {hu:"Raktáros",en:"Warehouse Worker",de:"Lagerarbeiter"},{hu:"Teherautó sofőr",en:"Truck Driver",de:"LKW-Fahrer"},{hu:"Eladó / Pénztáros",en:"Sales Clerk",de:"Verkäufer"},{hu:"Szakács",en:"Chef",de:"Koch"},{hu:"Pincér",en:"Waiter",de:"Kellner"},{hu:"Lakatos",en:"Locksmith",de:"Schlosser"},{hu:"Villanyszerelő",en:"Electrician",de:"Elektriker"},{hu:"Kőműves",en:"Bricklayer",de:"Maurer"},{hu:"Adminisztrátor",en:"Administrator",de:"Administrator"},{hu:"Projektmenedzser",en:"Project Manager",de:"Projektleiter"},{hu:"Takarító",en:"Cleaner",de:"Reinigungskraft"},{hu:"Biztonsági őr",en:"Security Guard",de:"Sicherheitskraft"},{hu:"Futár",en:"Courier",de:"Kurier"},{hu:"Gépkezelő",en:"Machine Operator",de:"Maschinenbediener"},{hu:"HR munkatárs",en:"HR Specialist",de:"Personalreferent"},{hu:"Értékesítő",en:"Sales Representative",de:"Vertriebsmitarbeiter"}
+        work: [
+            {hu:"Raktáros",en:"Warehouse Worker",de:"Lagerarbeiter"},{hu:"Teherautó sofőr",en:"Truck Driver",de:"LKW-Fahrer"},{hu:"Eladó / Pénztáros",en:"Sales Clerk",de:"Verkäufer"},{hu:"Szakács",en:"Chef",de:"Koch"},{hu:"Pincér",en:"Waiter",de:"Kellner"},{hu:"Lakatos",en:"Locksmith",de:"Schlosser"},{hu:"Villanyszerelő",en:"Electrician",de:"Elektriker"},{hu:"Kőműves",en:"Bricklayer",de:"Maurer"},{hu:"Adminisztrátor",en:"Administrator",de:"Administrator"},{hu:"Takarító",en:"Cleaner",de:"Reinigungskraft"},{hu:"Futár",en:"Courier",de:"Kurier"},{hu:"Gépkezelő",en:"Machine Operator",de:"Maschinenbediener"},{hu:"Festő",en:"Painter",de:"Maler"},{hu:"Asztalos",en:"Carpenter",de:"Tischler"},{hu:"Hegesztő",en:"Welder",de:"Schweißer"},{hu:"Biztonsági őr",en:"Security Guard",de:"Sicherheitskraft"}
         ],
-        positions: [
-            {hu:"Alkalmazott",en:"Employee",de:"Angestellte(r)"},{hu:"Csoportvezető",en:"Team Leader",de:"Teamleiter"},{hu:"Műszakvezető",en:"Shift Supervisor",de:"Schichtleiter"},{hu:"Üzletvezető",en:"Store Manager",de:"Filialleiter"},{hu:"Gyakornok",en:"Intern",de:"Praktikant"},{hu:"Senior szakértő",en:"Senior Expert",de:"Senior Experte"},{hu:"Középvezető",en:"Middle Manager",de:"Abteilungsleiter"},{hu:"Szakmai vezető",en:"Technical Lead",de:"Fachlicher Leiter"}
+        pos: [
+            {hu:"Alkalmazott",en:"Employee",de:"Angestellter"},{hu:"Műszakvezető",en:"Shift Leader",de:"Schichtleiter"},{hu:"Csoportvezető",en:"Team Leader",de:"Teamleiter"},{hu:"Vezető",en:"Manager",de:"Manager"},{hu:"Gyakornok",en:"Intern",de:"Praktikant"}
         ]
     };
 
-    const dictionary = {
-        hu: {
-            engineName: "Career-Engine", atsTitle: "🚀 GIGA ATS TIPPEK:", atsTips: "• Használj iparági kulcsszavakat!\n• Számokkal mutasd az eredményeidet (pl. +20% hatékonyság)!\n• Fotó: Világos, egyszínű háttér legyen!\n• Az ATS robotok a tiszta betűtípusokat szeretik!",
-            guideTitle: "📝 KITÖLTÉSI ÚTMUTATÓ:", guide: "A Profil mezőben 3-4 mondatban mutasd be szakmai céljaidat. Használd a legördülő menüket a garantált fordításhoz, az 'Egyéb' mezőket pedig csak speciális esetekben töltsd ki!",
-            fName: "KERESZTNÉV", lName: "VEZETÉKNÉV", cityLabel: "VÁROS", streetLabel: "UTCA", typeLabel: "≡ TÍPUS", phoneLabel: "TELEFON", emailLabel: "EMAIL", summaryLabel: "PROFIL / BEMUTATKOZÁS",
-            eduHeader: "TANULMÁNYOK", workHeader: "MUNKATAPASZTALAT", addEdu: "+ ÚJ ISKOLA / VÉGZETTSÉG", addWork: "+ ÚJ MUNKAHELY / FOGLALKOZÁS", printBtn: "PDF GENERÁLÁSA",
-            addr: "CÍM:", summary: "PROFIL", edu: "TANULMÁNYOK", work: "TAPASZTALAT", colorGrid: "SZÍNEK", styleGrid: "STÍLUSOK", photoLabel: "FOTÓ FELTÖLTÉSE"
-        },
-        en: {
-            engineName: "Career-Engine", atsTitle: "🚀 GIGA ATS TIPS:", atsTips: "• Use industry-specific keywords!\n• Show results with numbers (e.g. +20% efficiency)!\n• Photo: Use a clear, solid background!\n• ATS bots prefer clean, standard fonts!",
-            guideTitle: "📝 USER GUIDE:", guide: "In the Profile section, describe your goals in 3-4 sentences. Use the drop-down menus for guaranteed translation, and only use 'Other' for special cases!",
-            fName: "FIRST NAME", lName: "LAST NAME", cityLabel: "CITY", streetLabel: "STREET", typeLabel: "≡ TYPE", phoneLabel: "PHONE", emailLabel: "EMAIL", summaryLabel: "PROFILE / SUMMARY",
-            eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD SCHOOL / DEGREE", addWork: "+ ADD JOB / OCCUPATION", printBtn: "GENERATE PDF",
-            addr: "ADDRESS:", summary: "PROFILE", edu: "EDUCATION", work: "EXPERIENCE", colorGrid: "COLORS", styleGrid: "STYLES", photoLabel: "UPLOAD PHOTO"
-        },
-        de: {
-            engineName: "Career-Engine", atsTitle: "🚀 GIGA ATS TIPPS:", atsTips: "• Nutzen Sie branchenspezifische Keywords!\n• Ergebnisse mit Zahlen belegen (z.B. +20% Effizienz)!\n• Foto: Heller, einfarbiger Hintergrund!\n• ATS-Bots bevorzugen klare Schriftarten!",
-            guideTitle: "📝 ANLEITUNG:", guide: "Beschreiben Sie im Profilbereich in 3-4 Sätzen Ihre Ziele. Nutzen Sie die Menüs für die Übersetzung, 'Sonstiges' nur für Spezialfälle!",
-            fName: "VORNAME", lName: "NACHNAME", cityLabel: "STADT", streetLabel: "STRASSE", typeLabel: "≡ TYP", phoneLabel: "TELEFON", emailLabel: "EMAIL", summaryLabel: "PROFIL / ZUSAMMENFASSUNG",
-            eduHeader: "BILDUNGWEG", workHeader: "ERFAHRUNG", addEdu: "+ SCHULE / ABSCHLUSS", addWork: "+ JOB / BERUF", printBtn: "PDF GENERIEREN",
-            addr: "ADRESSE:", summary: "PROFIL", edu: "BILDUNG", work: "ERFAHRUNG", colorGrid: "FARBEN", styleGrid: "STILE", photoLabel: "FOTO HOCHLADEN"
-        }
+    const dict = {
+        hu: { engineName: "Career-Engine", atsTitle: "🚀 GIGA ATS TIPPEK:", atsTips: "• Kulcsszavak a szakmából!\n• Pontos évszámok!\n• Tiszta, olvasható formátum!", guideTitle: "ÚTMUTATÓ:", guide: "Használd a legördülő menüket a gyors fordításhoz!", fName: "KERESZTNÉV", lName: "VEZETÉKNÉV", city: "VÁROS", street: "UTCA", type: "TÍPUS", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ VÉGZETTSÉG", addWork: "+ ÚJ FOGLALKOZÁS", printBtn: "PDF GENERÁLÁSA", addr: "Cím:", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás" },
+        en: { engineName: "Career-Engine", atsTitle: "🚀 ATS TIPS:", atsTips: "• Use keywords!\n• Accurate dates!\n• Clean layout!", guideTitle: "GUIDE:", guide: "Use dropdowns for automatic translation!", fName: "FIRST NAME", lName: "LAST NAME", city: "CITY", street: "STREET", type: "TYPE", phone: "PHONE", email: "EMAIL", summary: "PROFILE", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD EDUCATION", addWork: "+ ADD EXPERIENCE", printBtn: "GENERATE PDF", addr: "Address:", v_deg: "Degree", v_job: "Occupation", v_pos: "Position" },
+        de: { engineName: "Career-Engine", atsTitle: "🚀 ATS TIPPS:", atsTips: "• Keywords nutzen!\n• Genaue Daten!\n• Sauberes Layout!", guideTitle: "ANLEITUNG:", guide: "Nutzen Sie die Menüs!", fName: "VORNAME", lName: "NACHNAME", city: "STADT", street: "STRASSE", type: "TYP", phone: "TELEFON", email: "EMAIL", summary: "PROFIL", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ BILDUNG HINZUFÜGEN", addWork: "+ JOB HINZUFÜGEN", printBtn: "PDF GENERIEREN", addr: "Adresse:", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position" }
     };
 
-    let currentLang = 'hu';
+    let lang = 'hu';
 
-    async function apiTranslate(text) {
-        if (!text || currentLang === 'hu') return text;
+    async function translate(text) {
+        if (!text || lang === 'hu') return text;
         try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${lang}`);
             const data = await res.json();
-            const tr = data.responseData.translatedText;
-            return (tr && !tr.includes("LIMIT")) ? tr : text;
-        } catch (e) { return text; }
+            return data.responseData.translatedText || text;
+        } catch { return text; }
     }
 
     function setMode(l, btn) {
-        currentLang = l;
+        lang = l;
         document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         updateInterface();
@@ -189,102 +135,98 @@
     }
 
     function updateInterface() {
-        const d = dictionary[currentLang];
+        const d = dict[lang];
         for (let key in d) {
             const el = document.getElementById('lbl-' + key);
             if (el) el.innerText = d[key];
         }
-        // Frissítsük a meglévő dinamikus mezők címkéit is
-        document.querySelectorAll('.lbl-dyn-degree').forEach(el => el.innerText = (currentLang === 'hu' ? 'Végzettség' : (currentLang === 'en' ? 'Degree' : 'Abschluss')));
-        document.querySelectorAll('.lbl-dyn-job').forEach(el => el.innerText = (currentLang === 'hu' ? 'Foglalkozás' : (currentLang === 'en' ? 'Occupation' : 'Beruf')));
-        document.querySelectorAll('.lbl-dyn-pos').forEach(el => el.innerText = (currentLang === 'hu' ? 'Beosztás' : (currentLang === 'en' ? 'Position' : 'Position')));
+        document.querySelectorAll('.dyn-label-deg').forEach(el => el.innerText = d.v_deg);
+        document.querySelectorAll('.dyn-label-job').forEach(el => el.innerText = d.v_job);
+        document.querySelectorAll('.dyn-label-pos').forEach(el => el.innerText = d.v_pos);
     }
 
     function updatePreview() {
-        const vez = document.getElementById('in-lastName').value || "";
-        const ker = document.getElementById('in-firstName').value || "";
-        // PAPÍR LOGIKA: HU esetén Vez + Ker | Egyéb esetén Ker + Vez
-        let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
-        document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
-        renderPaper();
+        const l = document.getElementById('in-lastName').value || "";
+        const f = document.getElementById('in-firstName').value || "";
+        // NEMZETKÖZI SORREND: HU: Vez+Ker, Más: Ker+Vez
+        document.getElementById('out-name').innerText = (lang === 'hu' ? l + " " + f : f + " " + l).trim().toUpperCase() || "NAME";
+        render();
     }
 
-    async function renderPaper() {
-        const d = dictionary[currentLang];
-        const city = await apiTranslate(document.getElementById('in-city').value);
-        const street = document.getElementById('in-street').value;
-        const house = document.getElementById('in-house').value;
-        const sTypeSelect = document.getElementById('in-street-type');
-        const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : (currentLang === 'en' ? 1 : 2)];
-
+    async function render() {
+        const d = dict[lang];
+        const city = await translate(document.getElementById('in-city').value);
+        const stType = document.getElementById('in-street-type').options[document.getElementById('in-street-type').selectedIndex].text.split(' / ')[lang==='hu'?0:lang==='en'?1:2];
+        
         document.getElementById('out-contact').innerHTML = `
-            <div><b>${d.phoneLabel}:</b> ${document.getElementById('in-phone').value}</div>
-            <div><b>${d.emailLabel}:</b> ${document.getElementById('in-email').value}</div>
-            <div><b>${d.addr}</b> ${city}, ${street} ${sType} ${house}</div>
+            <b>${d.phone}:</b> ${document.getElementById('in-phone').value} | <b>${d.email}:</b> ${document.getElementById('in-email').value}<br>
+            <b>${d.addr}</b> ${city}, ${document.getElementById('in-street').value} ${stType} ${document.getElementById('in-house').value}
         `;
 
         let html = "";
-        const summary = document.getElementById('in-summary').value;
-        if(summary) html += `<h3>${d.summary}</h3><p>${await apiTranslate(summary)}</p>`;
+        const sum = document.getElementById('in-summary').value;
+        if(sum) html += `<h3>${d.summary}</h3><p>${await translate(sum)}</p>`;
 
-        for (let type of ['edu', 'work']) {
-            let items = "";
-            const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
-            for (let box of boxes) {
-                const main = box.querySelector('.e-main').value;
-                const sub = box.querySelector('.e-sub').value;
-                
-                if(type === 'edu') {
-                    const dbVal = box.querySelector('.e-db-edu').value;
-                    const other = box.querySelector('.e-other-edu').value;
-                    let title = (dbVal !== "other") ? careerDB.eduLevels.find(x => x.hu === dbVal)[currentLang] : await apiTranslate(other);
-                    if(main || title) items += `<div class="cv-item"><b>${main}</b><br><span>${title}</span> (${sub})</div>`;
-                } else {
-                    const jobDb = box.querySelector('.e-db-job').value;
-                    const jobOther = box.querySelector('.e-other-job').value;
-                    const posDb = box.querySelector('.e-db-pos').value;
-                    const posOther = box.querySelector('.e-other-pos').value;
-                    
-                    let job = (jobDb !== "other") ? careerDB.jobs.find(x => x.hu === jobDb)[currentLang] : await apiTranslate(jobOther);
-                    let pos = (posDb !== "other") ? careerDB.positions.find(x => x.hu === posDb)[currentLang] : await apiTranslate(posOther);
-                    
-                    if(main || job) items += `<div class="cv-item"><b>${main}</b> - ${job}<br><i>${pos}</i> (${sub})</div>`;
-                }
-            }
-            if(items) html += `<h3>${d[type]}</h3>` + items;
+        // EDU
+        let edus = "";
+        document.querySelectorAll('#edu-container .entry-box').forEach(async (box) => {
+            const school = box.querySelector('.e-main').value;
+            const years = box.querySelector('.e-sub').value;
+            const degVal = box.querySelector('.e-sel').value;
+            const degOther = box.querySelector('.e-other').value;
+            let deg = degVal !== "other" ? db.edu.find(x => x.hu === degVal)[lang] : await translate(degOther);
+            if(school) document.getElementById('main-content').innerHTML += `<div style="margin-bottom:10px"><b>${school}</b><br>${deg} (${years})</div>`;
+        });
+
+        // WORK
+        let works = "";
+        const wBoxes = document.querySelectorAll('#work-container .entry-box');
+        for (let box of wBoxes) {
+            const comp = box.querySelector('.e-main').value;
+            const years = box.querySelector('.e-sub').value;
+            const jobVal = box.querySelector('.e-sel-job').value;
+            const jobOther = box.querySelector('.e-other-job').value;
+            const posVal = box.querySelector('.e-sel-pos').value;
+            const posOther = box.querySelector('.e-other-pos').value;
+
+            let job = jobVal !== "other" ? db.work.find(x => x.hu === jobVal)[lang] : await translate(jobOther);
+            let pos = posVal !== "other" ? db.pos.find(x => x.hu === posVal)[lang] : await translate(posOther);
+            if(comp) html += `<div style="margin-bottom:10px"><b>${comp}</b> - ${job} (${pos})<br>${years}</div>`;
         }
+
         document.getElementById('main-content').innerHTML = html;
     }
 
     function addEntry(type) {
+        const container = document.getElementById(type + '-container');
         const div = document.createElement('div');
         div.className = 'entry-box';
         
         if(type === 'edu') {
-            let eduOpts = careerDB.eduLevels.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
+            let opts = db.edu.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
             div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Iskola neve / School name" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Év / Year" oninput="updatePreview()">
-                <label class="smart-label lbl-dyn-degree">Végzettség</label>
-                <select class="e-db-edu" onchange="updatePreview()"><option value="other">-- EGYÉB / OTHER --</option>${eduOpts}</select>
-                <input type="text" class="e-other-edu" placeholder="Saját végzettség (API)" oninput="updatePreview()">
+                <input type="text" class="e-main" placeholder="Iskola neve" oninput="updatePreview()">
+                <input type="text" class="e-sub" placeholder="Évek" oninput="updatePreview()">
+                <label class="smart-label dyn-label-deg">Végzettség</label>
+                <select class="e-sel" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${opts}</select>
+                <input type="text" class="e-other" placeholder="Saját (API)" oninput="updatePreview()">
             `;
         } else {
-            let jobOpts = careerDB.jobs.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-            let posOpts = careerDB.positions.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
+            let jobOpts = db.work.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
+            let posOpts = db.pos.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
             div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Cég neve / Company name" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Év / Year" oninput="updatePreview()">
-                <label class="smart-label lbl-dyn-job">Foglalkozás</label>
-                <select class="e-db-job" onchange="updatePreview()"><option value="other">-- EGYÉB / OTHER --</option>${jobOpts}</select>
+                <input type="text" class="e-main" placeholder="Cég neve" oninput="updatePreview()">
+                <input type="text" class="e-sub" placeholder="Évek" oninput="updatePreview()">
+                <label class="smart-label dyn-label-job">Foglalkozás</label>
+                <select class="e-sel-job" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${jobOpts}</select>
                 <input type="text" class="e-other-job" placeholder="Saját foglalkozás (API)" oninput="updatePreview()">
-                <label class="smart-label lbl-dyn-pos">Beosztás</label>
-                <select class="e-db-pos" onchange="updatePreview()"><option value="other">-- EGYÉB / OTHER --</option>${posOpts}</select>
+                <label class="smart-label dyn-label-pos">Beosztás</label>
+                <select class="e-sel-pos" onchange="updatePreview()"><option value="other">-- EGYÉB --</option>${posOpts}</select>
                 <input type="text" class="e-other-pos" placeholder="Saját beosztás (API)" oninput="updatePreview()">
             `;
         }
-        document.getElementById(type + '-container').appendChild(div);
-        updateInterface(); // Dinamikus címkék fordítása
+        container.appendChild(div);
+        updateInterface();
     }
 
     window.onload = () => {

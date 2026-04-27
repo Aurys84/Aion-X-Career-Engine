@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v40.0</title>
+    <title>Career-Engine v41.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -18,23 +18,23 @@
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div class="picker-row"><label class="smart-label" id="lbl-colors">SZÍNEK</label><div class="color-grid" id="color-picker"></div></div>
-        <div class="picker-row"><label class="smart-label" id="lbl-styles">STÍLUSOK</label><div class="style-grid" id="style-picker"></div></div>
+        <div class="picker-row"><label class="smart-label" id="lbl-colorLabel">SZÍNEK</label><div class="color-grid" id="color-picker"></div></div>
+        <div class="picker-row"><label class="smart-label" id="lbl-styleLabel">STÍLUSOK</label><div class="style-grid" id="style-picker"></div></div>
 
         <label class="smart-label" id="lbl-photo">FOTÓ</label>
         <input type="file" onchange="loadPhoto(event)">
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">FIRST NAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-lName">LAST NAME</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
         </div>
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-city">CITY</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-street">STREET</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-cityLabel">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-streetLabel">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
         </div>
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TYPE</label>
+            <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street / straße</option>
                     <option value="út">út / road / straße</option>
@@ -44,16 +44,16 @@
             <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
-        <label class="smart-label" id="lbl-phone">PHONE</label><input type="text" id="in-phone" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-phoneLabel">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-emailLabel">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
         
-        <label class="smart-label" id="lbl-summary">SUMMARY</label>
+        <label class="smart-label" id="lbl-summaryLabel">BEMUTATKOZÁS</label>
         <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
-        <div id="edu-area"><h3 id="lbl-edu">EDUCATION</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button></div>
-        <div id="work-area"><h3 id="lbl-work">EXPERIENCE</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button></div>
+        <div id="edu-area"><h3 id="lbl-eduTitle">TANULMÁNYOK</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button></div>
+        <div id="work-area"><h3 id="lbl-workTitle">MUNKATAPASZTALAT</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button></div>
 
-        <button onclick="window.print()" class="print-btn" id="lbl-print">GENERATE PDF</button>
+        <button onclick="window.print()" class="print-btn" id="lbl-print">PDF GENERÁLÁSA</button>
     </div>
 
     <div class="preview-side">

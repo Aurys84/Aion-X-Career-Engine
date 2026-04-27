@@ -1,6 +1,6 @@
 let currentLang = 'hu';
 
-async function apiTranslate(text) {
+async function safeTranslate(text) {
     if (!text || currentLang === 'hu') return text;
     try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
@@ -10,20 +10,10 @@ async function apiTranslate(text) {
     } catch (e) { return text; }
 }
 
-function updateInterface() {
-    const d = dictionary[currentLang];
-    for (let key in d) {
-        const el = document.getElementById('lbl-' + key);
-        if (el) el.innerText = d[key];
-    }
-    // Summary placeholder frissítése
-    document.getElementById('in-summary').placeholder = d.summaryPlaceholder;
-}
-
 function updatePreview() {
     const vez = document.getElementById('in-lastName').value || "";
     const ker = document.getElementById('in-firstName').value || "";
-    // NÉVSORREND LOGIKA
+    // Magyar: Vezetéknév Keresztnév | Egyéb: Keresztnév Vezetéknév
     let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     renderPaper();
@@ -31,81 +21,71 @@ function updatePreview() {
 
 async function renderPaper() {
     const d = dictionary[currentLang];
-    const city = await apiTranslate(document.getElementById('in-city').value);
-    const summary = await apiTranslate(document.getElementById('in-summary').value);
-    
-    // Cím összerakása
+    const phone = document.getElementById('in-phone').value;
+    const email = document.getElementById('in-email').value;
+    const city = await safeTranslate(document.getElementById('in-city').value);
     const sName = document.getElementById('in-street').value;
-    const sType = document.getElementById('in-street-type').value;
-    const house = document.getElementById('in-house').value;
+    const sTypeHU = document.getElementById('in-street-type').value;
+    const sType = (sTypeHU === 'utca') ? (currentLang === 'hu' ? 'utca' : 'street') : sTypeHU; // Egyszerűsített
     
     document.getElementById('out-contact').innerHTML = `
-        <div><b>${d.phone}:</b> ${document.getElementById('in-phone').value}</div>
-        <div><b>${d.email}:</b> ${document.getElementById('in-email').value}</div>
-        <div><b>${d.addr}</b> ${city}, ${sName} ${sType} ${house}</div>
+        <div><b>${d.phone}:</b> ${phone}</div>
+        <div><b>${d.email}:</b> ${email}</div>
+        <div><b>${d.addr}</b> ${city}, ${sName} ${sType} ${document.getElementById('in-house').value}</div>
     `;
 
-    let html = summary ? `<h3>${d.summary}</h3><p>${summary}</p>` : "";
+    let html = "";
+    const sumRaw = document.getElementById('in-summary').value;
+    if(sumRaw) html += `<h3>${d.summary}</h3><p>${await safeTranslate(sumRaw)}</p>`;
 
-    // TANULMÁNYOK CIKLUS
-    let eduHtml = "";
-    document.querySelectorAll('#edu-container .entry-box').forEach(async (box) => {
-        const school = box.querySelector('.e-main').value;
-        const years = box.querySelector('.e-sub').value;
-        const dbSel = box.querySelector('.e-db-select').value;
-        const other = box.querySelector('.e-other').value;
-        
-        let degree = dbSel !== "other" ? 
-            careerDB.eduLevels.find(x => x.hu === dbSel)[currentLang] : 
-            await apiTranslate(other);
+    // Iskola/Munka ciklusok
+    for (let type of ['edu', 'work']) {
+        let items = "";
+        const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
+        for (let box of boxes) {
+            const m = box.querySelector('.e-main').value;
+            const sub = box.querySelector('.e-sub').value;
+            const dbVal = box.querySelector('.e-db').value;
+            const other = box.querySelector('.e-other').value;
+            
+            let title = "";
+            if(dbVal !== "other") {
+                const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
+                const found = list.find(x => x.hu === dbVal);
+                title = found ? found[currentLang] : dbVal;
+            } else {
+                title = await safeTranslate(other);
+            }
 
-        if(school) eduHtml += `<div class="item"><b>${school}</b><br>${degree} (${years})</div>`;
-    });
-
-    // MUNKÁK CIKLUS (50 szakma DB-ből + egyéb API)
-    let workHtml = "";
-    document.querySelectorAll('#work-container .entry-box').forEach(async (box) => {
-        const company = box.querySelector('.e-main').value;
-        const years = box.querySelector('.e-sub').value;
-        const jobDb = box.querySelector('.e-db-job').value;
-        const jobOther = box.querySelector('.e-other-job').value;
-        const posDb = box.querySelector('.e-db-pos').value;
-        const posOther = box.querySelector('.e-other-pos').value;
-
-        let jobTitle = jobDb !== "other" ? careerDB.jobs.find(x => x.hu === jobDb)[currentLang] : await apiTranslate(jobOther);
-        let position = posDb !== "other" ? careerDB.positions.find(x => x.hu === posDb)[currentLang] : await apiTranslate(posOther);
-
-        if(company) workHtml += `<div class="item"><b>${company}</b> - ${jobTitle}<br><i>${position}</i> (${years})</div>`;
-    });
-
-    document.getElementById('main-content').innerHTML = html + `<h3>${d.edu}</h3>` + eduHtml + `<h3>${d.work}</h3>` + workHtml;
+            if(m || title) items += `<div class="item"><b>${m}</b> - ${title} (${sub})</div>`;
+        }
+        if(items) html += `<h3>${d[type]}</h3>` + items;
+    }
+    document.getElementById('main-content').innerHTML = html;
 }
 
 function addEntry(type) {
     const div = document.createElement('div');
     div.className = 'entry-box';
-    if(type === 'edu') {
-        let opts = careerDB.eduLevels.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-        div.innerHTML = `
-            <input type="text" class="e-main" placeholder="Iskola neve">
-            <input type="text" class="e-sub" placeholder="Év (tól-ig)">
-            <select class="e-db-select"><option value="other">EGYÉB...</option>${opts}</select>
-            <input type="text" class="e-other" placeholder="Egyéb végzettség (API)">
-        `;
-    } else {
-        let jobOpts = careerDB.jobs.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-        let posOpts = careerDB.positions.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
-        div.innerHTML = `
-            <input type="text" class="e-main" placeholder="Munkahely neve">
-            <input type="text" class="e-sub" placeholder="Év (tól-ig)">
-            <select class="e-db-job"><option value="other">EGYÉB FOGLALKOZÁS...</option>${jobOpts}</select>
-            <input type="text" class="e-other-job" placeholder="Egyéb foglalkozás (API)">
-            <select class="e-db-pos"><option value="other">EGYÉB BEOSZTÁS...</option>${posOpts}</select>
-            <input type="text" class="e-other-pos" placeholder="Egyéb beosztás (API)">
-        `;
-    }
+    const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
+    let opts = list.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
+    
+    div.innerHTML = `
+        <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola neve':'Cég neve'}">
+        <input type="text" class="e-sub" placeholder="Év">
+        <select class="e-db"><option value="other">EGYÉB / OTHER</option>${opts}</select>
+        <input type="text" class="e-other" placeholder="Ha nincs a listában, ide írd...">
+    `;
     document.getElementById(type + '-container').appendChild(div);
     div.querySelectorAll('input, select').forEach(el => el.oninput = updatePreview);
+}
+
+function updateInterface() {
+    const d = dictionary[currentLang];
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
 }
 
 function setMode(l, b) {
@@ -115,7 +95,6 @@ function setMode(l, b) {
     updateInterface(); updatePreview();
 }
 
-// Szín- és stílusválasztó generálás (10-10 gomb)
 window.onload = () => {
     const colors = ["#007bb5", "#e67e22", "#27ae60", "#c0392b", "#8e44ad", "#1a1a1a", "#f1c40f", "#16a085", "#d35400", "#2c3e50"];
     colors.forEach(c => {
@@ -130,3 +109,9 @@ window.onload = () => {
     }
     updateInterface();
 };
+
+function loadPhoto(e) {
+    const r = new FileReader();
+    r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; };
+    r.readAsDataURL(e.target.files[0]);
+}

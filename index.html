@@ -2,100 +2,96 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Aion-X Dashboard v33.0</title>
+    <title>Career-Engine v36.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
     <div class="editor-side">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-            <div style="width:45px; height:45px; background:var(--main-color); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; border:2px solid white;">A&N</div>
-            <h2 id="lbl-title" style="color:var(--main-color); margin:0;">AION-X PANEL</h2>
+        <div class="logo-area">
+            <div class="brand-circle">A&N</div>
+            <h1 id="lbl-engineName">Career-Engine</h1>
         </div>
 
-        <div id="ats-box" style="background:#1a3a5a; padding:12px; border-radius:8px; margin-bottom:15px; border-left:4px solid #f1c40f; font-size:11px; color:white;">
-            <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b><br>
-            <div id="lbl-ats1">• Használj szoftverneveket!</div>
-            <div id="lbl-ats2">• Eredmények számokkal (+20%)!</div>
-            <div id="lbl-ats3">• Világos háttér!</div>
-            <div id="lbl-ats4">• Kulcsszavak!</div>
-        </div>
-        
-        <div class="lang-grid" style="display:flex; gap:5px; margin-bottom:20px;">
-            <button class="btn-lang active" onclick="setMode('hu', this)">HU</button>
-            <button class="btn-lang" onclick="setMode('en', this)">EN</button>
-            <button class="btn-lang" onclick="setMode('de', this)">DE</button>
+        <div id="ats-tips-box" class="info-panel">
+            <b id="lbl-atsTitle">🚀 GIGA ATS TIPPEK:</b>
+            <div id="lbl-atsContent"></div>
         </div>
 
-        <div style="display: flex; gap: 10px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-style">STÍLUS</label>
-                <select id="style-select" onchange="updateStyle()">
-                    <option value="style-10">10. Aion-X Speciál</option>
-                    <option value="style-1">1. Modern</option><option value="style-2">2. Klasszikus</option>
-                    <option value="style-3">3. Centrált</option><option value="style-4">4. Minimalista</option>
-                    <option value="style-5">5. Tech</option><option value="style-6">6. Kreatív</option>
-                    <option value="style-7">7. Vezetői</option><option value="style-8">8. Akadémiai</option>
-                    <option value="style-9">9. Junior Bold</option>
-                </select>
-            </div>
-            <div style="flex:1"><label class="smart-label" id="lbl-color">SZÍN</label>
-                <select id="theme-color" onchange="updateTheme()">
-                    <option value="#007bb5">Aion Kék</option><option value="#e67e22">Narancs</option>
-                    <option value="#27ae60">Smaragd</option><option value="#c0392b">Vörös</option>
-                    <option value="#8e44ad">Lila</option><option value="#1a1a1a">Fekete</option>
-                    <option value="#f1c40f">Arany</option><option value="#16a085">Türkiz</option>
-                    <option value="#d35400">Tégla</option><option value="#2c3e50">Pala</option>
-                </select>
-            </div>
+        <div class="info-panel guide">
+            <b id="lbl-guideTitle">📝 KITÖLTÉSI ÚTMUTATÓ:</b>
+            <p id="lbl-guideText"></p>
         </div>
+
+        <div class="lang-grid">
+            <button class="btn-lang active" onclick="setMode('hu', this)">MAGYAR</button>
+            <button class="btn-lang" onclick="setMode('en', this)">ENGLISH</button>
+            <button class="btn-lang" onclick="setMode('de', this)">DEUTSCH</button>
+        </div>
+
+        <label class="smart-label" id="lbl-color">SZÍNVÁLASZTÓ</label>
+        <div class="color-grid" id="color-picker"></div>
+
+        <label class="smart-label" id="lbl-style">STÍLUSVÁLASZTÓ</label>
+        <div class="style-grid" id="style-picker"></div>
 
         <label class="smart-label" id="lbl-photo">FOTÓ</label>
         <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
 
-        <div style="display: flex; gap: 5px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+        <div class="input-group">
             <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
         </div>
 
-        <label class="smart-label" id="lbl-cityHeader">IRSZ / VÁROS</label>
-        <div style="display: flex; gap: 5px;">
-            <input type="text" id="in-zip" placeholder="IRSZ" oninput="updatePreview()" style="width:30%">
-            <input type="text" id="in-city" placeholder="Város" oninput="updatePreview()" style="width:70%">
+        <div class="input-group">
+            <div style="flex:1"><label class="smart-label" id="lbl-city">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
         </div>
 
-        <div style="display: flex; gap: 5px; margin-top:5px;">
-            <div style="flex:1"><label class="smart-label" id="lbl-streetName">UTCA NEVE</label><input type="text" id="in-street-name" oninput="updatePreview()"></div>
+        <div class="input-group">
             <div style="flex:1">
-                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
+                <label class="smart-label" id="lbl-type">TÍPUS</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street</option>
                     <option value="út">út / road</option>
                     <option value="tér">tér / square</option>
                 </select>
             </div>
-            <div style="width:20%"><label class="smart-label" id="lbl-house">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
+            <div style="width:30%"><label class="smart-label">HÁZSZÁM</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
         <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-summary">PROFIL</label><textarea id="in-summary" rows="2" oninput="updatePreview()"></textarea>
+        
+        <label class="smart-label" id="lbl-summary">PROFIL / BEMUTATKOZÁS</label>
+        <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
-        <div id="edu-container"></div>
-        <button onclick="addEntry('edu')" class="add-btn" id="lbl-addE">+ ÚJ ISKOLA</button>
-        <div id="work-container"></div>
-        <button onclick="addEntry('work')" class="add-btn" id="lbl-addW">+ ÚJ MUNKA</button>
+        <div id="edu-area">
+            <label class="smart-label" id="lbl-edu">TANULMÁNYOK</label>
+            <div id="edu-container"></div>
+            <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
+        </div>
 
-        <button onclick="window.print()" style="background:var(--main-color); color:white; padding:15px; width:100%; border:none; margin-top:20px; font-weight:bold; cursor:pointer; border-radius:6px;">PDF GENERÁLÁSA</button>
+        <div id="work-area">
+            <label class="smart-label" id="lbl-work">MUNKATAPASZTALAT</label>
+            <div id="work-container"></div>
+            <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
+        </div>
+
+        <button onclick="window.print()" class="print-btn">PDF GENERÁLÁSA</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
-            <div class="cv-header" style="display:flex; gap:20px;">
-                <div id="out-photo-box" style="display:none; width:130px; height:160px; border:1px solid #ccc; overflow:hidden;"><img id="out-photo" style="width:100%; height:100%; object-fit:cover;"></div>
+            <div class="cv-header">
+                <div id="out-photo-box" style="display:none;"><img id="out-photo"></div>
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
             </div>
             <div id="main-content"></div>
         </div>
     </div>
-    <script src="dictionary.js"></script><script src="engine.js"></script>
+
+    <script src="database.js"></script>
+    <script src="dictionary.js"></script>
+    <script src="engine.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v65.0 - A&N Visual</title>
+    <title>Career-Engine v66.0 - A&N Visual</title>
     <style>
         :root { --main-color: #007bb5; --bg: #0d0d0d; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
@@ -64,13 +64,13 @@
     <label class="smart-label" id="lbl-photo">FOTÓ</label><input type="file" onchange="loadPhoto(event)">
 
     <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
-        <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV / FIRST NAME / VORNAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV / LAST NAME / NACHNAME</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
     </div>
 
     <div class="input-group">
-        <div style="flex:1"><label class="smart-label" id="lbl-city">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-        <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-city">VÁROS / CITY / STADT</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+        <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA / STREET / STRASSE</label><input type="text" id="in-street" oninput="updatePreview()"></div>
     </div>
     <div class="input-group">
         <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TÍPUS</label>
@@ -83,7 +83,7 @@
         <div style="width:30%"><label class="smart-label">HÁZSZÁM</label><input type="text" id="in-house" oninput="updatePreview()"></div>
     </div>
 
-    <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+    <label class="smart-label" id="lbl-phone">TELEFON / PHONE / TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
     <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
     <label class="smart-label" id="lbl-summary">PROFIL-BEMUTATKOZÁS</label><textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
@@ -99,9 +99,9 @@
 
 <script>
     const dictionary = {
-        hu: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPEK:", atsTips: "• Kulcsszavak!\n• Számok!\n• Jó fotó!", guideTitle: "📝 ÚTMUTATÓ:", guide: "Profilba írj 3-4 mondatban. Használd a menüket!", fName: "KERESZTNÉV / FIRST NAME / VORNAME", lName: "VEZETÉKNÉV / LAST NAME / NACHNAME", city: "VÁROS / CITY / STADT", street: "UTCA / STREET / STRASSE", type: "≡ TÍPUS", phone: "TELEFON / PHONE / TELEFON", email: "EMAIL", summary: "PROFIL / SUMMARY / PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ ISKOLA", addWork: "+ ÚJ MUNKAHELY", printBtn: "PDF GENERÁLÁSA", addr: "Cím:", colors: "SZÍNEK", styles: "STÍLUSOK", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás", v_other: "EGYÉB", select_hint: "-- VÁLASSZ / SELECT / WÄHLEN --" },
-        en: { engineName: "Career-Engine", atsTitle: "🚀 API TIPS:", atsTips: "• Keywords!\n• Numbers!\n• Pro Photo!", guideTitle: "📝 GUIDE:", guide: "Describe yourself in 3-4 sentences.", fName: "FIRST NAME / KERESZTNÉV / VORNAME", lName: "LAST NAME / VEZETÉKNÉV / NACHNAME", city: "CITY / VÁROS / STADT", street: "STREET / UTCA / STRASSE", type: "≡ TYPE", phone: "PHONE / TELEFON / TELEFON", email: "EMAIL", summary: "SUMMARY / PROFIL / PROFIL", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD SCHOOL", addWork: "+ ADD JOB", printBtn: "GENERATE PDF", addr: "Address:", colors: "COLORS", styles: "STYLES", v_deg: "Degree", v_job: "Occupation", v_pos: "Position", v_other: "OTHER", select_hint: "-- SELECT / VÁLASSZ / WÄHLEN --" },
-        de: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPS:", atsTips: "• Keywords!\n• Zahlen!\n• Foto!", guideTitle: "📝 ANLEITUNG:", guide: "Schreiben Sie 3-4 Sätze.", fName: "VORNAME / KERESZTNÉV / FIRST NAME", lName: "NACHNAME / VEZETÉKNÉV / LAST NAME", city: "STADT / VÁROS / CITY", street: "STRASSE / UTCA / STREET", type: "≡ TYP", phone: "TELEFON / TELEFON / PHONE", email: "EMAIL", summary: "PROFIL / PROFIL / SUMMARY", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ SCHULE", addWork: "+ JOB", printBtn: "PDF GENERIEREN", addr: "Adresse:", colors: "FARBEN", styles: "STILE", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position", v_other: "SONSTIGES", select_hint: "-- WÄHLEN / VÁLASSZ / SELECT --" }
+        hu: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPEK:", atsTips: "• Kulcsszavak!\n• Számok!\n• Jó fotó!", guideTitle: "📝 ÚTMUTATÓ:", guide: "Profilba írj 3-4 mondatban. Használd a menüket!", fName: "KERESZTNÉV / FIRST NAME / VORNAME", lName: "VEZETÉKNÉV / LAST NAME / NACHNAME", city: "VÁROS / CITY / STADT", street: "UTCA / STREET / STRASSE", type: "≡ TÍPUS", phone: "TELEFON / PHONE / TELEFON", email: "EMAIL", summary: "PROFIL / SUMMARY / PROFIL", eduHeader: "TANULMÁNYOK", workHeader: "TAPASZTALAT", addEdu: "+ ÚJ ISKOLA", addWork: "+ ÚJ MUNKAHELY", printBtn: "PDF GENERÁLÁSA", addr: "Cím / Address / Adresse:", colors: "SZÍNEK", styles: "STÍLUSOK", v_deg: "Végzettség", v_job: "Foglalkozás", v_pos: "Beosztás", v_other: "EGYÉB", select_hint: "-- VÁLASSZ / SELECT / WÄHLEN --" },
+        en: { engineName: "Career-Engine", atsTitle: "🚀 API TIPS:", atsTips: "• Keywords!\n• Numbers!\n• Pro Photo!", guideTitle: "📝 GUIDE:", guide: "Describe yourself in 3-4 sentences.", fName: "FIRST NAME / KERESZTNÉV / VORNAME", lName: "LAST NAME / VEZETÉKNÉV / NACHNAME", city: "CITY / VÁROS / STADT", street: "STREET / UTCA / STRASSE", type: "≡ TYPE", phone: "PHONE / TELEFON / TELEFON", email: "EMAIL", summary: "SUMMARY / PROFIL / PROFIL", eduHeader: "EDUCATION", workHeader: "EXPERIENCE", addEdu: "+ ADD SCHOOL", addWork: "+ ADD JOB", printBtn: "GENERATE PDF", addr: "Address / Cím / Adresse:", colors: "COLORS", styles: "STYLES", v_deg: "Degree", v_job: "Occupation", v_pos: "Position", v_other: "OTHER", select_hint: "-- SELECT / VÁLASSZ / WÄHLEN --" },
+        de: { engineName: "Career-Engine", atsTitle: "🚀 API TIPPS:", atsTips: "• Keywords!\n• Zahlen!\n• Foto!", guideTitle: "📝 ANLEITUNG:", guide: "Schreiben Sie 3-4 Sätze.", fName: "VORNAME / KERESZTNÉV / FIRST NAME", lName: "NACHNAME / VEZETÉKNÉV / LAST NAME", city: "STADT / VÁROS / CITY", street: "STRASSE / UTCA / STREET", type: "≡ TYP", phone: "TELEFON / TELEFON / PHONE", email: "EMAIL", summary: "PROFIL / PROFIL / SUMMARY", eduHeader: "BILDUNG", workHeader: "ERFAHRUNG", addEdu: "+ SCHULE", addWork: "+ JOB", printBtn: "PDF GENERIEREN", addr: "Adresse / Address / Cím:", colors: "FARBEN", styles: "STILE", v_deg: "Abschluss", v_job: "Beruf", v_pos: "Position", v_other: "SONSTIGES", select_hint: "-- WÄHLEN / VÁLASSZ / SELECT --" }
     };
 
     let currentLang = 'hu';
@@ -170,9 +170,11 @@
         const sTypeSelect = document.getElementById('in-street-type');
         const sType = sTypeSelect.options[sTypeSelect.selectedIndex].text.split(' / ')[currentLang === 'hu' ? 0 : (currentLang === 'en' ? 1 : 2)];
         
+        // JAVÍTVA: Telefon alatt az Email, tiszta folytonosság
         document.getElementById('out-contact').innerHTML = `
-            <b>${d.phone.split(' / ')[0]}:</b> ${document.getElementById('in-phone').value} | <b>EMAIL:</b> ${document.getElementById('in-email').value}<br>
-            <b>${d.addr}</b> ${city}, ${street} ${sType} ${document.getElementById('in-house').value}
+            <b>${d.phone.split(' / ')[0]}:</b> ${document.getElementById('in-phone').value}<br>
+            <b>EMAIL:</b> ${document.getElementById('in-email').value}<br>
+            <b>${d.addr.split(' / ')[0]}:</b> ${city}, ${street} ${sType} ${document.getElementById('in-house').value}
         `;
 
         let html = "";
@@ -182,10 +184,8 @@
             html += `<h3>${d.summary.split(' / ')[0]}</h3><p>${sumTrans}</p>`;
         }
 
-        // ISKOLA RENDER + API FORDÍTÁS AZ EGYÉBRE
         let eduHtml = "";
-        const eduBoxes = document.querySelectorAll('#edu-container .entry-box');
-        for (const box of eduBoxes) {
+        for (const box of document.querySelectorAll('#edu-container .entry-box')) {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
             const dbVal = box.querySelector('.e-db').value;
@@ -195,10 +195,8 @@
         }
         if(eduHtml) html += `<h3>${d.eduHeader}</h3>` + eduHtml;
 
-        // MUNKA RENDER + API FORDÍTÁS AZ EGYÉBRE
         let workHtml = "";
-        const workBoxes = document.querySelectorAll('#work-container .entry-box');
-        for (const box of workBoxes) {
+        for (const box of document.querySelectorAll('#work-container .entry-box')) {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
             const jobVal = box.querySelector('.e-job').value;
@@ -218,7 +216,6 @@
         const div = document.createElement('div');
         div.className = 'entry-box';
         const d = dictionary[currentLang];
-        // HIBRID LABELEK A PLACEHOLDEREKBEN IS
         if(type === 'edu') {
             div.innerHTML = `
                 <input type="text" class="e-main" placeholder="Iskola neve / School name / Schulname">

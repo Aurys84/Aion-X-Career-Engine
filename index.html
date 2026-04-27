@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v59.0 - A&N Visual</title>
+    <title>Career-Engine v60.0 - A&N Visual</title>
     <style>
         :root { --main-color: #007bb5; --bg: #0d0d0d; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
@@ -126,11 +126,9 @@
 
     function refreshAllSelects() {
         document.querySelectorAll('.entry-box').forEach(box => {
-            const isEdu = box.closest('#edu-container');
             const selectDeg = box.querySelector('.e-db');
             const selectJob = box.querySelector('.e-job');
             const selectPos = box.querySelector('.e-pos');
-
             if (selectDeg) updateSelect(selectDeg, careerDB.eduLevels);
             if (selectJob) updateSelect(selectJob, careerDB.jobs);
             if (selectPos) updateSelect(selectPos, careerDB.positions);
@@ -140,7 +138,6 @@
     function updateSelect(select, list) {
         const currentVal = select.value;
         let html = `<option value="other">-- ${dictionary[currentLang].v_other} --</option>`;
-        // HIVATKOZÁS A DATABASE.JS-RE
         list.forEach(item => {
             html += `<option value="${item.hu}" ${item.hu === currentVal ? 'selected' : ''}>${item[currentLang]}</option>`;
         });
@@ -182,7 +179,6 @@
         const sum = document.getElementById('in-summary').value;
         if(sum) html += `<h3>${d.summary}</h3><p>${await apiTranslate(sum)}</p>`;
 
-        // ISKOLA RENDER A DATABASE.JS-BŐL
         let eduHtml = "";
         document.querySelectorAll('#edu-container .entry-box').forEach(box => {
             const m = box.querySelector('.e-main').value;
@@ -194,7 +190,6 @@
         });
         if(eduHtml) html += `<h3>${d.eduHeader}</h3>` + eduHtml;
 
-        // MUNKA RENDER A DATABASE.JS-BŐL
         let workHtml = "";
         document.querySelectorAll('#work-container .entry-box').forEach(box => {
             const m = box.querySelector('.e-main').value;
@@ -218,8 +213,8 @@
         const d = dictionary[currentLang];
         if(type === 'edu') {
             div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Iskola" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
+                <input type="text" class="e-main" placeholder="Iskola">
+                <input type="text" class="e-sub" placeholder="Év">
                 <label class="smart-label dyn-deg">${d.v_deg}</label>
                 <select class="e-db" onchange="updatePreview()"></select>
                 <label class="smart-label dyn-other">${d.v_other}</label>
@@ -228,19 +223,22 @@
             updateSelect(div.querySelector('.e-db'), careerDB.eduLevels);
         } else {
             div.innerHTML = `
-                <input type="text" class="e-main" placeholder="Munkahely" oninput="updatePreview()">
-                <input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()">
+                <input type="text" class="e-main" placeholder="Munkahely">
+                <input type="text" class="e-sub" placeholder="Év">
                 <label class="smart-label dyn-job">${d.v_job}</label>
                 <select class="e-job" onchange="updatePreview()"></select>
+                <label class="smart-label dyn-other">${d.v_other}</label>
                 <input type="text" class="e-job-other" oninput="updatePreview()">
                 <label class="smart-label dyn-pos">${d.v_pos}</label>
                 <select class="e-pos" onchange="updatePreview()"></select>
+                <label class="smart-label dyn-other">${d.v_other}</label>
                 <input type="text" class="e-pos-other" oninput="updatePreview()">
             `;
             updateSelect(div.querySelector('.e-job'), careerDB.jobs);
             updateSelect(div.querySelector('.e-pos'), careerDB.positions);
         }
         document.getElementById(type + '-container').appendChild(div);
+        div.querySelectorAll('input').forEach(i => i.oninput = updatePreview);
         updateInterface();
     }
 
@@ -261,7 +259,7 @@
 
     function loadPhoto(e) {
         const r = new FileReader();
-        r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; };
+        r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; updatePreview(); };
         r.readAsDataURL(e.target.files[0]);
     }
 </script>

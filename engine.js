@@ -1,95 +1,116 @@
 let currentLang = 'hu';
 
-function setMode(lang, btn) {
-    currentLang = lang;
-    document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    updateInterface();
-    updatePreview(); 
+// STÍLUS ÉS SZÍN GENERÁLÁS GOMBOKKAL
+const colors = ["#007bb5", "#e67e22", "#27ae60", "#c0392b", "#8e44ad", "#1a1a1a", "#f1c40f", "#16a085", "#d35400", "#2c3e50"];
+const themes = ["style-1", "style-2", "style-3", "style-4", "style-5", "style-6", "style-7", "style-8", "style-9", "style-10"];
+
+function initButtons() {
+    const cp = document.getElementById('color-picker');
+    colors.forEach(c => {
+        let b = document.createElement('div');
+        b.className = 'color-btn';
+        b.style.background = c;
+        b.onclick = () => { document.documentElement.style.setProperty('--main-color', c); updatePreview(); };
+        cp.appendChild(b);
+    });
 }
 
-// EZ MOSTANTÓL NEM HÍV KÜLSŐ API-T, CSAK A BELSŐ SZÓTÁRT HASZNÁLJA
+async function safeTranslate(text) {
+    if (!text || currentLang === 'hu') return text;
+    try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
+        const data = await res.json();
+        const tr = data.responseData.translatedText;
+        if (!tr || tr.includes("LIMIT") || tr.includes("WARNING")) return text;
+        return tr;
+    } catch (e) { return text; }
+}
+
 function updatePreview() {
-    const szin = document.getElementById('theme-color').value;
-    document.documentElement.style.setProperty('--main-color', szin);
-    
     const vez = document.getElementById('in-lastName').value || "";
     const ker = document.getElementById('in-firstName').value || "";
+    // NÉV SORREND NYELV SZERINT
     let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
-    
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
-    document.getElementById('out-name').style.color = szin;
-    renderStaticContent();
+    renderSync();
 }
 
-function renderStaticContent() {
+async function renderSync() {
     const d = dictionary[currentLang];
     
-    const phone = document.getElementById('in-phone').value || "";
-    const email = document.getElementById('in-email').value || "";
-    const zip = document.getElementById('in-zip').value || "";
-    const city = document.getElementById('in-city').value || "";
-    const sName = document.getElementById('in-street-name').value || "";
-    const house = document.getElementById('in-house').value || "";
+    // TÁJÉKOZTATÓK FRISSÍTÉSE
+    document.getElementById('lbl-atsContent').innerText = d.atsTips;
+    document.getElementById('lbl-guideText').innerText = d.guide;
 
-    const sTypeSelect = document.getElementById('in-street-type');
-    // A típusválasztó a szótárból szedi a nevet (utca/street/straße)
-    const sTypeHU = sTypeSelect.value;
-    const sTypeObj = omniDict.find(e => e.hu === sTypeHU);
-    const sType = sTypeObj ? sTypeObj[currentLang] : sTypeHU;
+    const phone = document.getElementById('in-phone').value;
+    const email = document.getElementById('in-email').value;
+    const city = await safeTranslate(document.getElementById('in-city').value);
     
-    const fullStreet = sName ? sName + " " + sType : "";
-    const addr = [zip, city, fullStreet, house].filter(x => x && x.trim() !== "").join(", ");
-
     document.getElementById('out-contact').innerHTML = `
-        <div style="margin-top:10px; line-height: 1.5;">
-            ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
-            ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
-            ${addr ? '<div style="margin-top:5px;"><b>' + d.addr + '</b> ' + addr + '</div>' : ''}
-        </div>
+        ${phone ? '<div><b>' + d.phone + ':</b> ' + phone + '</div>' : ''}
+        ${email ? '<div><b>' + d.email + ':</b> ' + email + '</div>' : ''}
+        ${city ? '<div><b>' + d.addr + '</b> ' + city + '</div>' : ''}
     `;
 
     let html = "";
-    const sum = document.getElementById('in-summary').value;
-    if(sum) html += `<h3>${d.summary}</h3><p>${sum}</p>`;
+    const sumRaw = document.getElementById('in-summary').value;
+    if(sumRaw) {
+        const sum = await safeTranslate(sumRaw);
+        html += `<h3>${d.summary}</h3><p>${sum}</p>`;
+    }
 
+    // DINAMIKUS MEZŐK RENDERELÉSE
     for (let type of ['edu', 'work']) {
         let items = "";
-        const boxes = document.querySelectorAll('#' + type + '-container .entry-box');
-        boxes.forEach(box => {
-            const m = box.querySelector('.e-main').value;
-            const sub = box.querySelector('.e-sub').value;
-            const desc = box.querySelector('.e-desc').value;
-            if(m || sub || desc) {
-                items += `<div style="margin-bottom:12px"><b>${m}</b> ${sub ? '('+sub+')' : ''}<br><span>${desc}</span></div>`;
+        const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
+        for (let box of boxes) {
+            const main = box.querySelector('.e-main').value; // Tulajdonnév
+            const sub = box.querySelector('.e-sub').value;   // Év
+            
+            // Ha adatbázisból választott
+            const dbSelect = box.querySelector('.e-db-select');
+            let dbVal = "";
+            if(dbSelect && dbSelect.value !== "other") {
+                const found = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs).find(x => x.hu === dbSelect.value);
+                dbVal = found ? found[currentLang] : dbSelect.value;
+            } else {
+                // Csak akkor hívjuk az API-t, ha az "Egyéb" mezőbe írt
+                dbVal = await safeTranslate(box.querySelector('.e-other').value);
             }
-        });
+
+            if(main || dbVal) {
+                items += `<div class="cv-item"><b>${main}</b> - ${dbVal} (${sub})</div>`;
+            }
+        }
         if(items) html += `<h3>${d[type]}</h3>` + items;
     }
     document.getElementById('main-content').innerHTML = html;
 }
 
-function updateInterface() {
-    const d = dictionary[currentLang];
-    for (let key in d) {
-        const el = document.getElementById('lbl-' + key);
-        if (el) el.innerText = d[key];
-    }
-}
-
 function addEntry(type) {
+    const container = document.getElementById(type + '-container');
     const div = document.createElement('div');
     div.className = 'entry-box';
-    div.innerHTML = `<input type="text" class="e-main" placeholder="Intézmény/Cég" oninput="updatePreview()"><input type="text" class="e-sub" placeholder="Év" oninput="updatePreview()"><input type="text" class="e-desc" placeholder="Leírás" oninput="updatePreview()">`;
-    document.getElementById(type + '-container').appendChild(div);
+    
+    let options = `<option value="other">-- EGYÉB (FORDÍTÓVAL) --</option>`;
+    const source = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
+    source.forEach(x => options += `<option value="${x.hu}">${x.hu}</option>`);
+
+    div.innerHTML = `
+        <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola neve':'Cég neve'}" oninput="updatePreview()">
+        <input type="text" class="e-sub" placeholder="Év (tól-ig)" oninput="updatePreview()">
+        <select class="e-db-select" onchange="updatePreview()">${options}</select>
+        <input type="text" class="e-other" placeholder="Ha nincs a listában, ide írd..." oninput="updatePreview()">
+    `;
+    container.appendChild(div);
 }
 
-function loadPhoto(event) {
-    const reader = new FileReader();
-    reader.onload = () => { document.getElementById('out-photo').src = reader.result; document.getElementById('out-photo-box').style.display = 'block'; };
-    reader.readAsDataURL(event.target.files[0]);
+function setMode(lang, btn) {
+    currentLang = lang;
+    document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateInterface();
+    updatePreview();
 }
 
-function updateStyle() { document.body.className = document.getElementById('style-select').value; }
-function updateTheme() { updatePreview(); }
-window.onload = () => { updateInterface(); updatePreview(); };
+window.onload = () => { initButtons(); updateInterface(); };

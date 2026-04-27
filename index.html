@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v63.0 - A&N Visual</title>
+    <title>Career-Engine v64.0 - A&N Visual</title>
     <style>
         :root { --main-color: #007bb5; --bg: #0d0d0d; }
         body { margin: 0; display: flex; height: 100vh; font-family: 'Segoe UI', sans-serif; background: #000; color: #eee; transition: 0.3s; }
@@ -106,6 +106,7 @@
 
     let currentLang = 'hu';
 
+    // API FORDÍTÓ FÜGGVÉNY
     async function apiTranslate(text) {
         if (!text || currentLang === 'hu') return text;
         try {
@@ -137,7 +138,6 @@
 
     function updateSelect(select, list) {
         const currentVal = select.value;
-        // JAVÍTVA: Csak egy tiszta választási tipp, NINCS egyéb felirat itt
         let html = `<option value="">${dictionary[currentLang].select_hint}</option>`;
         list.forEach(item => {
             html += `<option value="${item.hu}" ${item.hu === currentVal ? 'selected' : ''}>${item[currentLang]}</option>`;
@@ -166,6 +166,8 @@
 
     async function renderPaper() {
         const d = dictionary[currentLang];
+        
+        // API FORDÍTÁS A CÍMHEZ ÉS PROFILHOZ
         const city = await apiTranslate(document.getElementById('in-city').value);
         const street = document.getElementById('in-street').value;
         const sTypeSelect = document.getElementById('in-street-type');
@@ -177,29 +179,37 @@
         `;
 
         let html = "";
-        const sum = document.getElementById('in-summary').value;
-        if(sum) html += `<h3>${d.summary}</h3><p>${await apiTranslate(sum)}</p>`;
+        const sumRaw = document.getElementById('in-summary').value;
+        if(sumRaw) {
+            const sumTrans = await apiTranslate(sumRaw);
+            html += `<h3>${d.summary}</h3><p>${sumTrans}</p>`;
+        }
 
-        document.querySelectorAll('#edu-container .entry-box').forEach(box => {
+        // ISKOLA ÉS MUNKA RENDER (API FORDÍTÁS AZ EGYÉB MEZŐKHÖZ)
+        let eduHtml = "";
+        for (const box of document.querySelectorAll('#edu-container .entry-box')) {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
             const dbVal = box.querySelector('.e-db').value;
-            const other = box.querySelector('.e-other').value;
-            let title = (dbVal && dbVal !== "") ? careerDB.eduLevels.find(x => x.hu === dbVal)[currentLang] : other;
-            if(m || title) html += `<div style="margin-bottom:10px"><b>${m}</b> - ${title} (${sub})</div>`;
-        });
+            const otherRaw = box.querySelector('.e-other').value;
+            let title = (dbVal && dbVal !== "") ? careerDB.eduLevels.find(x => x.hu === dbVal)[currentLang] : await apiTranslate(otherRaw);
+            if(m || title) eduHtml += `<div style="margin-bottom:10px"><b>${m}</b> - ${title} (${sub})</div>`;
+        }
+        if(eduHtml) html += `<h3>${d.eduHeader}</h3>` + eduHtml;
 
-        document.querySelectorAll('#work-container .entry-box').forEach(box => {
+        let workHtml = "";
+        for (const box of document.querySelectorAll('#work-container .entry-box')) {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
             const jobVal = box.querySelector('.e-job').value;
-            const jobOther = box.querySelector('.e-job-other').value;
+            const jobOtherRaw = box.querySelector('.e-job-other').value;
             const posVal = box.querySelector('.e-pos').value;
-            const posOther = box.querySelector('.e-pos-other').value;
-            let job = (jobVal && jobVal !== "") ? careerDB.jobs.find(x => x.hu === jobVal)[currentLang] : jobOther;
-            let pos = (posVal && posVal !== "") ? careerDB.positions.find(x => x.hu === posVal)[currentLang] : posOther;
-            if(m || job) html += `<div style="margin-bottom:10px"><b>${m}</b> - ${job} (${pos})<br>${sub}</div>`;
-        });
+            const posOtherRaw = box.querySelector('.e-pos-other').value;
+            let job = (jobVal && jobVal !== "") ? careerDB.jobs.find(x => x.hu === jobVal)[currentLang] : await apiTranslate(jobOtherRaw);
+            let pos = (posVal && posVal !== "") ? careerDB.positions.find(x => x.hu === posVal)[currentLang] : await apiTranslate(posOtherRaw);
+            if(m || job) workHtml += `<div style="margin-bottom:10px"><b>${m}</b> - ${job} (${pos})<br>${sub}</div>`;
+        }
+        if(workHtml) html += `<h3>${d.workHeader}</h3>` + workHtml;
 
         document.getElementById('main-content').innerHTML = html;
     }
@@ -213,9 +223,9 @@
                 <input type="text" class="e-main" placeholder="Iskola">
                 <input type="text" class="e-sub" placeholder="Év">
                 <label class="smart-label dyn-deg">${d.v_deg}</label>
-                <select class="e-db" onchange="updatePreview()"></select>
+                <select class="e-db"></select>
                 <label class="smart-label dyn-other">${d.v_other}</label>
-                <input type="text" class="e-other" oninput="updatePreview()">
+                <input type="text" class="e-other">
             `;
             updateSelect(div.querySelector('.e-db'), careerDB.eduLevels);
         } else {
@@ -223,18 +233,19 @@
                 <input type="text" class="e-main" placeholder="Munkahely">
                 <input type="text" class="e-sub" placeholder="Időtartam">
                 <label class="smart-label dyn-job">${d.v_job}</label>
-                <select class="e-job" onchange="updatePreview()"></select>
-                <input type="text" class="e-job-other" oninput="updatePreview()">
-                <label class="smart-label dyn-pos">${d.v_pos}</label>
-                <select class="e-pos" onchange="updatePreview()"></select>
+                <select class="e-job"></select>
                 <label class="smart-label dyn-other">${d.v_other}</label>
-                <input type="text" class="e-pos-other" oninput="updatePreview()">
+                <input type="text" class="e-job-other">
+                <label class="smart-label dyn-pos">${d.v_pos}</label>
+                <select class="e-pos"></select>
+                <label class="smart-label dyn-other">${d.v_other}</label>
+                <input type="text" class="e-pos-other">
             `;
             updateSelect(div.querySelector('.e-job'), careerDB.jobs);
             updateSelect(div.querySelector('.e-pos'), careerDB.positions);
         }
         document.getElementById(type + '-container').appendChild(div);
-        div.querySelectorAll('input').forEach(i => i.oninput = updatePreview);
+        div.querySelectorAll('input, select').forEach(i => i.onchange = updatePreview);
         updateInterface();
     }
 

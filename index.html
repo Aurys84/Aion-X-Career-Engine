@@ -2,8 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career-Engine v36.2</title>
+    <title>Career-Engine v36.3</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
@@ -13,14 +12,13 @@
             <h1 id="lbl-engineName">Career-Engine</h1>
         </div>
 
-        <div class="info-panel" id="ats-tips-box">
-            <b id="lbl-atsTitle">GIGA ATS TIPPEK:</b>
-            <div id="lbl-atsContent"></div>
+        <div class="info-panel">
+            <b id="lbl-atsTitle"></b>
+            <pre id="lbl-atsTips"></pre>
         </div>
-
         <div class="info-panel guide">
-            <b id="lbl-guideTitle">KITÖLTÉSI ÚTMUTATÓ:</b>
-            <p id="lbl-guideText"></p>
+            <b id="lbl-guideTitle"></b>
+            <p id="lbl-guide"></p>
         </div>
 
         <div class="lang-grid">
@@ -28,62 +26,58 @@
             <button class="btn-lang" onclick="setMode('en', this)">EN</button>
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
-
-        <div class="control-row">
-            <div class="picker-box">
-                <label class="smart-label" id="lbl-colorLabel">SZÍNEK (10)</label>
-                <div class="color-grid" id="color-picker"></div>
-            </div>
-            <div class="picker-box">
-                <label class="smart-label" id="lbl-styleLabel">STÍLUSOK (10)</label>
-                <div class="style-grid" id="style-picker"></div>
-            </div>
+        <div class="picker-row">
+            <div class="grid-label" id="lbl-colors">SZÍNEK</div>
+            <div class="color-grid" id="color-picker"></div>
+        </div>
+        <div class="picker-row">
+            <div class="grid-label" id="lbl-styles">STÍLUSOK</div>
+            <div class="style-grid" id="style-picker"></div>
         </div>
 
-        <label class="smart-label" id="lbl-photo">FOTÓ FELTÖLTÉSE</label>
-        <input type="file" id="in-photo" accept="image/*" onchange="loadPhoto(event)">
+        <label class="smart-label">FOTÓ</label>
+        <input type="file" onchange="loadPhoto(event)">
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-lName"></label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-fName"></label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
         </div>
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-cityLabel">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-streetLabel">UTCANÉV</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-city"></label><input type="text" id="in-city" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-street"></label><input type="text" id="in-street" oninput="updatePreview()"></div>
         </div>
-
         <div class="input-group">
             <div style="flex:1">
-                <label class="smart-label" id="lbl-type">≡ TÍPUS</label>
+                <label class="smart-label" id="lbl-type"></label>
                 <select id="in-street-type" onchange="updatePreview()">
-                    <option value="utca">utca / street / straße</option>
-                    <option value="út">út / road / straße</option>
-                    <option value="tér">tér / square / platz</option>
+                    <option value="utca">utca / street</option>
+                    <option value="út">út / road</option>
+                    <option value="tér">tér / square</option>
                 </select>
             </div>
             <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
-        <label class="smart-label" id="lbl-phoneLabel">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
-        <label class="smart-label" id="lbl-emailLabel">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-phone"></label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-email"></label><input type="email" id="in-email" oninput="updatePreview()">
         
-        <label class="smart-label" id="lbl-summaryLabel">PROFIL / BEMUTATKOZÁS (API FORDÍTÓVAL)</label>
+        <label class="smart-label" id="lbl-summary"></label>
         <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
         <div id="edu-area">
-            <h3 id="lbl-eduTitle">TANULMÁNYOK</h3>
+            <h3 id="lbl-eduHeader">TANULMÁNYOK</h3>
             <div id="edu-container"></div>
-            <button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button>
+            <button onclick="addEntry('edu')" class="add-btn">+ ÚJ ISKOLA</button>
         </div>
 
         <div id="work-area">
-            <h3 id="lbl-workTitle">MUNKATAPASZTALAT</h3>
+            <h3 id="lbl-workHeader">MUNKATAPASZTALAT</h3>
             <div id="work-container"></div>
-            <button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button>
+            <button onclick="addEntry('work')" class="add-btn">+ ÚJ MUNKAHELY</button>
         </div>
 
-        <button onclick="window.print()" class="print-btn" id="lbl-print">PDF GENERÁLÁSA</button>
+        <button onclick="window.print()" class="print-btn" id="lbl-print"></button>
     </div>
 
     <div class="preview-side">

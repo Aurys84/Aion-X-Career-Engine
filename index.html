@@ -2,14 +2,14 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Career-Engine v39.0</title>
+    <title>Career-Engine v40.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="style-10">
     <div class="editor-side">
         <div class="logo-area"><div class="brand-circle">A&N</div><h1 id="lbl-engineName">Career-Engine</h1></div>
         
-        <div class="info-panel"><b id="lbl-atsTitle"></b><pre id="lbl-atsTips"></pre></div>
+        <div class="info-panel"><b id="lbl-atsTitle"></b><div id="lbl-atsTips" style="white-space: pre-wrap;"></div></div>
         <div class="info-panel guide"><b id="lbl-guideTitle"></b><p id="lbl-guide"></p></div>
 
         <div class="lang-grid">
@@ -18,23 +18,23 @@
             <button class="btn-lang" onclick="setMode('de', this)">DE</button>
         </div>
 
-        <div class="picker-row"><div class="grid-label" id="lbl-colors">SZÍNEK</div><div class="color-grid" id="color-picker"></div></div>
-        <div class="picker-row"><div class="grid-label" id="lbl-styles">STÍLUSOK</div><div class="style-grid" id="style-picker"></div></div>
+        <div class="picker-row"><label class="smart-label" id="lbl-colors">SZÍNEK</label><div class="color-grid" id="color-picker"></div></div>
+        <div class="picker-row"><label class="smart-label" id="lbl-styles">STÍLUSOK</label><div class="style-grid" id="style-picker"></div></div>
 
         <label class="smart-label" id="lbl-photo">FOTÓ</label>
         <input type="file" onchange="loadPhoto(event)">
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-fName">KERESZTNÉV</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-lName">VEZETÉKNÉV</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-fName">FIRST NAME</label><input type="text" id="in-firstName" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-lName">LAST NAME</label><input type="text" id="in-lastName" oninput="updatePreview()"></div>
         </div>
 
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-city">VÁROS</label><input type="text" id="in-city" oninput="updatePreview()"></div>
-            <div style="flex:1"><label class="smart-label" id="lbl-street">UTCA</label><input type="text" id="in-street" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-city">CITY</label><input type="text" id="in-city" oninput="updatePreview()"></div>
+            <div style="flex:1"><label class="smart-label" id="lbl-street">STREET</label><input type="text" id="in-street" oninput="updatePreview()"></div>
         </div>
         <div class="input-group">
-            <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TÍPUS</label>
+            <div style="flex:1"><label class="smart-label" id="lbl-type">≡ TYPE</label>
                 <select id="in-street-type" onchange="updatePreview()">
                     <option value="utca">utca / street / straße</option>
                     <option value="út">út / road / straße</option>
@@ -44,22 +44,22 @@
             <div style="width:30%"><label class="smart-label">NO.</label><input type="text" id="in-house" oninput="updatePreview()"></div>
         </div>
 
-        <label class="smart-label" id="lbl-phone">TELEFON</label><input type="text" id="in-phone" oninput="updatePreview()">
+        <label class="smart-label" id="lbl-phone">PHONE</label><input type="text" id="in-phone" oninput="updatePreview()">
         <label class="smart-label" id="lbl-email">EMAIL</label><input type="email" id="in-email" oninput="updatePreview()">
         
-        <label class="smart-label" id="lbl-summary">BEMUTATKOZÁS</label>
+        <label class="smart-label" id="lbl-summary">SUMMARY</label>
         <textarea id="in-summary" rows="3" oninput="updatePreview()"></textarea>
 
-        <div id="edu-area"><h3 id="lbl-edu">TANULMÁNYOK</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button></div>
-        <div id="work-area"><h3 id="lbl-work">MUNKATAPASZTALAT</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button></div>
+        <div id="edu-area"><h3 id="lbl-edu">EDUCATION</h3><div id="edu-container"></div><button onclick="addEntry('edu')" class="add-btn" id="lbl-addEdu">+ ÚJ ISKOLA</button></div>
+        <div id="work-area"><h3 id="lbl-work">EXPERIENCE</h3><div id="work-container"></div><button onclick="addEntry('work')" class="add-btn" id="lbl-addWork">+ ÚJ MUNKAHELY</button></div>
 
-        <button onclick="window.print()" class="print-btn" id="lbl-print">PDF GENERÁLÁSA</button>
+        <button onclick="window.print()" class="print-btn" id="lbl-print">GENERATE PDF</button>
     </div>
 
     <div class="preview-side">
         <div class="cv-paper" id="cv-paper">
             <div class="cv-header">
-                <div id="out-photo-box" style="display:none;"><img id="out-photo"></div>
+                <div id="out-photo-box" style="display:none; width:120px; height:150px; overflow:hidden;"><img id="out-photo" style="width:100%;"></div>
                 <div class="header-text"><h1 id="out-name">NAME</h1><div id="out-contact"></div></div>
             </div>
             <div id="main-content"></div>

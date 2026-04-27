@@ -1,6 +1,13 @@
 let currentLang = 'hu';
 
-async function safeTranslate(text) {
+function setMode(l, b) {
+    currentLang = l;
+    document.querySelectorAll('.btn-lang').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    updateInterface(); updatePreview();
+}
+
+async function apiTranslate(text) {
     if (!text || currentLang === 'hu') return text;
     try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=hu|${currentLang}`);
@@ -10,10 +17,18 @@ async function safeTranslate(text) {
     } catch (e) { return text; }
 }
 
+function updateInterface() {
+    const d = dictionary[currentLang];
+    for (let key in d) {
+        const el = document.getElementById('lbl-' + key);
+        if (el) el.innerText = d[key];
+    }
+}
+
 function updatePreview() {
     const vez = document.getElementById('in-lastName').value || "";
     const ker = document.getElementById('in-firstName').value || "";
-    // Magyar: Vezetéknév Keresztnév | Egyéb: Keresztnév Vezetéknév
+    // NÉVSORREND PAPÍRON: HU: Vez + Ker | EN/DE: Ker + Vez
     let fullName = (currentLang === 'hu') ? vez + " " + ker : ker + " " + vez;
     document.getElementById('out-name').innerText = fullName.trim().toUpperCase() || "NAME";
     renderPaper();
@@ -21,41 +36,33 @@ function updatePreview() {
 
 async function renderPaper() {
     const d = dictionary[currentLang];
-    const phone = document.getElementById('in-phone').value;
-    const email = document.getElementById('in-email').value;
-    const city = await safeTranslate(document.getElementById('in-city').value);
-    const sName = document.getElementById('in-street').value;
+    const city = await apiTranslate(document.getElementById('in-city').value);
     const sTypeHU = document.getElementById('in-street-type').value;
-    const sType = (sTypeHU === 'utca') ? (currentLang === 'hu' ? 'utca' : 'street') : sTypeHU; // Egyszerűsített
+    const sType = omniDict.find(e => e.hu === sTypeHU)[currentLang];
     
     document.getElementById('out-contact').innerHTML = `
-        <div><b>${d.phone}:</b> ${phone}</div>
-        <div><b>${d.email}:</b> ${email}</div>
-        <div><b>${d.addr}</b> ${city}, ${sName} ${sType} ${document.getElementById('in-house').value}</div>
+        <div><b>${d.phone}:</b> ${document.getElementById('in-phone').value}</div>
+        <div><b>${d.email}:</b> ${document.getElementById('in-email').value}</div>
+        <div><b>${d.addr}</b> ${city}, ${document.getElementById('in-street').value} ${sType} ${document.getElementById('in-house').value}</div>
     `;
 
     let html = "";
-    const sumRaw = document.getElementById('in-summary').value;
-    if(sumRaw) html += `<h3>${d.summary}</h3><p>${await safeTranslate(sumRaw)}</p>`;
+    const sum = document.getElementById('in-summary').value;
+    if(sum) html += `<h3>${d.summary}</h3><p>${await apiTranslate(sum)}</p>`;
 
-    // Iskola/Munka ciklusok
     for (let type of ['edu', 'work']) {
         let items = "";
         const boxes = document.querySelectorAll(`#${type}-container .entry-box`);
         for (let box of boxes) {
             const m = box.querySelector('.e-main').value;
             const sub = box.querySelector('.e-sub').value;
+            
+            // ADATBÁZIS VÁLASZTÓ (50 ELEM)
             const dbVal = box.querySelector('.e-db').value;
             const other = box.querySelector('.e-other').value;
-            
-            let title = "";
-            if(dbVal !== "other") {
-                const list = (type === 'edu' ? careerDB.eduLevels : careerDB.jobs);
-                const found = list.find(x => x.hu === dbVal);
-                title = found ? found[currentLang] : dbVal;
-            } else {
-                title = await safeTranslate(other);
-            }
+            let title = (dbVal !== "other") ? 
+                (type === 'edu' ? careerDB.eduLevels : careerDB.jobs).find(x => x.hu === dbVal)[currentLang] : 
+                await apiTranslate(other);
 
             if(m || title) items += `<div class="item"><b>${m}</b> - ${title} (${sub})</div>`;
         }
@@ -71,28 +78,13 @@ function addEntry(type) {
     let opts = list.map(x => `<option value="${x.hu}">${x.hu}</option>`).join('');
     
     div.innerHTML = `
-        <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola neve':'Cég neve'}">
-        <input type="text" class="e-sub" placeholder="Év">
-        <select class="e-db"><option value="other">EGYÉB / OTHER</option>${opts}</select>
-        <input type="text" class="e-other" placeholder="Ha nincs a listában, ide írd...">
+        <input type="text" class="e-main" placeholder="${type==='edu'?'Iskola/Schule':'Cég/Company'}">
+        <input type="text" class="e-sub" placeholder="Év/Year">
+        <select class="e-db"><option value="other">EGYÉB...</option>${opts}</select>
+        <input type="text" class="e-other" placeholder="Egyéb (API)">
     `;
     document.getElementById(type + '-container').appendChild(div);
     div.querySelectorAll('input, select').forEach(el => el.oninput = updatePreview);
-}
-
-function updateInterface() {
-    const d = dictionary[currentLang];
-    for (let key in d) {
-        const el = document.getElementById('lbl-' + key);
-        if (el) el.innerText = d[key];
-    }
-}
-
-function setMode(l, b) {
-    currentLang = l;
-    document.querySelectorAll('.btn-lang').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    updateInterface(); updatePreview();
 }
 
 window.onload = () => {
@@ -110,8 +102,5 @@ window.onload = () => {
     updateInterface();
 };
 
-function loadPhoto(e) {
-    const r = new FileReader();
-    r.onload = () => { document.getElementById('out-photo').src = r.result; document.getElementById('out-photo-box').style.display='block'; };
-    r.readAsDataURL(e.target.files[0]);
-}
+
+    
